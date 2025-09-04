@@ -1,0 +1,30 @@
+{
+  "template_id": "trenching",
+  "name": "Trenching Service", 
+  "description": "Hand trenching for irrigation lines",
+  "category": "labor_service",
+  "parameters": {
+    "trench_feet": {"type": "decimal", "required": true, "min": 1},
+    "soil_type": {"type": "string", "required": true, "options": ["turf", "rocky", "clay", "roots"]},
+    "depth": {"type": "string", "required": false, "default": "standard", "options": ["standard", "deep"]},
+    "width": {"type": "string", "required": false, "default": "single", "options": ["single", "double"]}
+  },
+  "element_list": [
+    {
+      "element_id": "trenching",
+      "quantity_formula": "trench_feet",
+      "soil_modifier": true,
+      "description": "Hand trenching {trench_feet} ft in {soil_type} soil"
+    }
+  ],
+  "narrative_template": "Hand trench {trench_feet} feet in {soil_type} soil conditions. Trench depth 12-18 inches suitable for irrigation lines. Includes proper backfill and surface restoration.",
+  "terms": "Customer responsible for utility locate. Surface restoration to match existing grade.",
+  "modifiers": {
+    "depth": {
+      "deep": {"multiplier": "1.3", "description": "18-24 inch depth"}
+    },
+    "width": {
+      "double": {"multiplier": "1.8", "description": "Double-wide trench for multiple lines"}
+    }
+  }
+}

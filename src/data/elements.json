@@ -1,0 +1,94 @@
+{
+  "materials": {
+    "pvc_pipe_1inch": {
+      "id": "pvc_pipe_1inch",
+      "name": "1\" Sch 40 PVC Pipe",
+      "category": "materials",
+      "unit": "ft",
+      "base_rate": "2.50",
+      "description": "1 inch Schedule 40 PVC pipe for main lines"
+    },
+    "pvc_pipe_half_inch": {
+      "id": "pvc_pipe_half_inch", 
+      "name": "1/2\" Sch 40 PVC Pipe",
+      "category": "materials",
+      "unit": "ft",
+      "base_rate": "1.75",
+      "description": "1/2 inch Schedule 40 PVC pipe for laterals"
+    },
+    "sprinkler_head_prs45": {
+      "id": "sprinkler_head_prs45",
+      "name": "PRS-45 Spray Head",
+      "category": "materials", 
+      "unit": "each",
+      "base_rate": "8.50",
+      "description": "Hunter PRS-45 pressure regulating spray head"
+    },
+    "swing_joint": {
+      "id": "swing_joint",
+      "name": "Swing Joint Assembly", 
+      "category": "materials",
+      "unit": "each",
+      "base_rate": "12.00",
+      "description": "Flexible swing joint for sprinkler connection"
+    }
+  },
+  "equipment": {
+    "valve_1inch": {
+      "id": "valve_1inch",
+      "name": "1\" Electric Valve",
+      "category": "equipment",
+      "unit": "each", 
+      "base_rate": "45.00",
+      "description": "Hunter PGV-101 1-inch electric valve"
+    },
+    "valve_box": {
+      "id": "valve_box",
+      "name": "Valve Box w/ Lid",
+      "category": "equipment",
+      "unit": "each",
+      "base_rate": "25.00", 
+      "description": "Standard valve box with green lid"
+    }
+  },
+  "labor": {
+    "trenching": {
+      "id": "trenching",
+      "name": "Trenching", 
+      "category": "labor",
+      "unit": "ft",
+      "base_rate": "3.00",
+      "description": "Hand trenching 12-18 inches deep",
+      "soil_modifiers": {
+        "turf": "1.0",
+        "rocky": "1.8", 
+        "clay": "1.4",
+        "roots": "1.6"
+      }
+    },
+    "valve_install": {
+      "id": "valve_install",
+      "name": "Valve Installation",
+      "category": "labor", 
+      "unit": "each",
+      "base_rate": "85.00",
+      "description": "Install valve, connect wiring, test operation"
+    },
+    "head_install": {
+      "id": "head_install",
+      "name": "Sprinkler Head Install",
+      "category": "labor",
+      "unit": "each", 
+      "base_rate": "25.00",
+      "description": "Install head with swing joint, adjust spray pattern"
+    },
+    "pipe_assembly": {
+      "id": "pipe_assembly",
+      "name": "Pipe Assembly & Install", 
+      "category": "labor",
+      "unit": "ft",
+      "base_rate": "1.50",
+      "description": "Cut, fit, glue and install PVC pipe"
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "template_id": "head_replacement", 
+  "name": "Sprinkler Head Replacement",
+  "description": "Replace existing sprinkler heads",
+  "category": "repair_service",
+  "parameters": {
+    "head_count": {"type": "int", "required": true, "min": 1, "max": 20},
+    "head_type": {"type": "string", "required": false, "default": "spray", "options": ["spray", "rotary", "drip"]},
+    "swing_joint_needed": {"type": "boolean", "required": false, "default": false},
+    "pipe_repair": {"type": "boolean", "required": false, "default": false}
+  },
+  "element_list": [
+    {
+      "element_id": "sprinkler_head_prs45",
+      "quantity_formula": "head_count",
+      "description": "Replacement {head_type} heads"
+    },
+    {
+      "element_id": "swing_joint", 
+      "quantity_formula": "head_count if swing_joint_needed else 0",
+      "description": "Swing joint assemblies"
+    },
+    {
+      "element_id": "head_install",
+      "quantity_formula": "head_count",
+      "description": "Remove old head and install new"
+    },
+    {
+      "element_id": "pipe_assembly",
+      "quantity_formula": "head_count * 2 if pipe_repair else 0", 
+      "description": "Minor pipe repair at head connection"
+    }
+  ],
+  "narrative_template": "Replace {head_count} existing sprinkler heads with new {head_type} heads. {swing_joint_text} {pipe_repair_text} Includes adjustment of spray patterns and pressure testing.",
+  "terms": "Old heads removed from site. New heads include manufacturer warranty. Customer responsible for any major pipe repairs discovered during work.",
+  "conditional_text": {
+    "swing_joint_text": {
+      "condition": "swing_joint_needed == true", 
+      "true": "Includes new swing joint assemblies for flexible connection.",
+      "false": ""
+    },
+    "pipe_repair_text": {
+      "condition": "pipe_repair == true",
+      "true": "Includes minor pipe repair at connection points.",
+      "false": ""
+    }
+  }
+}

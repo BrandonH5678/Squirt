@@ -1,0 +1,52 @@
+
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                           WATERWIZARD IRRIGATION                              ║
+║                              INVOICE                                          ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+INVOICE NUMBER: INV-20250828-001
+DATE: August 28, 2025
+DUE: Upon Receipt
+
+BILL TO:                               FROM:
+Rodriguez Family Trust                           WaterWizard Irrigation & Landscape
+2847 Maple Ridge Drive                        Professional Irrigation Services  
+Cedar Park, TX 78613
+                                       Phone: (555) 123-4567
+                                       Email: info@waterwizard.com
+
+PROJECT: Front Yard Irrigation Repair & New Zone Installation
+
+═════════════════════════════════════════════════════════════════════════════════
+
+┌─────────────────────────────────────────────┬──────┬─────────┬─────────────┐
+│ Description                                 │ Qty  │ Rate    │ Amount      │
+├─────────────────────────────────────────────┼──────┼─────────┼─────────────┤
+│ Replacement spray heads                     │ 5.0 each │   $8.50 │      $42.50 │
+│ Swing joint assemblies                      │ 5.0 each │  $12.00 │      $60.00 │
+│ Remove old head and install new             │ 5.0 each │  $25.00 │     $125.00 │
+│ Minor pipe repair at head connection        │ 10.0 ft │   $1.50 │      $15.00 │
+│ Zone 3 control valve                        │ 1.0 each │  $45.00 │      $45.00 │
+│ Valve box for zone 3                        │ 1.0 each │  $25.00 │      $25.00 │
+│ Install valve for zone 3                    │ 1.0 each │  $85.00 │      $85.00 │
+│ Main line piping                            │ 148.0 ft │   $2.50 │     $370.00 │
+│ Lateral piping to heads                     │ 56.0 ft │   $1.75 │      $98.00 │
+│ Spray heads for zone 3                      │ 7.0 each │   $8.50 │      $59.50 │
+│ Swing joints for heads                      │ 7.0 each │  $12.00 │      $84.00 │
+│ Hand trenching for zone 3                   │ 185.0 ft │   $5.40 │     $999.00 │
+│ Assemble and install piping                 │ 222.0 ft │   $1.50 │     $333.00 │
+│ Install and adjust spray heads              │ 7.0 each │  $25.00 │     $175.00 │
+│ Hand trenching 35 ft in roots soil          │ 35.0 ft │   $4.80 │     $168.00 │
+│ 1inch irrigation valve                      │ 3.0 each │  $45.00 │     $135.00 │
+│ Valve box with lid                          │ 1.0 each │  $25.00 │      $25.00 │
+│ Professional valve installation             │ 3.0 each │  $85.00 │     $255.00 │
+├─────────────────────────────────────────────┴──────┴─────────┼─────────────┤
+│                                              SUBTOTAL: │ $    3099.00 │
+│                                    TAX (8.75%): │ $     271.16 │
+│                                        AMOUNT DUE: │ $    3370.16 │
+└────────────────────────────────────────────────────────┴─────────────┘
+
+PAYMENT TERMS: Net 30 days
+THANK YOU FOR YOUR BUSINESS!
+
+═════════════════════════════════════════════════════════════════════════════════

@@ -1,0 +1,38 @@
+{
+  "template_id": "valve_install",
+  "name": "Valve Installation",
+  "description": "Install irrigation control valve with box",
+  "category": "equipment_install", 
+  "parameters": {
+    "valve_count": {"type": "int", "required": true, "min": 1, "max": 8},
+    "valve_size": {"type": "string", "required": false, "default": "1inch", "options": ["1inch", "3/4inch"]},
+    "wiring_feet": {"type": "decimal", "required": false, "default": 50},
+    "manifold": {"type": "boolean", "required": false, "default": false}
+  },
+  "element_list": [
+    {
+      "element_id": "valve_1inch",
+      "quantity_formula": "valve_count",
+      "description": "{valve_size} irrigation valve"
+    },
+    {
+      "element_id": "valve_box",
+      "quantity_formula": "1 if manifold else valve_count", 
+      "description": "Valve box with lid"
+    },
+    {
+      "element_id": "valve_install",
+      "quantity_formula": "valve_count",
+      "description": "Professional valve installation"
+    }
+  ],
+  "narrative_template": "Install {valve_count} x {valve_size} irrigation control valve(s) with proper valve box and wiring connection. Includes pressure testing and operational verification. {manifold_text}",
+  "terms": "Installation includes 1-year warranty on workmanship. Valve manufacturers warranty applies to equipment.",
+  "conditional_text": {
+    "manifold_text": {
+      "condition": "manifold == true",
+      "true": "Valves installed in manifold configuration with single valve box.",
+      "false": ""
+    }
+  }
+}

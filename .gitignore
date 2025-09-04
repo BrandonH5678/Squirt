@@ -1,0 +1,91 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environment
+venv/
+env/
+ENV/
+venv.bak/
+env.bak/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Operating System
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Business/Client Data - PROTECT SENSITIVE INFORMATION
+Client Files/*/
+!Client Files/README.md
+Company Files/*/
+!Company Files/README.md
+
+# Generated Output Files
+*_output/
+*.pdf
+*.odt
+enhanced_output/
+sprint*_output/
+test_*_output/
+
+# CSV Data Files (may contain client info)
+*.csv
+!sample_*.csv
+!*_template.csv
+
+# Log Files
+*.log
+validation_reports/
+logs/
+
+# Temporary Files
+*.tmp
+*.temp
+temp/
+tmp/
+
+# LibreOffice Lock Files
+.~lock.*
+
+# Backup Files
+*.bak
+*.backup
+
+# Test Files (keep templates but exclude actual test data)
+test_project.csv
+comprehensive_test.csv
+
+# Generated Documentation
+generated_docs/

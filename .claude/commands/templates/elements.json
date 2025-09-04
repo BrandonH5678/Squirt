@@ -1,0 +1,68 @@
+{
+  "valve_install": {
+    "name": "Electronic Control Valve Installation",
+    "description": "Installation of Hunter or Rain Bird electronic control valve with valve box",
+    "materials": [
+      {"item": "Electronic control valve", "unit": "each", "base_price": 85.00},
+      {"item": "Valve box (standard)", "unit": "each", "base_price": 25.00},
+      {"item": "Gravel (valve box)", "unit": "bag", "base_price": 8.00, "quantity": 0.5},
+      {"item": "Wire (14ga)", "unit": "foot", "base_price": 0.75, "quantity": 50}
+    ],
+    "labor": [
+      {"task": "Valve installation", "hours": 1.5, "rate": 65.00}
+    ],
+    "typical_total": 175.00,
+    "notes": "Includes connection to mainline and wiring to controller"
+  },
+  
+  "sprinkler_head": {
+    "name": "Sprinkler Head Installation", 
+    "description": "Rain Bird PRS-45 head with swing joint assembly",
+    "materials": [
+      {"item": "Rain Bird PRS-45 head", "unit": "each", "base_price": 15.00},
+      {"item": "Swing joint assembly", "unit": "each", "base_price": 8.50},
+      {"item": "Riser (6 inch)", "unit": "each", "base_price": 3.00}
+    ],
+    "labor": [
+      {"task": "Head installation", "hours": 0.3, "rate": 65.00}
+    ],
+    "typical_total": 45.00,
+    "notes": "Pressure-regulated spray head with flexible connection"
+  },
+
+  "trenching_turf": {
+    "name": "Hand Trenching - Regular Turf",
+    "description": "Hand digging trench through regular turf conditions",
+    "materials": [],
+    "labor": [
+      {"task": "Hand trenching", "hours_per_foot": 0.1, "rate": 65.00}
+    ],
+    "typical_cost_per_foot": 6.50,
+    "notes": "Standard soil conditions, minimal obstacles"
+  },
+
+  "trenching_rocky": {
+    "name": "Hand Trenching - Rocky Soil", 
+    "description": "Hand digging trench through rocky or hard soil",
+    "materials": [],
+    "labor": [
+      {"task": "Hand trenching", "hours_per_foot": 0.15, "rate": 65.00}
+    ],
+    "typical_cost_per_foot": 9.75,
+    "notes": "Rocky soil, requires extra time and effort"
+  },
+
+  "pipe_assembly": {
+    "name": "Lateral Pipe Assembly",
+    "description": "1 inch Schedule 40 PVC lateral distribution pipe",
+    "materials": [
+      {"item": "1in Sch 40 PVC pipe", "unit": "foot", "base_price": 1.25},
+      {"item": "Fittings (per 10ft)", "unit": "allowance", "base_price": 3.50, "quantity": 0.1}
+    ],
+    "labor": [
+      {"task": "Pipe assembly", "hours_per_foot": 0.05, "rate": 65.00}
+    ],
+    "typical_cost_per_foot": 4.85,
+    "notes": "Includes standard fittings allowance"
+  }
+}

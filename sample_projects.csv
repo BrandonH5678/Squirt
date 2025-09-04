@@ -1,0 +1,5 @@
+client_name,template_type,zone_number,head_count,trench_feet,soil_type,project_name
+"Smith Family",sprinkler_zone,1,6,120,clay,"Backyard Zone 1"
+"Johnson Home",sprinkler_zone,2,8,150,turf,"Front Yard Zone 2"  
+"Rodriguez Trust",head_replacement,,,5,,,"Repair Broken Heads"
+"Green Acres HOA",trenching,,,200,rocky,"Main Line Extension"

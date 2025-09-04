@@ -1,0 +1,106 @@
+{
+  "contract_validation": {
+    "required_sections": [
+      "prepared_by",
+      "prepared_for", 
+      "project_name_with_total",
+      "project_elements",
+      "materials_tables",
+      "labor_tables",
+      "element_subtotals",
+      "project_totals",
+      "terms_and_conditions",
+      "signature_blocks"
+    ],
+    "mathematical_checks": [
+      "element_subtotals_sum_to_project_subtotal",
+      "materials_plus_labor_equals_element_subtotal",
+      "subtotal_plus_tax_equals_total",
+      "all_currency_formatted_correctly",
+      "no_rounding_errors"
+    ],
+    "formatting_requirements": [
+      "element_headings_with_costs",
+      "consistent_fonts_and_colors", 
+      "professional_table_formatting",
+      "narrative_descriptions_present",
+      "technical_specifications_included"
+    ]
+  },
+
+  "invoice_validation": {
+    "required_sections": [
+      "prepared_by",
+      "prepared_for",
+      "invoice_number_and_date", 
+      "work_description",
+      "itemized_table",
+      "subtotal_tax_total",
+      "payment_information"
+    ],
+    "mathematical_checks": [
+      "quantity_times_unit_price_equals_line_total",
+      "all_line_totals_sum_to_subtotal",
+      "subtotal_plus_tax_equals_total",
+      "currency_formatting_consistent",
+      "decimal_precision_maintained"
+    ],
+    "table_requirements": [
+      "date_column_present",
+      "description_column_detailed",
+      "quantity_and_units_specified",
+      "unit_price_clearly_stated",
+      "line_totals_calculated"
+    ]
+  },
+
+  "receipt_validation": {
+    "inherits": "invoice_validation",
+    "additional_requirements": [
+      "payment_received_section",
+      "payment_method_specified",
+      "payment_date_recorded",
+      "balance_due_calculated"
+    ]
+  },
+
+  "csv_export_validation": {
+    "required_fields": [
+      "date",
+      "item_description", 
+      "quantity",
+      "unit_price",
+      "line_total",
+      "tax_amount",
+      "invoice_total"
+    ],
+    "data_integrity": [
+      "csv_totals_match_document_totals",
+      "all_line_items_present",
+      "proper_quickbooks_formatting",
+      "date_format_consistent",
+      "decimal_places_correct"
+    ]
+  },
+
+  "common_errors": {
+    "mathematical": [
+      "Rounding errors in calculations",
+      "Tax calculation incorrect",
+      "Subtotals don't match line items",
+      "Element costs don't match component costs"
+    ],
+    "formatting": [
+      "Inconsistent currency formatting",
+      "Missing decimal places", 
+      "Improper table alignment",
+      "Font inconsistencies"
+    ],
+    "content": [
+      "Missing required sections",
+      "Incomplete client information",
+      "Vague work descriptions",
+      "Missing technical specifications"
+    ]
+  }
+}

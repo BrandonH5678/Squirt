@@ -1,0 +1,68 @@
+{
+  "template_id": "sprinkler_zone",
+  "name": "Sprinkler Zone Installation",
+  "description": "Complete sprinkler zone with valve, heads, and piping",
+  "category": "installation",
+  "parameters": {
+    "zone_number": {"type": "int", "required": true},
+    "head_count": {"type": "int", "required": true, "min": 1, "max": 12},
+    "trench_feet": {"type": "decimal", "required": true, "min": 10},
+    "soil_type": {"type": "string", "required": true, "options": ["turf", "rocky", "clay", "roots"]},
+    "pipe_size": {"type": "string", "required": false, "default": "1inch", "options": ["1inch", "half_inch"]}
+  },
+  "element_list": [
+    {
+      "element_id": "valve_1inch",
+      "quantity_formula": "1",
+      "description": "Zone {zone_number} control valve"
+    },
+    {
+      "element_id": "valve_box", 
+      "quantity_formula": "1",
+      "description": "Valve box for zone {zone_number}"
+    },
+    {
+      "element_id": "valve_install",
+      "quantity_formula": "1", 
+      "description": "Install valve for zone {zone_number}"
+    },
+    {
+      "element_id": "pvc_pipe_1inch",
+      "quantity_formula": "trench_feet * 0.8",
+      "description": "Main line piping"
+    },
+    {
+      "element_id": "pvc_pipe_half_inch", 
+      "quantity_formula": "head_count * 8",
+      "description": "Lateral piping to heads"
+    },
+    {
+      "element_id": "sprinkler_head_prs45",
+      "quantity_formula": "head_count",
+      "description": "Spray heads for zone {zone_number}"
+    },
+    {
+      "element_id": "swing_joint",
+      "quantity_formula": "head_count", 
+      "description": "Swing joints for heads"
+    },
+    {
+      "element_id": "trenching",
+      "quantity_formula": "trench_feet",
+      "soil_modifier": true,
+      "description": "Hand trenching for zone {zone_number}"
+    },
+    {
+      "element_id": "pipe_assembly",
+      "quantity_formula": "trench_feet * 1.2",
+      "description": "Assemble and install piping"
+    },
+    {
+      "element_id": "head_install", 
+      "quantity_formula": "head_count",
+      "description": "Install and adjust spray heads"
+    }
+  ],
+  "narrative_template": "Install new sprinkler zone {zone_number} with {head_count} spray heads. Includes trenching {trench_feet} feet in {soil_type} soil, main line piping, valve installation with box, and complete head installation with swing joints. All work includes testing and adjustment of spray patterns.",
+  "terms": "Work includes 1-year warranty on installation. Materials warranted per manufacturer specifications."
+}

@@ -1,0 +1,33 @@
+{
+  "timestamp": "2025-09-02T20:42:47.171647",
+  "document_path": "/home/johnny5/Squirt/template_reference/perfect_waterwizard_contract.odt",
+  "validation_result": {
+    "overall_score": 8,
+    "criteria": [
+      {
+        "category": "Professional Appearance",
+        "description": "Document looks professional",
+        "status": "PASS"
+      },
+      {
+        "category": "Header Formatting",
+        "description": "Headers are properly formatted",
+        "status": "PASS"
+      },
+      {
+        "category": "Table Alignment",
+        "description": "Tables are properly aligned",
+        "status": "PASS"
+      },
+      {
+        "category": "Content Completeness",
+        "description": "All required content present",
+        "status": "PASS"
+      }
+    ]
+  },
+  "system_info": {
+    "validator_version": "1.0",
+    "validation_type": "unknown"
+  }
+}
