@@ -205,24 +205,25 @@ class UnoEstimateGenerator:
         """Add modern professional estimate header"""
         text = self.document.Text
         
-        # Company header
-        text.insertString(cursor, "WATERWIZARD IRRIGATION", False)
-        cursor.gotoEnd(False)
-        text.insertControlCharacter(cursor, LINE_BREAK, False)
-        text.insertString(cursor, "Professional Landscape Services", False)
-        
-        # Apply header style to company name
-        cursor.gotoStart(False)
-        cursor.goRight(len("WATERWIZARD IRRIGATION"), True)
-        cursor.ParaStyleName = "WaterWizardHeader"
-        
+        # Contract title - Kim Sherertz format
+        text.insertString(cursor, "MAINTENANCE CONTRACT", False)
+        cursor.goLeft(len("MAINTENANCE CONTRACT"), True)
+        cursor.CharFontName = "Liberation Sans"
+        cursor.CharHeight = 18
+        cursor.CharWeight = 150  # Bold
+        cursor.ParaAdjust = 1    # Center alignment
+        cursor.CharColor = 0x000000  # Black like Kim Sherertz
         cursor.gotoEnd(False)
         text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
         
-        # Estimate title
-        text.insertString(cursor, "PROJECT ESTIMATE", False)
-        cursor.goLeft(len("PROJECT ESTIMATE"), True)
-        cursor.ParaStyleName = "EstimateTitle"
+        # Contract subtitle
+        text.insertString(cursor, project_info.get('name', 'Project'), False)
+        cursor.goLeft(len(project_info.get('name', 'Project')), True)
+        cursor.CharFontName = "Liberation Sans"
+        cursor.CharHeight = 16
+        cursor.CharWeight = 150  # Bold
+        cursor.ParaAdjust = 1    # Center alignment
+        cursor.CharColor = 0x000000  # Black
         cursor.gotoEnd(False)
         text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
         text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
@@ -249,9 +250,17 @@ class UnoEstimateGenerator:
             
             text.insertTextContent(cursor, table, False)
             
-            # Configure table appearance
+            # Configure table appearance  
             table.setPropertyValue("Width", 16000)
             table.setPropertyValue("RelativeWidth", 100)
+            
+            # Set column widths - very narrow left, very wide right
+            try:
+                columns = table.getColumns()
+                columns.getByIndex(0).setPropertyValue("RelativeWidth", 25)  # Left column very narrow
+                columns.getByIndex(1).setPropertyValue("RelativeWidth", 75)  # Right column very wide
+            except:
+                pass  # Skip column sizing if not supported
             
             # Fill table with data
             # Row 1-3: Estimate details
@@ -279,14 +288,19 @@ class UnoEstimateGenerator:
             table.getCellByName("A7").setString("LOCATION:")
             table.getCellByName("B7").setString(project_info.get('address', client_info.get('address', 'N/A')))
             
-            # Style the table cells
+            # Style the table cells - left column bold, right column normal
             for row in range(1, 8):
-                for col in ['A', 'B']:
-                    cell = table.getCellByName(f"{col}{row}")
-                    cell_cursor = cell.createTextCursor()
-                    if col == 'A':  # Labels
-                        cell_cursor.CharWeight = 150  # Bold
-                        cell_cursor.CharColor = 0x0066CC
+                # Left column (labels) - bold
+                cell = table.getCellByName(f"A{row}")
+                cell_cursor = cell.createTextCursor()
+                cell_cursor.CharWeight = 150  # Bold
+                cell_cursor.CharColor = 0x000000  # Black
+                
+                # Right column (data) - normal weight
+                cell = table.getCellByName(f"B{row}")
+                cell_cursor = cell.createTextCursor()  
+                cell_cursor.CharWeight = 100  # Normal
+                cell_cursor.CharColor = 0x000000  # Black
             
             # Move cursor after table
             cursor.gotoEnd(False)
@@ -322,12 +336,17 @@ class UnoEstimateGenerator:
         """Add estimate body with scope areas in professional format"""
         text = self.document.Text
         
-        # Services section header
-        text.insertString(cursor, "SCOPE OF WORK BY AREA", False)
-        cursor.goLeft(len("SCOPE OF WORK BY AREA"), True)
-        cursor.ParaStyleName = "SectionHeader"
+        # Services section header - Left aligned with line break
+        text.insertString(cursor, "SCOPE OF WORK BY CATEGORY", False)
+        cursor.goLeft(len("SCOPE OF WORK BY CATEGORY"), True)
+        cursor.CharFontName = "Liberation Sans"
+        cursor.CharHeight = 14
+        cursor.CharWeight = 150  # Bold
+        cursor.CharColor = 0x4A90E2  # Kim Sherertz blue
+        cursor.ParaAdjust = 0  # Left alignment
         cursor.gotoEnd(False)
         text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
+        text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)  # Extra line break
         
         # Add each scope area
         for scope in scope_areas:
@@ -337,7 +356,7 @@ class UnoEstimateGenerator:
         self._add_project_totals(cursor, subtotal, tax_amount, total)
     
     def _add_scope_area_section(self, cursor, scope: Dict[str, Any]):
-        """Add a scope area section with title, description, and breakdown"""
+        """Add a scope area section with title, description, and breakdown using tables"""
         text = self.document.Text
         
         # Scope area title with cost
@@ -350,77 +369,229 @@ class UnoEstimateGenerator:
         cursor.gotoEnd(False)
         text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
         
-        # Scope description
+        # Scope description - smaller black text
         description = scope.get('description', '')
         if description:
             text.insertString(cursor, description, False)
+            cursor.goLeft(len(description), True)
+            cursor.CharFontName = "Liberation Sans"
+            cursor.CharHeight = 11  # Smaller than title
+            cursor.CharWeight = 100  # Normal weight
+            cursor.CharColor = 0x000000  # Black
+            cursor.gotoEnd(False)
             text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
         
-        # Materials breakdown (if any)
-        materials = scope.get('materials', [])
-        if materials:
-            text.insertString(cursor, "Materials & Equipment", False)
-            text.insertControlCharacter(cursor, LINE_BREAK, False)
-            
-            # Simple materials table format
-            text.insertString(cursor, "Qty     Unit Price    Subtotal    Description", False)
-            text.insertControlCharacter(cursor, LINE_BREAK, False)
-            
-            for material in materials:
-                qty = material.get('qty', 0)
-                price = material.get('price', 0)
-                subtotal = material.get('subtotal', 0)
-                desc = material.get('description', '')
-                
-                line = f"{qty:<7} ${price:<10.2f}   ${subtotal:<9.2f}   {desc}"
-                text.insertString(cursor, line, False)
-                text.insertControlCharacter(cursor, LINE_BREAK, False)
-            
-            text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
-        
-        # Labor breakdown
-        labor = scope.get('labor', [])
-        if labor:
-            text.insertString(cursor, "Labor", False)
-            text.insertControlCharacter(cursor, LINE_BREAK, False)
-            
-            text.insertString(cursor, "Task                                              Subtotal", False)
-            text.insertControlCharacter(cursor, LINE_BREAK, False)
-            
-            for labor_item in labor:
-                task = labor_item.get('task', '')
-                labor_subtotal = labor_item.get('subtotal', 0)
-                
-                line = f"{task:<50} ${labor_subtotal:.2f}"
-                text.insertString(cursor, line, False)
-                text.insertControlCharacter(cursor, LINE_BREAK, False)
-        
-        # Equipment breakdown (if any)
-        equipment = scope.get('equipment', [])
-        if equipment:
-            text.insertControlCharacter(cursor, LINE_BREAK, False)
-            text.insertString(cursor, "Equipment & Fees", False)
-            text.insertControlCharacter(cursor, LINE_BREAK, False)
-            
-            text.insertString(cursor, "Qty     Unit Price    Subtotal    Description", False)
-            text.insertControlCharacter(cursor, LINE_BREAK, False)
-            
-            for equip_item in equipment:
-                qty = equip_item.get('qty', 0)
-                price = equip_item.get('price', 0)
-                subtotal = equip_item.get('subtotal', 0)
-                desc = equip_item.get('description', '')
-                
-                line = f"{qty:<7} ${price:<10.2f}   ${subtotal:<9.2f}   {desc}"
-                text.insertString(cursor, line, False)
-                text.insertControlCharacter(cursor, LINE_BREAK, False)
+        # Create table for this scope area's breakdown
+        self._add_scope_breakdown_table(cursor, scope)
         
         # Add spacing between scope areas
         text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
-        text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
     
+    def _add_scope_breakdown_table(self, cursor, scope: Dict[str, Any]):
+        """Add a professional table for scope area breakdown"""
+        try:
+            text = self.document.Text
+            
+            # Determine table rows needed
+            materials = scope.get('materials', [])
+            labor = scope.get('labor', [])
+            equipment = scope.get('equipment', [])
+            
+            row_count = 0
+            if materials: row_count += len(materials) + 2  # header + items + space
+            if labor: row_count += len(labor) + 2
+            if equipment: row_count += len(equipment) + 2
+            
+            if row_count == 0:
+                return  # No breakdown items
+            
+            # Create table
+            table = self.document.createInstance("com.sun.star.text.TextTable")
+            table.initialize(row_count, 4)  # 4 columns: Description, Qty, Rate, Amount
+            text.insertTextContent(cursor, table, False)
+            
+            # Configure table
+            table.setPropertyValue("Width", 16000)
+            table.setPropertyValue("RelativeWidth", 100)
+            
+            current_row = 1
+            
+            # Add materials section
+            if materials:
+                table.getCellByName(f"A{current_row}").setString("MATERIALS & EQUIPMENT")
+                cell = table.getCellByName(f"A{current_row}")
+                cell_cursor = cell.createTextCursor()
+                cell_cursor.CharWeight = 150
+                current_row += 1
+                
+                for material in materials:
+                    qty = f"{material.get('qty', 0)}"
+                    price = f"${material.get('price', 0):.2f}"
+                    subtotal = f"${material.get('subtotal', 0):.2f}"
+                    desc = material.get('description', '')
+                    
+                    table.getCellByName(f"A{current_row}").setString(desc)
+                    table.getCellByName(f"B{current_row}").setString(qty)
+                    table.getCellByName(f"C{current_row}").setString(price)
+                    table.getCellByName(f"D{current_row}").setString(subtotal)
+                    current_row += 1
+                
+                current_row += 1  # Space
+            
+            # Add labor section
+            if labor:
+                table.getCellByName(f"A{current_row}").setString("LABOR")
+                cell = table.getCellByName(f"A{current_row}")
+                cell_cursor = cell.createTextCursor()
+                cell_cursor.CharWeight = 150
+                current_row += 1
+                
+                for labor_item in labor:
+                    task = labor_item.get('task', '')
+                    labor_subtotal = f"${labor_item.get('subtotal', 0):.2f}"
+                    
+                    table.getCellByName(f"A{current_row}").setString(task)
+                    table.getCellByName(f"D{current_row}").setString(labor_subtotal)
+                    current_row += 1
+                
+                current_row += 1  # Space
+                
+            # Add equipment section
+            if equipment:
+                table.getCellByName(f"A{current_row}").setString("EQUIPMENT & FEES")
+                cell = table.getCellByName(f"A{current_row}")
+                cell_cursor = cell.createTextCursor()
+                cell_cursor.CharWeight = 150
+                current_row += 1
+                
+                for equip_item in equipment:
+                    qty = f"{equip_item.get('qty', 0)}"
+                    price = f"${equip_item.get('price', 0):.2f}"
+                    subtotal = f"${equip_item.get('subtotal', 0):.2f}"
+                    desc = equip_item.get('description', '')
+                    
+                    table.getCellByName(f"A{current_row}").setString(desc)
+                    table.getCellByName(f"B{current_row}").setString(qty)
+                    table.getCellByName(f"C{current_row}").setString(price)
+                    table.getCellByName(f"D{current_row}").setString(subtotal)
+                    current_row += 1
+            
+            # Move cursor after table
+            cursor.gotoEnd(False)
+            text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
+            
+        except Exception as e:
+            print(f"⚠️ Warning: Could not create scope breakdown table: {e}")
+            # Fallback to simple text
+            self._add_simple_scope_breakdown(cursor, scope)
+
+    def _add_simple_scope_breakdown(self, cursor, scope: Dict[str, Any]):
+        """Fallback simple text breakdown"""
+        text = self.document.Text
+        
+        materials = scope.get('materials', [])
+        labor = scope.get('labor', [])
+        equipment = scope.get('equipment', [])
+        
+        if materials:
+            text.insertString(cursor, "Materials & Equipment:", False)
+            text.insertControlCharacter(cursor, LINE_BREAK, False)
+            for material in materials:
+                line = f"  {material.get('qty', 0)} x ${material.get('price', 0):.2f} = ${material.get('subtotal', 0):.2f} {material.get('description', '')}"
+                text.insertString(cursor, line, False)
+                text.insertControlCharacter(cursor, LINE_BREAK, False)
+        
+        if labor:
+            text.insertString(cursor, "Labor:", False)
+            text.insertControlCharacter(cursor, LINE_BREAK, False)
+            for labor_item in labor:
+                line = f"  {labor_item.get('task', '')} - ${labor_item.get('subtotal', 0):.2f}"
+                text.insertString(cursor, line, False)
+                text.insertControlCharacter(cursor, LINE_BREAK, False)
+        
+        if equipment:
+            text.insertString(cursor, "Equipment & Fees:", False)
+            text.insertControlCharacter(cursor, LINE_BREAK, False)
+            for equip_item in equipment:
+                line = f"  {equip_item.get('qty', 0)} x ${equip_item.get('price', 0):.2f} = ${equip_item.get('subtotal', 0):.2f} {equip_item.get('description', '')}"
+                text.insertString(cursor, line, False)
+                text.insertControlCharacter(cursor, LINE_BREAK, False)
+
+    def _add_project_totals_table(self, cursor, subtotal: Decimal, tax_amount: Decimal, total: Decimal):
+        """Add project totals in a professional table format"""
+        try:
+            text = self.document.Text
+            
+            # Create simple totals table
+            table = self.document.createInstance("com.sun.star.text.TextTable")
+            table.initialize(4, 2)  # 4 rows for totals
+            text.insertTextContent(cursor, table, False)
+            
+            # Configure table
+            table.setPropertyValue("Width", 16000)
+            table.setPropertyValue("RelativeWidth", 100)
+            
+            # Set column widths for totals table
+            try:
+                columns = table.getColumns()
+                columns.getByIndex(0).setPropertyValue("RelativeWidth", 60)  # Left column 
+                columns.getByIndex(1).setPropertyValue("RelativeWidth", 40)  # Right column
+            except:
+                pass
+            
+            # Subtotal
+            table.getCellByName("A1").setString("Subtotal")
+            table.getCellByName("B1").setString(f"${subtotal:.2f}")
+            
+            # Tax
+            if tax_amount > 0:
+                table.getCellByName("A2").setString("Est. Tax")
+                table.getCellByName("B2").setString(f"${tax_amount:.2f}")
+            else:
+                table.getCellByName("A2").setString("Sales Tax (Oregon - No Sales Tax)")
+                table.getCellByName("B2").setString("$0.00")
+            
+            # Contingency (5% buffer typically included in total)
+            contingency = total - subtotal - tax_amount
+            table.getCellByName("A3").setString("Contingency & Buffer")
+            table.getCellByName("B3").setString(f"${contingency:.2f}")
+            
+            # Total
+            table.getCellByName("A4").setString("TOTAL ESTIMATED COST")
+            table.getCellByName("B4").setString(f"${total:.2f}")
+            
+            # Style the total row
+            for col in ['A', 'B']:
+                cell = table.getCellByName(f"{col}4")
+                cell_cursor = cell.createTextCursor()
+                cell_cursor.CharWeight = 150  # Bold
+                cell_cursor.CharColor = 0x0066CC  # Blue
+            
+            # Right-align amounts
+            for row in range(1, 5):
+                cell = table.getCellByName(f"B{row}")
+                cell_cursor = cell.createTextCursor()
+                cell_cursor.ParaAdjust = 2  # Right align
+                
+                # Style labels
+                cell = table.getCellByName(f"A{row}")
+                cell_cursor = cell.createTextCursor()
+                cell_cursor.CharWeight = 150  # Bold
+            
+            cursor.gotoEnd(False)
+            text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
+            
+        except Exception as e:
+            print(f"⚠️ Warning: Could not create totals table: {e}")
+            # Fallback to simple text
+            text.insertString(cursor, f"Subtotal: ${subtotal:.2f}", False)
+            text.insertControlCharacter(cursor, LINE_BREAK, False)
+            text.insertString(cursor, f"Tax: ${tax_amount:.2f}", False)  
+            text.insertControlCharacter(cursor, LINE_BREAK, False)
+            text.insertString(cursor, f"TOTAL: ${total:.2f}", False)
+
     def _add_project_totals(self, cursor, subtotal: Decimal, tax_amount: Decimal, total: Decimal):
-        """Add project totals section"""
+        """Add project totals section with proper table formatting"""
         text = self.document.Text
         
         # Project totals header
@@ -430,33 +601,8 @@ class UnoEstimateGenerator:
         cursor.gotoEnd(False)
         text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
         
-        # Totals breakdown
-        text.insertString(cursor, f"Materials & Disposal                              ${subtotal * Decimal('0.1'):.2f}", False)
-        text.insertControlCharacter(cursor, LINE_BREAK, False)
-        text.insertString(cursor, f"Equipment & Fees                                  ${subtotal * Decimal('0.15'):.2f}", False)
-        text.insertControlCharacter(cursor, LINE_BREAK, False)
-        text.insertString(cursor, f"Labor                                             ${subtotal * Decimal('0.75'):.2f}", False)
-        text.insertControlCharacter(cursor, LINE_BREAK, False)
+        self._add_project_totals_table(cursor, subtotal, tax_amount, total)
         
-        # Main totals
-        text.insertString(cursor, f"Subtotal                                          ${subtotal:.2f}", False)
-        text.insertControlCharacter(cursor, LINE_BREAK, False)
-        
-        if tax_amount > 0:
-            text.insertString(cursor, f"Est. Tax                                          ${tax_amount:.2f}", False)
-        else:
-            text.insertString(cursor, f"Sales Tax (Oregon - No state sales tax)          ${tax_amount:.2f}", False)
-        
-        text.insertControlCharacter(cursor, LINE_BREAK, False)
-        
-        # Total with emphasis
-        text.insertString(cursor, f"Total Estimated Cost                              ${total:.2f}", False)
-        cursor.goLeft(len(f"Total Estimated Cost                              ${total:.2f}"), True)
-        cursor.CharWeight = 150  # Bold
-        cursor.CharColor = 0x0066CC  # Blue
-        cursor.gotoEnd(False)
-        
-        text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
         text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
     
     def _add_line_items_table(self, cursor, line_items: List[Dict[str, Any]], 
@@ -632,9 +778,9 @@ class UnoEstimateGenerator:
         text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
         text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
         
-        # Contact information
-        text.insertString(cursor, "Ready to proceed? Contact us at info@waterwizard.com or (555) 123-4567", False)
-        cursor.goLeft(len("Ready to proceed? Contact us at info@waterwizard.com or (555) 123-4567"), True)
+        # Contact information - updated from manual edits
+        text.insertString(cursor, "Ready to proceed? Contact us at waterwizardpdx@gmail.com or (707) 845-4714", False)
+        cursor.goLeft(len("Ready to proceed? Contact us at waterwizardpdx@gmail.com or (707) 845-4714"), True)
         cursor.CharHeight = 10
         cursor.CharColor = 0x666666
         cursor.ParaAdjust = 1  # Center
@@ -698,27 +844,28 @@ def main():
         }
         
         project_info = {
-            'name': 'Fall Clean-up 2025 Maintenance Services',
+            'name': 'Fall Clean-up – Liam Smith Property',
             'address': '6112 SE 77th Ave, Portland, OR'
         }
         
-        # Scope areas (organized by work area like Kim Sherertz format)
+        # Scope areas (Fall Clean-up contract with 3 distinct scope areas)
         scope_areas = [
             {
-                "title": "Hollyhock Removal — Estimated $225.00",
-                "description": "Deadhead all hollyhocks and remove 80%-90% of existing plants. Includes complete removal of root systems and site preparation.",
+                "title": "Fall Clean-up — $315.00",
+                "description": "Baseline fall landscape cleanup and maintenance service including deadheading, pruning, plant removal, and debris collection. Includes specific hollyhock removal as part of comprehensive seasonal cleanup.",
                 "materials": [
                     {"qty": 1, "price": 40.00, "description": "Disposal Fee", "subtotal": 40.00}
                 ],
                 "labor": [
-                    {"task": "Dead head, prune", "subtotal": 75.00},
-                    {"task": "Dig/remove 80%-90% hollyhocks", "subtotal": 150.00}
+                    {"task": "Dead head, prune various plants", "subtotal": 75.00},
+                    {"task": "Dig/remove 80%-90% hollyhocks", "subtotal": 150.00},
+                    {"task": "General debris collection & cleanup", "subtotal": 50.00}
                 ],
-                "total": 265.00
+                "total": 315.00
             },
             {
-                "title": "Tree of Heaven Removal — Estimated $300.00", 
-                "description": "Complete Tree of Heaven removal including root ball excavation, cutting, and site restoration to prevent regrowth.",
+                "title": "Tree of Heaven Removal — $300.00", 
+                "description": "Complete Tree of Heaven removal including root ball excavation, cutting, and site restoration. This is additional scope beyond routine fall cleanup.",
                 "materials": [],
                 "labor": [
                     {"task": "Dig and cut root ball", "subtotal": 225.00},
@@ -727,20 +874,23 @@ def main():
                 "total": 300.00
             },
             {
-                "title": "Site Cleanup & Disposal — Estimated $100.00",
-                "description": "Complete debris collection, proper disposal of all organic matter, and final site cleanup and restoration.",
+                "title": "Laurel Hedge Pruning — $162.50",
+                "description": "Specialized pruning of Laurel hedge away from house structure and clearing sideyard travel areas. Additional scope beyond routine cleanup.",
                 "materials": [],
                 "equipment": [
                     {"qty": 1, "price": 100.00, "description": "Truck fee", "subtotal": 100.00}
                 ],
-                "labor": [],
-                "total": 100.00
+                "labor": [
+                    {"task": "Prune Laurel hedge", "subtotal": 37.50},
+                    {"task": "Debris disposal", "subtotal": 25.00}
+                ],
+                "total": 162.50
             }
         ]
         
-        subtotal = Decimal("665.00")
+        subtotal = Decimal("777.50")
         tax_amount = Decimal("0.00")  # Oregon no sales tax
-        total = Decimal("665.00")
+        total = Decimal("777.50")
         
         output_path = "/tmp/liam_smith_uno_estimate.odt"
         
