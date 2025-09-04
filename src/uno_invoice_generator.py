@@ -335,12 +335,15 @@ class UnoInvoiceGenerator:
             table.setPropertyValue("Width", 16000)
             table.setPropertyValue("RelativeWidth", 100)
             
-            # Set column widths
-            columns = table.getColumns()
-            columns.getByIndex(0).setPropertyValue("RelativeWidth", 50)  # Description
-            columns.getByIndex(1).setPropertyValue("RelativeWidth", 15)  # Qty
-            columns.getByIndex(2).setPropertyValue("RelativeWidth", 15)  # Rate  
-            columns.getByIndex(3).setPropertyValue("RelativeWidth", 20)  # Amount
+            # Set column widths (with error handling)
+            try:
+                columns = table.getColumns()
+                columns.getByIndex(0).setPropertyValue("RelativeWidth", 50)  # Description
+                columns.getByIndex(1).setPropertyValue("RelativeWidth", 15)  # Qty
+                columns.getByIndex(2).setPropertyValue("RelativeWidth", 15)  # Rate  
+                columns.getByIndex(3).setPropertyValue("RelativeWidth", 20)  # Amount
+            except:
+                pass  # Skip column sizing if not supported
             
             # Header row with professional styling
             table.getCellByName("A1").setString("Description")
