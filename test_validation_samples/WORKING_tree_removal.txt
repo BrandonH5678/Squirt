@@ -1,0 +1,71 @@
+
+================================================================================
+                      WATERWIZARD IRRIGATION & LANDSCAPE
+                         Professional Landscape Services
+                            Licensed • Bonded • Insured
+================================================================================
+
+ESTIMATE
+
+Client: Test Client
+Property: 123 Test Street, Portland, OR 97205
+Date: 2025-01-04
+Phone: (503) 555-0123
+Email: test@example.com
+
+================================================================================
+PROJECT: Tree Removal - Residential (2 trees)
+================================================================================
+
+Description: Professional tree removal service including cutting, cleanup, and stump grinding option
+
+Assumptions:
+  • Trees accessible by ground-based equipment
+  • Normal residential property access
+  • No utility line conflicts
+  • Standard cleanup and disposal included
+
+================================================================================
+MATERIALS & EQUIPMENT
+================================================================================
+Description                                        Qty      Unit     Cost         Subtotal    
+------------------------------------------------------------------------------------------
+Two-cycle fuel mix for chainsaws                   2        gallon   $10.62       $21.25      
+Bar and chain oil for chainsaws                    1        quart    $15.94       $15.94      
+Professional arborist rigging rope                 0        lf       $2.81        $0.00       
+------------------------------------------------------------------------------------------
+MATERIALS TOTAL:                                                               $      37.19
+
+================================================================================
+LABOR & INSTALLATION
+================================================================================
+Task Description                                   Hours    Crew   Rate         Subtotal    
+----------------------------------------------------------------------------------------
+Assess trees and plan removal strategy             0.5      1      $95.00       $47.50      
+Remove small trees (under 20 feet)                 0.0      2      $95.00       $0.00       
+Remove medium trees (20-40 feet)                   8.0      3      $95.00       $2280.00    
+Remove large trees (40-60 feet)                    0.0      3      $95.00       $0.00       
+Remove extra large trees (over 60 feet)            0.0      4      $95.00       $0.00       
+Grind stumps to 6 inches below grade               1.5      1      $70.00       $105.00     
+Basic cleanup and debris removal                   0.0      2      $45.00       $0.00       
+Complete cleanup and site restoration              5.0      2      $45.00       $450.00     
+Premium cleanup with fine debris removal           0.0      3      $45.00       $0.00       
+----------------------------------------------------------------------------------------
+LABOR TOTAL:                                                                 $    2882.50
+
+================================================================================
+TOTALS
+================================================================================
+Subtotal:                                                       $    2919.69
+Tax (Oregon):                                                   $       0.00
+TOTAL:                                                          $    2919.69
+
+================================================================================
+
+Valid for: 30 days from estimate date
+Payment: Due upon completion
+Contact: (503) 555-0199 | info@waterwizard.com
+
+Template ID: tree_removal_residential
+Category: tree_service
+Generated: This estimate was generated from template data (NOT hardcoded Liam Smith data)

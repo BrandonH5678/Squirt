@@ -23,8 +23,8 @@ class ScreenshotValidator:
     
     def capture_document_screenshot(self, odt_path: str) -> Optional[str]:
         """
-        Capture a screenshot of an ODT document by converting to PDF first,
-        then using Python to create a visual representation.
+        Capture a screenshot of an ODT document by opening it in LibreOffice GUI
+        and taking a screenshot directly. This captures error dialogs and actual formatting.
         
         Args:
             odt_path: Path to the ODT file
@@ -38,13 +38,8 @@ class ScreenshotValidator:
             return None
         
         try:
-            # Step 1: Convert ODT to PDF using headless LibreOffice
-            pdf_path = self._convert_odt_to_pdf(odt_path)
-            if not pdf_path:
-                return None
-            
-            # Step 2: Convert PDF to image using Python
-            screenshot_path = self._convert_pdf_to_image(pdf_path)
+            # Open ODT in LibreOffice GUI and capture screenshot
+            screenshot_path = self._capture_gui_screenshot(odt_path)
             if not screenshot_path:
                 return None
             
@@ -55,102 +50,71 @@ class ScreenshotValidator:
             print(f"❌ Screenshot capture failed: {e}")
             return None
     
-    def _convert_odt_to_pdf(self, odt_path: str) -> Optional[str]:
-        """Convert ODT to PDF using headless LibreOffice"""
+    def _capture_gui_screenshot(self, odt_path: str) -> Optional[str]:
+        """Capture screenshot by opening ODT in LibreOffice GUI"""
         
         try:
-            # Create temporary directory for PDF
-            temp_dir = tempfile.mkdtemp()
+            import subprocess
+            import time
             
-            # Run LibreOffice headless conversion
-            result = subprocess.run([
-                'libreoffice', '--headless', '--convert-to', 'pdf',
-                '--outdir', temp_dir, odt_path
-            ], capture_output=True, text=True, timeout=30)
+            # Kill any existing LibreOffice processes to avoid conflicts
+            subprocess.run(['pkill', '-f', 'libreoffice'], capture_output=True)
+            time.sleep(1)
             
-            if result.returncode != 0:
-                print(f"❌ LibreOffice conversion failed: {result.stderr}")
-                return None
-            
-            # Find the generated PDF file
-            odt_name = Path(odt_path).stem
-            pdf_path = os.path.join(temp_dir, f"{odt_name}.pdf")
-            
-            if os.path.exists(pdf_path):
-                return pdf_path
-            else:
-                print(f"❌ PDF file not created at expected location: {pdf_path}")
-                return None
-                
-        except subprocess.TimeoutExpired:
-            print("❌ LibreOffice conversion timed out")
-            return None
-        except Exception as e:
-            print(f"❌ PDF conversion error: {e}")
-            return None
-    
-    def _convert_pdf_to_image(self, pdf_path: str) -> Optional[str]:
-        """Convert PDF to image using Python libraries"""
-        
-        try:
-            # Try using pdf2image if available, fallback to basic methods
-            try:
-                from pdf2image import convert_from_path
-                
-                # Convert first page of PDF to image
-                images = convert_from_path(pdf_path, first_page=1, last_page=1, dpi=150)
-                
-                if images:
-                    # Save the image
-                    timestamp = int(time.time())
-                    screenshot_path = self.screenshot_dir / f"document_screenshot_{timestamp}.png"
-                    images[0].save(screenshot_path, 'PNG')
-                    return str(screenshot_path)
-                    
-            except ImportError:
-                print("📦 pdf2image not available, trying alternative approach...")
-                return self._fallback_pdf_screenshot(pdf_path)
-            
-        except Exception as e:
-            print(f"❌ PDF to image conversion failed: {e}")
-            return self._fallback_pdf_screenshot(pdf_path)
-    
-    def _fallback_pdf_screenshot(self, pdf_path: str) -> Optional[str]:
-        """Fallback method for PDF screenshot using system tools"""
-        
-        # Try using LibreOffice to open and then system screenshot
-        try:
-            # Start LibreOffice with the PDF
+            # Open LibreOffice with the ODT file
             process = subprocess.Popen([
-                'libreoffice', '--draw', pdf_path
-            ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                'libreoffice', '--writer', odt_path
+            ], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             
-            # Give it time to open
+            # Wait for LibreOffice to fully load
             time.sleep(3)
             
-            # Try Python screenshot of the screen
+            # Generate screenshot filename
+            timestamp = int(time.time() * 1000)
+            screenshot_name = f"document_capture_{timestamp}.png"
+            screenshot_path = str(self.screenshot_dir / screenshot_name)
+            
+            # Capture screenshot using gnome-screenshot or scrot
             try:
-                import pyautogui
-                timestamp = int(time.time())
-                screenshot_path = self.screenshot_dir / f"screen_capture_{timestamp}.png"
+                # Try gnome-screenshot first (more common on Ubuntu)
+                result = subprocess.run([
+                    'gnome-screenshot', '--window', '-f', screenshot_path
+                ], capture_output=True, timeout=10)
                 
-                # Take a screenshot
-                screenshot = pyautogui.screenshot()
-                screenshot.save(str(screenshot_path))
-                
-                # Close LibreOffice
+                if result.returncode != 0:
+                    # Fallback to full screen screenshot with scrot
+                    result = subprocess.run([
+                        'scrot', '-s', screenshot_path
+                    ], capture_output=True, timeout=10)
+                    
+            except FileNotFoundError:
+                # Fallback to ImageMagick import
+                result = subprocess.run([
+                    'import', screenshot_path
+                ], capture_output=True, timeout=15)
+            
+            # Give a moment for screenshot to be saved
+            time.sleep(0.5)
+            
+            # Close LibreOffice
+            try:
                 process.terminate()
-                
-                return str(screenshot_path)
-                
-            except ImportError:
-                print("📦 pyautogui not available for screen capture")
-                process.terminate()
+                process.wait(timeout=5)
+            except:
+                process.kill()
+            
+            # Verify screenshot was created
+            if os.path.exists(screenshot_path):
+                return screenshot_path
+            else:
+                print(f"❌ Screenshot not created at: {screenshot_path}")
                 return None
                 
         except Exception as e:
-            print(f"❌ Fallback screenshot failed: {e}")
+            print(f"❌ GUI screenshot error: {e}")
             return None
+    
+    # Old PDF conversion methods removed - now using direct GUI screenshots for better validation
     
     def validate_with_vision(self, screenshot_path: str, validation_criteria: Dict[str, Any]) -> Dict[str, Any]:
         """

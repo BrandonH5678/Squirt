@@ -1,0 +1,169 @@
+{
+  "template_id": "french_drain_linear",
+  "category": "drainage",
+  "subcategory": "subsurface_drainage",
+  "title_format": "French Drain Installation ({drain_length} linear feet)",
+  "description": "French drain system installation with perforated pipe, gravel surround, and surface restoration",
+  "assumptions": [
+    "Normal soil conditions for trenching",
+    "Adequate fall for proper drainage",
+    "Access for equipment and materials",
+    "No conflicts with utilities or structures"
+  ],
+  "parameters": {
+    "drain_length": {
+      "type": "number",
+      "description": "Length of french drain in linear feet",
+      "default": 50,
+      "unit": "lf",
+      "min": 10,
+      "max": 200
+    },
+    "trench_depth": {
+      "type": "number",
+      "description": "Depth of drain trench",
+      "default": 18,
+      "unit": "inches", 
+      "min": 12,
+      "max": 36
+    },
+    "pipe_size": {
+      "type": "select",
+      "description": "Diameter of perforated drain pipe",
+      "default": "4_inch",
+      "options": ["4_inch", "6_inch"]
+    },
+    "surface_restoration": {
+      "type": "select",
+      "description": "Surface restoration method",
+      "default": "seed_mulch",
+      "options": ["seed_mulch", "sod", "gravel", "none"]
+    }
+  },
+  "materials": [
+    {
+      "code": "PIPE_PERF_4IN",
+      "description": "Perforated drain pipe, 4 inch diameter",
+      "unit": "lf",
+      "qty_formula": "drain_length",
+      "default_qty": 50,
+      "unit_cost": 3.25,
+      "markup": 0.25,
+      "specifications": [
+        "Perforated HDPE or PVC",
+        "Wrapped in filter fabric",
+        "Schedule 35 minimum"
+      ]
+    },
+    {
+      "code": "GRAVEL_DRAIN_ROCK",
+      "description": "Drain rock, 3/4 inch minus",
+      "unit": "yard",
+      "qty_formula": "drain_length * trench_depth * 0.002",
+      "default_qty": 1.5,
+      "unit_cost": 45.00,
+      "markup": 0.25,
+      "specifications": ["Washed drain rock", "3/4 inch minus"]
+    },
+    {
+      "code": "FABRIC_FILTER",
+      "description": "Filter fabric, non-woven geotextile",
+      "unit": "sf",
+      "qty_formula": "drain_length * 4",
+      "default_qty": 200,
+      "unit_cost": 0.65,
+      "markup": 0.25,
+      "specifications": ["Non-woven geotextile", "4 oz minimum"]
+    },
+    {
+      "code": "FITTING_DRAIN_COUPLING",
+      "description": "Drain pipe coupling",
+      "unit": "each",
+      "qty_formula": "drain_length / 20",
+      "default_qty": 3,
+      "unit_cost": 4.50,
+      "markup": 0.25
+    },
+    {
+      "code": "OUTLET_DRAIN_POP",
+      "description": "Drain outlet with pop-up emitter",
+      "unit": "each", 
+      "qty_formula": "1",
+      "default_qty": 1,
+      "unit_cost": 35.00,
+      "markup": 0.30
+    }
+  ],
+  "labor": [
+    {
+      "task_code": "EXCAVATE_DRAIN_TRENCH",
+      "description": "Excavate trench for french drain",
+      "hrs_formula": "drain_length * 0.15",
+      "default_hrs": 7.5,
+      "skill_level": "install",
+      "crew_size": 1,
+      "equipment_required": ["trenching_shovel", "pick", "level"]
+    },
+    {
+      "task_code": "INSTALL_FABRIC_ROCK",
+      "description": "Install filter fabric and base rock",
+      "hrs_formula": "drain_length * 0.08",
+      "default_hrs": 4.0,
+      "skill_level": "install",
+      "crew_size": 1
+    },
+    {
+      "task_code": "INSTALL_DRAIN_PIPE",
+      "description": "Install perforated pipe with proper grade",
+      "hrs_formula": "drain_length * 0.05",
+      "default_hrs": 2.5,
+      "skill_level": "install",
+      "crew_size": 1,
+      "equipment_required": ["transit_level", "grade_rod"]
+    },
+    {
+      "task_code": "BACKFILL_COMPLETE",
+      "description": "Complete backfill with rock and soil",
+      "hrs_formula": "drain_length * 0.1",
+      "default_hrs": 5.0,
+      "skill_level": "maintenance",
+      "crew_size": 1
+    },
+    {
+      "task_code": "SURFACE_RESTORATION",
+      "description": "Restore surface with seed and mulch",
+      "hrs_formula": "drain_length * 0.04",
+      "default_hrs": 2.0,
+      "skill_level": "maintenance",
+      "crew_size": 1
+    }
+  ],
+  "equipment": [
+    {
+      "equipment_code": "CREW_TRUCK_1TON",
+      "description": "Crew truck with tools and materials",
+      "usage_formula": "2",
+      "usage_unit": "day",
+      "daily_rate": 125.00
+    }
+  ],
+  "validation_expectations": {
+    "required_sections": ["Materials & Equipment", "Labor & Installation"],
+    "required_fields": ["drain_length", "trench_depth"],
+    "math_checks": [
+      {
+        "formula": "materials_total + labor_total = subtotal",
+        "tolerance": 0.01,
+        "description": "Subtotal calculation check"
+      }
+    ],
+    "outlier_checks": [
+      {
+        "field": "cost_per_lf",
+        "min_value": 15,
+        "max_value": 75,
+        "warning_message": "Cost per linear foot outside typical range ($15-$75)"
+      }
+    ]
+  }
+}

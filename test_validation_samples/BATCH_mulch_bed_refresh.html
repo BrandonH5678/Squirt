@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>WaterWizard Estimate - Mulch Bed Refresh (600 sq ft, fir_bark_medium)</title>
+    <style>
+        @page {
+            size: letter;
+            margin: 0.75in;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            font-size: 11pt;
+            line-height: 1.4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30pt;
+            border-bottom: 3pt solid #2E5984;
+            padding-bottom: 15pt;
+        }
+        .company {
+            font-size: 20pt;
+            font-weight: bold;
+            color: #2E5984;
+            margin-bottom: 5pt;
+        }
+        .tagline {
+            font-size: 12pt;
+            color: #666;
+            margin: 3pt 0;
+        }
+        .credentials {
+            font-size: 10pt;
+            color: #888;
+            font-style: italic;
+        }
+        .estimate-label {
+            font-size: 16pt;
+            font-weight: bold;
+            color: #2E5984;
+            margin: 20pt 0 15pt 0;
+            text-align: center;
+            background-color: #f8f9fa;
+            padding: 10pt;
+            border: 1pt solid #dee2e6;
+        }
+        .client-section {
+            display: table;
+            width: 100%;
+            margin: 20pt 0;
+        }
+        .client-left, .client-right {
+            display: table-cell;
+            width: 50%;
+            vertical-align: top;
+        }
+        .client-right {
+            text-align: right;
+        }
+        .field {
+            margin: 5pt 0;
+        }
+        .field-label {
+            font-weight: bold;
+            color: #2E5984;
+        }
+        .section {
+            margin: 25pt 0;
+        }
+        .section-title {
+            font-size: 14pt;
+            font-weight: bold;
+            color: #2E5984;
+            margin-bottom: 15pt;
+            padding: 8pt 0;
+            border-bottom: 2pt solid #2E5984;
+        }
+        .project-title {
+            font-size: 16pt;
+            font-weight: bold;
+            color: #1a365d;
+            margin: 20pt 0 10pt 0;
+            text-align: center;
+        }
+        .description {
+            background-color: #f8f9fa;
+            padding: 15pt;
+            border-left: 4pt solid #2E5984;
+            margin: 15pt 0;
+            font-style: italic;
+        }
+        .assumptions {
+            background-color: #fff3cd;
+            border: 1pt solid #ffeaa7;
+            padding: 12pt;
+            margin: 15pt 0;
+        }
+        .assumptions h4 {
+            margin: 0 0 10pt 0;
+            color: #856404;
+        }
+        .assumptions ul {
+            margin: 0;
+            padding-left: 20pt;
+        }
+        .assumptions li {
+            margin: 3pt 0;
+            color: #856404;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15pt 0;
+            font-size: 10pt;
+        }
+        th {
+            background-color: #2E5984;
+            color: white;
+            padding: 10pt 8pt;
+            text-align: left;
+            font-weight: bold;
+        }
+        td {
+            padding: 8pt;
+            border-bottom: 1pt solid #dee2e6;
+            vertical-align: top;
+        }
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        .currency {
+            text-align: right;
+            font-weight: bold;
+        }
+        .center {
+            text-align: center;
+        }
+        .section-total {
+            background-color: #e9ecef;
+            font-weight: bold;
+            border-top: 2pt solid #2E5984;
+        }
+        .totals {
+            margin: 30pt 0;
+            background-color: #f8f9fa;
+            border: 2pt solid #2E5984;
+            padding: 20pt;
+        }
+        .total-row {
+            display: table;
+            width: 100%;
+            margin: 8pt 0;
+        }
+        .total-label {
+            display: table-cell;
+            font-size: 12pt;
+            padding: 5pt 0;
+        }
+        .total-amount {
+            display: table-cell;
+            text-align: right;
+            font-size: 12pt;
+            font-weight: bold;
+            padding: 5pt 0;
+            width: 120pt;
+        }
+        .grand-total {
+            border-top: 2pt solid #2E5984;
+            padding-top: 10pt;
+            margin-top: 10pt;
+        }
+        .grand-total .total-label {
+            font-size: 16pt;
+            font-weight: bold;
+            color: #2E5984;
+        }
+        .grand-total .total-amount {
+            font-size: 16pt;
+            font-weight: bold;
+            color: #2E5984;
+        }
+        .footer {
+            margin-top: 40pt;
+            padding-top: 20pt;
+            border-top: 1pt solid #dee2e6;
+            font-size: 10pt;
+            color: #666;
+        }
+        .footer-section {
+            display: table-cell;
+            width: 33%;
+            vertical-align: top;
+        }
+        .specs {
+            font-size: 9pt;
+            color: #666;
+            margin-top: 3pt;
+        }
+        .equipment-note {
+            font-size: 9pt;
+            color: #666;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="company">WaterWizard Irrigation & Landscape</div>
+        <div class="tagline">Professional Landscape Services</div>
+        <div class="credentials">Licensed • Bonded • Insured • CCB #CCB #12345</div>
+    </div>
+    
+    <div class="estimate-label">ESTIMATE</div>
+    
+    <div class="client-section">
+        <div class="client-left">
+            <div class="field">
+                <span class="field-label">Client:</span> Test Client
+            </div>
+            <div class="field">
+                <span class="field-label">Property:</span> 123 Test Street, Portland, OR 97205
+            </div>
+            <div class="field">
+                <span class="field-label">Phone:</span> (503) 555-0123
+            </div>
+            <div class="field">
+                <span class="field-label">Email:</span> test@example.com
+            </div>
+        </div>
+        <div class="client-right">
+            <div class="field">
+                <span class="field-label">Date:</span> 2025-01-04
+            </div>
+            <div class="field">
+                <span class="field-label">Valid:</span> 30 days
+            </div>
+            <div class="field">
+                <span class="field-label">Contact:</span> (503) 555-0199
+            </div>
+            <div class="field">
+                <span class="field-label">Email:</span> info@waterwizard.com
+            </div>
+        </div>
+    </div>
+    
+    <div class="project-title">Mulch Bed Refresh (600 sq ft, fir_bark_medium)</div>
+    
+    <div class="description">
+        <strong>Project Description:</strong> Complete bed refresh with weed removal, edging, and fresh mulch application
+    </div>
+    
+    <div class="assumptions">
+        <h4>Project Assumptions:</h4>
+        <ul>
+            <li>Existing mulch beds with defined edges</li>
+            <li>Standard residential bed maintenance</li>
+            <li>Normal weed pressure and debris accumulation</li>
+            <li>Access for wheelbarrow and materials</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <div class="section-title">MATERIALS & EQUIPMENT</div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 50%;">Description</th>
+                    <th style="width: 8%;">Qty</th>
+                    <th style="width: 8%;">Unit</th>
+                    <th style="width: 12%;">Unit Cost</th>
+                    <th style="width: 12%;">Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td>
+                        Western red cedar chips
+                        <div class="specs">• Natural pest deterrent • Long lasting • Pleasant aroma</div>
+                    </td>
+                    <td class="center">0</td>
+                    <td class="center">yard</td>
+                    <td class="currency">$67.60</td>
+                    <td class="currency">$0.00</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Hemlock bark mulch
+                        <div class="specs">• Fine texture • Rich brown color • Slow decomposition</div>
+                    </td>
+                    <td class="center">0</td>
+                    <td class="center">yard</td>
+                    <td class="currency">$62.40</td>
+                    <td class="currency">$0.00</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Compost and bark blend mulch
+                        <div class="specs">• Nutrient rich • Soil building • Organic certified</div>
+                    </td>
+                    <td class="center">0</td>
+                    <td class="center">yard</td>
+                    <td class="currency">$75.40</td>
+                    <td class="currency">$0.00</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Decorative river rock mulch
+                        <div class="specs">• 1-3 inch river rock • Mixed natural colors • Long lasting</div>
+                    </td>
+                    <td class="center">0</td>
+                    <td class="center">yard</td>
+                    <td class="currency">$84.50</td>
+                    <td class="currency">$0.00</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Granular pre-emergent herbicide
+                        <div class="specs">• Season-long control • Safe around plants • Covers 1000 sq ft</div>
+                    </td>
+                    <td class="center">0</td>
+                    <td class="center">bag</td>
+                    <td class="currency">$42.25</td>
+                    <td class="currency">$0.00</td>
+                </tr>
+
+                <tr class="section-total">
+                    <td colspan="4"><strong>MATERIALS TOTAL</strong></td>
+                    <td class="currency"><strong>$0.00</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <div class="section-title">EQUIPMENT</div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 50%;">Description</th>
+                    <th style="width: 10%;">Quantity</th>
+                    <th style="width: 10%;">Unit</th>
+                    <th style="width: 12%;">Rate</th>
+                    <th style="width: 12%;">Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td>Crew truck for material transport</td>
+                    <td class="center">1</td>
+                    <td class="center">day</td>
+                    <td class="currency">$125.00</td>
+                    <td class="currency">$125.00</td>
+                </tr>
+
+                <tr>
+                    <td>Heavy-duty wheelbarrows for mulch</td>
+                    <td class="center">2</td>
+                    <td class="center">day</td>
+                    <td class="currency">$15.00</td>
+                    <td class="currency">$30.00</td>
+                </tr>
+
+                <tr class="section-total">
+                    <td colspan="4"><strong>EQUIPMENT TOTAL</strong></td>
+                    <td class="currency"><strong>$155.00</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <div class="section-title">LABOR & INSTALLATION</div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 50%;">Task Description</th>
+                    <th style="width: 8%;">Hours</th>
+                    <th style="width: 8%;">Crew</th>
+                    <th style="width: 12%;">Rate</th>
+                    <th style="width: 12%;">Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td>
+                        Assess bed conditions and prepare work area
+                        <div class="equipment-note">Equipment: measuring_tape, notepad</div>
+                    </td>
+                    <td class="center">0.6</td>
+                    <td class="center">1</td>
+                    <td class="currency">$45.00/hr</td>
+                    <td class="currency">$27.00</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Hand removal of weeds and unwanted growth
+                        <div class="equipment-note">Equipment: hand_tools, kneepads, yard_waste_bags</div>
+                    </td>
+                    <td class="center">2.4</td>
+                    <td class="center">2</td>
+                    <td class="currency">$45.00/hr</td>
+                    <td class="currency">$216.00</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Renew and define bed edges
+                        <div class="equipment-note">Equipment: edging_tool, half_moon_spade, string_line</div>
+                    </td>
+                    <td class="center">7.8</td>
+                    <td class="center">1</td>
+                    <td class="currency">$45.00/hr</td>
+                    <td class="currency">$351.00</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Cultivate and fluff existing mulch
+                        <div class="equipment-note">Equipment: cultivation_fork, rake</div>
+                    </td>
+                    <td class="center">1.2</td>
+                    <td class="center">2</td>
+                    <td class="currency">$45.00/hr</td>
+                    <td class="currency">$108.00</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Apply granular pre-emergent herbicide
+                        <div class="equipment-note">Equipment: spreader_drop, measuring_cup</div>
+                    </td>
+                    <td class="center">0.0</td>
+                    <td class="center">1</td>
+                    <td class="currency">$70.00/hr</td>
+                    <td class="currency">$0.00</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Apply and spread fresh mulch
+                        <div class="equipment-note">Equipment: wheelbarrow, rakes, shovels</div>
+                    </td>
+                    <td class="center">1.8</td>
+                    <td class="center">2</td>
+                    <td class="currency">$45.00/hr</td>
+                    <td class="currency">$162.00</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Detail work around plants and edges
+                        <div class="equipment-note">Equipment: hand_rakes, detail_tools</div>
+                    </td>
+                    <td class="center">0.6</td>
+                    <td class="center">2</td>
+                    <td class="currency">$45.00/hr</td>
+                    <td class="currency">$54.00</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Clean up work area and restore pathways
+                        <div class="equipment-note">Equipment: broom, blower, hose</div>
+                    </td>
+                    <td class="center">0.3</td>
+                    <td class="center">2</td>
+                    <td class="currency">$45.00/hr</td>
+                    <td class="currency">$27.00</td>
+                </tr>
+
+                <tr class="section-total">
+                    <td colspan="4"><strong>LABOR TOTAL</strong></td>
+                    <td class="currency"><strong>$945.00</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="totals">
+        <div class="total-row">
+            <div class="total-label">Subtotal:</div>
+            <div class="total-amount">$1100.00</div>
+        </div>
+        <div class="total-row">
+            <div class="total-label">Tax (Oregon):</div>
+            <div class="total-amount">$0.00</div>
+        </div>
+        <div class="total-row grand-total">
+            <div class="total-label">TOTAL:</div>
+            <div class="total-amount">$1100.00</div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <div style="display: table; width: 100%;">
+            <div class="footer-section">
+                <strong>Payment Terms:</strong><br>
+                Due upon completion
+            </div>
+            <div class="footer-section" style="text-align: center;">
+                <strong>Template:</strong> mulch_bed_refresh<br>
+                <strong>Category:</strong> mulching
+            </div>
+            <div class="footer-section" style="text-align: right;">
+                <strong>Generated:</strong> Template-driven<br>
+                (Not hardcoded data)
+            </div>
+        </div>
+    </div>
+</body>
+</html>

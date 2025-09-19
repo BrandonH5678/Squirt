@@ -1,0 +1,246 @@
+{
+  "template_id": "sprinkler_valve_replacement",
+  "category": "irrigation_repair",
+  "subcategory": "valve_repair",
+  "title_format": "Sprinkler Valve Replacement ({valve_count} valves)",
+  "description": "Professional replacement of irrigation valves including excavation, valve installation, and system testing",
+  "assumptions": [
+    "Existing valve box and wiring in serviceable condition",
+    "Standard residential valve depth and access",
+    "Normal soil conditions around valve box",
+    "Replacement with equivalent capacity valves"
+  ],
+  "parameters": {
+    "valve_count": {
+      "type": "number",
+      "description": "Number of valves to replace",
+      "default": 2,
+      "min": 1,
+      "max": 8
+    },
+    "valve_size": {
+      "type": "select",
+      "description": "Valve size/capacity",
+      "default": "1_inch",
+      "options": ["3_4_inch", "1_inch", "1_25_inch", "1_5_inch"]
+    },
+    "valve_type": {
+      "type": "select",
+      "description": "Type of valve replacement",
+      "default": "standard",
+      "options": ["standard", "pressure_regulating", "anti_siphon"]
+    },
+    "access_difficulty": {
+      "type": "select",
+      "description": "Difficulty accessing valve location",
+      "default": "normal",
+      "options": ["easy", "normal", "difficult", "very_difficult"]
+    }
+  },
+  "materials": [
+    {
+      "code": "VALVE_RAIN_BIRD_100DVA_75",
+      "description": "Rain Bird 100-DVA valve, 3/4 inch",
+      "unit": "each",
+      "qty_formula": "valve_size == '3_4_inch' ? valve_count : 0",
+      "default_qty": 0,
+      "unit_cost": 75.00,
+      "markup": 0.30,
+      "specifications": ["24V AC solenoid", "Manual bleed screw", "Flow control"]
+    },
+    {
+      "code": "VALVE_RAIN_BIRD_100DVA_1",
+      "description": "Rain Bird 100-DVA valve, 1 inch", 
+      "unit": "each",
+      "qty_formula": "valve_size == '1_inch' ? valve_count : 0",
+      "default_qty": 2,
+      "unit_cost": 85.00,
+      "markup": 0.30,
+      "specifications": ["24V AC solenoid", "Manual bleed screw", "Flow control"]
+    },
+    {
+      "code": "VALVE_RAIN_BIRD_100DVA_125",
+      "description": "Rain Bird 100-DVA valve, 1-1/4 inch",
+      "unit": "each",
+      "qty_formula": "valve_size == '1_25_inch' ? valve_count : 0",
+      "default_qty": 0,
+      "unit_cost": 105.00,
+      "markup": 0.30,
+      "specifications": ["24V AC solenoid", "Heavy duty construction"]
+    },
+    {
+      "code": "VALVE_RAIN_BIRD_100DVA_15",
+      "description": "Rain Bird 100-DVA valve, 1-1/2 inch",
+      "unit": "each",
+      "qty_formula": "valve_size == '1_5_inch' ? valve_count : 0", 
+      "default_qty": 0,
+      "unit_cost": 125.00,
+      "markup": 0.30,
+      "specifications": ["24V AC solenoid", "Commercial grade"]
+    },
+    {
+      "code": "FITTING_PVC_UNION_1IN",
+      "description": "PVC union fittings for valve connections",
+      "unit": "each",
+      "qty_formula": "valve_count * 2",
+      "default_qty": 4,
+      "unit_cost": 8.50,
+      "markup": 0.25,
+      "specifications": ["Schedule 40 PVC", "Easy maintenance access"]
+    },
+    {
+      "code": "PIPE_PVC_SCH40_REPAIR",
+      "description": "Schedule 40 PVC pipe for repairs",
+      "unit": "lf",
+      "qty_formula": "valve_count * 2",
+      "default_qty": 4,
+      "unit_cost": 2.45,
+      "markup": 0.25,
+      "specifications": ["Various sizes as needed", "Schedule 40 grade"]
+    },
+    {
+      "code": "PVC_PRIMER_CEMENT",
+      "description": "PVC primer and cement kit",
+      "unit": "kit",
+      "qty_formula": "1",
+      "default_qty": 1,
+      "unit_cost": 15.75,
+      "markup": 0.25,
+      "specifications": ["Purple primer", "Medium-body cement", "Applicator brush"]
+    },
+    {
+      "code": "WIRE_SPLICE_KIT",
+      "description": "Waterproof wire splice connectors",
+      "unit": "kit",
+      "qty_formula": "valve_count",
+      "default_qty": 2,
+      "unit_cost": 8.25,
+      "markup": 0.25,
+      "specifications": ["Waterproof gel caps", "Wire nuts", "Electrical tape"]
+    },
+    {
+      "code": "GRAVEL_VALVE_BOX",
+      "description": "Drainage gravel for valve box",
+      "unit": "bag",
+      "qty_formula": "valve_count * 0.5",
+      "default_qty": 1,
+      "unit_cost": 4.50,
+      "markup": 0.25,
+      "specifications": ["Pea gravel", "Drainage purposes", "50 lb bag"]
+    }
+  ],
+  "labor": [
+    {
+      "task_code": "VALVE_DIAGNOSIS",
+      "description": "Diagnose valve problems and plan replacement",
+      "hrs_formula": "valve_count * 0.25",
+      "default_hrs": 0.5,
+      "skill_level": "irrigation_tech",
+      "crew_size": 1,
+      "equipment_required": ["multimeter", "pressure_gauge", "inspection_tools"]
+    },
+    {
+      "task_code": "EXCAVATE_VALVE_ACCESS",
+      "description": "Carefully excavate around existing valves",
+      "hrs_formula": "valve_count * (access_difficulty == 'easy' ? 0.5 : access_difficulty == 'normal' ? 0.75 : access_difficulty == 'difficult' ? 1.25 : 2.0)",
+      "default_hrs": 1.5,
+      "skill_level": "install",
+      "crew_size": 1,
+      "equipment_required": ["hand_shovel", "pick", "valve_box_tools"]
+    },
+    {
+      "task_code": "DISCONNECT_OLD_VALVE",
+      "description": "Safely disconnect and remove old valves",
+      "hrs_formula": "valve_count * 0.33",
+      "default_hrs": 0.66,
+      "skill_level": "irrigation_tech",
+      "crew_size": 1,
+      "equipment_required": ["pipe_wrench", "pvc_cutter", "wire_tools"]
+    },
+    {
+      "task_code": "PREPARE_VALVE_CONNECTIONS",
+      "description": "Prepare pipe connections for new valves",
+      "hrs_formula": "valve_count * 0.5",
+      "default_hrs": 1.0,
+      "skill_level": "irrigation_tech", 
+      "crew_size": 1,
+      "equipment_required": ["pvc_cutter", "deburring_tool", "measuring_tape"]
+    },
+    {
+      "task_code": "INSTALL_NEW_VALVES",
+      "description": "Install and connect new irrigation valves",
+      "hrs_formula": "valve_count * 0.75",
+      "default_hrs": 1.5,
+      "skill_level": "irrigation_tech",
+      "crew_size": 1,
+      "equipment_required": ["pipe_wrench", "pvc_cement", "teflon_tape"]
+    },
+    {
+      "task_code": "WIRE_VALVE_CONNECTIONS", 
+      "description": "Connect valve wiring and test electrical",
+      "hrs_formula": "valve_count * 0.33",
+      "default_hrs": 0.66,
+      "skill_level": "irrigation_tech",
+      "crew_size": 1,
+      "equipment_required": ["wire_stripper", "multimeter", "waterproof_connectors"]
+    },
+    {
+      "task_code": "PRESSURE_TEST_VALVES",
+      "description": "Pressure test new valve installation",
+      "hrs_formula": "valve_count * 0.25",
+      "default_hrs": 0.5,
+      "skill_level": "irrigation_tech",
+      "crew_size": 1,
+      "equipment_required": ["pressure_gauge", "valve_key"]
+    },
+    {
+      "task_code": "BACKFILL_VALVE_AREA",
+      "description": "Backfill around valves and restore grade",
+      "hrs_formula": "valve_count * 0.33",
+      "default_hrs": 0.66,
+      "skill_level": "maintenance",
+      "crew_size": 1,
+      "equipment_required": ["hand_shovel", "tamping_tool", "rake"]
+    },
+    {
+      "task_code": "SYSTEM_TEST_OPERATION",
+      "description": "Complete system test and zone operation check",
+      "hrs_formula": "1.0",
+      "default_hrs": 1.0,
+      "skill_level": "irrigation_tech",
+      "crew_size": 1,
+      "equipment_required": ["controller_interface", "stopwatch", "pressure_gauge"]
+    }
+  ],
+  "equipment": [
+    {
+      "equipment_code": "CREW_TRUCK_1TON",
+      "description": "Service truck with irrigation tools",
+      "usage_formula": "1",
+      "usage_unit": "day",
+      "daily_rate": 125.00
+    }
+  ],
+  "validation_expectations": {
+    "required_sections": ["Materials & Equipment", "Labor & Installation"],
+    "required_fields": ["valve_count", "valve_size"],
+    "math_checks": [
+      {
+        "formula": "materials_total + labor_total = subtotal",
+        "tolerance": 0.01,
+        "description": "Subtotal calculation check"
+      }
+    ],
+    "outlier_checks": [
+      {
+        "field": "cost_per_valve",
+        "min_value": 150,
+        "max_value": 400,
+        "warning_message": "Cost per valve outside typical replacement range ($150-$400)"
+      }
+    ]
+  },
+  "render_hints": {
+    "section_order": ["project_header", "materials_equipment", "labor_installation", "project_totals"]
+  }
+}

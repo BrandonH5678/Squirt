@@ -1,0 +1,4 @@
+#!/bin/bash
+# One-word protocols command
+cd /home/johnny5/Squirt
+python3 ai_operator_helper.py protocols

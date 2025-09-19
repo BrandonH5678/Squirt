@@ -2,7 +2,18 @@
   "permissions": {
     "allow": [
       "Bash(python3:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "WebSearch",
+      "Bash(python:*)",
+      "Bash(chmod:*)",
+      "Bash(find:*)",
+      "Bash(for:*)",
+      "Bash(do python3 -m json.tool \"$template\")",
+      "Bash(done)",
+      "Read(//home/johnny5/**)",
+      "Bash(libreoffice:*)",
+      "Bash(soffice:*)",
+      "Bash(grep:*)"
     ],
     "deny": [],
     "ask": []

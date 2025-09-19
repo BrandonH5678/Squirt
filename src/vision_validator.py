@@ -25,15 +25,119 @@ class VisionValidator:
         self.validation_history_dir = Path(__file__).parent.parent / "validation_history"
         self.validation_history_dir.mkdir(exist_ok=True)
     
-    def capture_document_screenshot(self, odt_path: str) -> Dict[str, Any]:
+    def _capture_complete_document(self, odt_path: str) -> Dict[str, Any]:
         """
-        Capture screenshot of document for vision analysis
+        Capture complete multi-page document with automatic scrolling
         
         Args:
             odt_path: Path to ODT document
             
         Returns:
-            Dictionary with screenshot info and base64 encoded image
+            Dictionary with all page screenshots and metadata
+        """
+        screenshots = []
+        
+        try:
+            # Open document in LibreOffice
+            print(f"🔍 Opening document for complete visual capture: {odt_path}")
+            process = subprocess.Popen(['libreoffice', odt_path], 
+                                     stdout=subprocess.PIPE, 
+                                     stderr=subprocess.PIPE)
+            
+            # Wait for document to load
+            time.sleep(4)
+            
+            # Capture first page
+            page1_path = self._capture_current_page(1)
+            if page1_path:
+                screenshots.append({
+                    'page': 1,
+                    'screenshot_path': page1_path,
+                    'screenshot_base64': self._encode_image_to_base64(page1_path)
+                })
+            
+            # Auto-scroll and capture additional pages
+            page_num = 2
+            max_pages = 10  # Safety limit
+            
+            while page_num <= max_pages:
+                # Try to scroll down (Page Down key)
+                subprocess.run(['xdotool', 'key', 'Page_Down'], 
+                             capture_output=True, timeout=2)
+                time.sleep(1)
+                
+                # Capture current view
+                current_page_path = self._capture_current_page(page_num)
+                if current_page_path:
+                    # Check if this page is different from previous
+                    if self._is_new_page_content(current_page_path, screenshots[-1]['screenshot_path']):
+                        screenshots.append({
+                            'page': page_num,
+                            'screenshot_path': current_page_path,
+                            'screenshot_base64': self._encode_image_to_base64(current_page_path)
+                        })
+                        page_num += 1
+                    else:
+                        # No new content, we've reached the end
+                        break
+                else:
+                    break
+            
+            # Close LibreOffice
+            subprocess.run(['pkill', 'libreoffice'], capture_output=True)
+            
+            print(f"✅ Captured {len(screenshots)} pages for complete document review")
+            
+            return {
+                'success': True,
+                'multi_page': True,
+                'total_pages': len(screenshots),
+                'screenshots': screenshots,
+                'ready_for_vision': True,
+                'document_path': odt_path
+            }
+            
+        except Exception as e:
+            print(f"❌ Multi-page capture failed: {e}")
+            return {
+                'success': False,
+                'error': f'Multi-page capture failed: {e}'
+            }
+    
+    def _capture_current_page(self, page_num: int) -> Optional[str]:
+        """Capture screenshot of currently visible page"""
+        timestamp = int(time.time())
+        screenshot_path = self.screenshot_dir / f"document_page_{page_num}_{timestamp}.png"
+        
+        try:
+            subprocess.run(['gnome-screenshot', '-w', '-f', str(screenshot_path)], 
+                         check=True, timeout=10)
+            return str(screenshot_path) if screenshot_path.exists() else None
+        except:
+            return None
+    
+    def _is_new_page_content(self, new_path: str, previous_path: str) -> bool:
+        """Simple check if two screenshots show different content"""
+        try:
+            new_size = os.path.getsize(new_path)
+            prev_size = os.path.getsize(previous_path)
+            
+            # If file sizes differ significantly, likely different content
+            size_diff = abs(new_size - prev_size) / max(new_size, prev_size)
+            return size_diff > 0.05  # 5% difference threshold
+        except:
+            return False
+    
+    def capture_document_screenshot(self, odt_path: str, multi_page: bool = True) -> Dict[str, Any]:
+        """
+        Capture screenshot(s) of document for vision analysis with multi-page support
+        
+        Args:
+            odt_path: Path to ODT document
+            multi_page: If True, automatically scroll and capture all pages
+            
+        Returns:
+            Dictionary with screenshot info and base64 encoded images
         """
         
         if not os.path.exists(odt_path):
@@ -43,11 +147,15 @@ class VisionValidator:
             }
         
         try:
-            # Method 1: Try PDF conversion + system screenshot
-            screenshot_path = self._capture_via_pdf_display(odt_path)
-            
-            if screenshot_path:
-                # Encode screenshot for vision API
+            if multi_page:
+                # Capture complete document with scrolling
+                return self._capture_complete_document(odt_path)
+            else:
+                # Single screenshot (legacy mode)
+                screenshot_path = self._capture_via_direct_gui(odt_path)
+                
+                if screenshot_path:
+                    # Encode screenshot for vision API
                 screenshot_base64 = self._encode_image_to_base64(screenshot_path)
                 
                 if screenshot_base64:
@@ -68,27 +176,53 @@ class VisionValidator:
                 'error': f'Screenshot capture failed: {e}'
             }
     
-    def _capture_via_pdf_display(self, odt_path: str) -> Optional[str]:
-        """Capture screenshot by converting to PDF and displaying"""
+    def _capture_via_direct_gui(self, odt_path: str) -> Optional[str]:
+        """Capture screenshot by opening ODT directly in LibreOffice GUI"""
         
         try:
-            # Convert to PDF
-            odt_path_obj = Path(odt_path)
-            pdf_path = odt_path_obj.parent / f"{odt_path_obj.stem}.pdf"
+            # Kill any existing LibreOffice processes
+            subprocess.run(['pkill', '-f', 'libreoffice'], capture_output=True)
+            time.sleep(1)
             
-            # Use existing PDF or create new one
-            if not pdf_path.exists():
+            # Open ODT directly in LibreOffice Writer
+            process = subprocess.Popen([
+                'libreoffice', '--writer', odt_path
+            ], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            
+            # Wait for LibreOffice to load
+            time.sleep(3)
+            
+            # Generate screenshot filename
+            timestamp = int(time.time() * 1000)
+            screenshot_path = self.screenshot_dir / f"gui_capture_{timestamp}.png"
+            
+            # Try screenshot methods
+            screenshot_success = False
+            try:
+                # Try gnome-screenshot for window capture
                 result = subprocess.run([
-                    'libreoffice', '--headless', '--convert-to', 'pdf',
-                    '--outdir', str(odt_path_obj.parent), odt_path
-                ], capture_output=True, text=True, timeout=30)
-                
-                if result.returncode != 0:
-                    print(f"❌ PDF conversion failed: {result.stderr}")
-                    return None
+                    'gnome-screenshot', '--window', '-f', str(screenshot_path)
+                ], capture_output=True, timeout=10)
+                screenshot_success = (result.returncode == 0)
+            except:
+                pass
             
-            # Try built-in screenshot methods
-            return self._try_builtin_screenshot_methods(str(pdf_path))
+            if not screenshot_success:
+                try:
+                    # Fallback to scrot
+                    subprocess.run(['scrot', '-s', str(screenshot_path)], timeout=10)
+                    screenshot_success = screenshot_path.exists()
+                except:
+                    pass
+            
+            # Close LibreOffice
+            try:
+                process.terminate()
+                process.wait(timeout=3)
+            except:
+                process.kill()
+            
+            return str(screenshot_path) if screenshot_success else None
             
         except Exception as e:
             print(f"❌ PDF display capture failed: {e}")
@@ -184,19 +318,10 @@ class VisionValidator:
         """Fallback to manual validation workflow"""
         
         try:
-            # Convert to PDF and open
-            odt_path_obj = Path(odt_path)
-            pdf_path = odt_path_obj.parent / f"{odt_path_obj.stem}.pdf"
-            
-            if not pdf_path.exists():
-                subprocess.run([
-                    'libreoffice', '--headless', '--convert-to', 'pdf',
-                    '--outdir', str(odt_path_obj.parent), odt_path
-                ], timeout=30)
-            
-            # Open for manual review
+            # Open ODT directly in LibreOffice for manual review
+            # This avoids unnecessary PDF conversion and shows actual document
             subprocess.Popen([
-                'libreoffice', str(pdf_path)
+                'libreoffice', '--writer', odt_path
             ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             
             return {

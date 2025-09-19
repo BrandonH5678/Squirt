@@ -1,0 +1,70 @@
+
+================================================================================
+                      WATERWIZARD IRRIGATION & LANDSCAPE
+                         Professional Landscape Services
+                            Licensed • Bonded • Insured
+================================================================================
+
+ESTIMATE
+
+Client: Test Client
+Property: 123 Test Street, Portland, OR 97205
+Date: 2025-01-04
+Phone: (503) 555-0123
+Email: test@example.com
+
+================================================================================
+PROJECT: Path Lighting - Economy Package (6 fixtures)
+================================================================================
+
+Description: Economy-grade path lighting system with ProTrade fixtures, transformer, and low-voltage wiring
+
+Assumptions:
+  • Normal soil conditions for trenching
+  • 120V power source available within 50 feet
+  • Standard residential pathway applications
+  • No conflicts with utilities or irrigation
+
+================================================================================
+MATERIALS & EQUIPMENT
+================================================================================
+Description                                        Qty      Unit     Cost         Subtotal    
+------------------------------------------------------------------------------------------
+ProTrade PTH1 Path Light, aluminum housing, black finish 6        each     $110.50      $663.00     
+ProTrade TR1 Transformer, 150W                     1        each     $305.50      $305.50     
+Mechanical timer for lighting control              1        each     $39.00       $39.00      
+12 gauge low voltage lighting wire                 125      lf       $1.12        $140.62     
+Gel cap wire connectors                            12       each     $1.56        $18.75      
+4x4 pressure treated mounting post                 1        each     $62.50       $62.50      
+Mounting hardware and fasteners                    1        each     $31.25       $31.25      
+------------------------------------------------------------------------------------------
+MATERIALS TOTAL:                                                               $    1260.62
+
+================================================================================
+LABOR & INSTALLATION
+================================================================================
+Task Description                                   Hours    Crew   Rate         Subtotal    
+----------------------------------------------------------------------------------------
+Install and position path light fixtures           3.0      1      $65.00       $195.00     
+Shallow bury low voltage lighting wire             2.5      1      $65.00       $162.50     
+Mount transformer and connect power                1.5      1      $65.00       $97.50      
+Wire transformer and light connections             2.5      1      $65.00       $162.50     
+----------------------------------------------------------------------------------------
+LABOR TOTAL:                                                                 $     617.50
+
+================================================================================
+TOTALS
+================================================================================
+Subtotal:                                                       $    1878.12
+Tax (Oregon):                                                   $       0.00
+TOTAL:                                                          $    1878.12
+
+================================================================================
+
+Valid for: 30 days from estimate date
+Payment: Due upon completion
+Contact: (503) 555-0199 | info@waterwizard.com
+
+Template ID: path_lighting_economy
+Category: lighting
+Generated: This estimate was generated from template data (NOT hardcoded Liam Smith data)

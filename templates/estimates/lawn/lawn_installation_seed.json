@@ -1,0 +1,240 @@
+{
+  "template_id": "lawn_installation_seed",
+  "category": "lawn",
+  "subcategory": "installation",
+  "title_format": "Lawn Installation - Seeded ({lawn_area} sq ft)",
+  "description": "Complete lawn installation from seed including soil preparation, seeding, and establishment care",
+  "assumptions": [
+    "Site cleared and ready for preparation", 
+    "Normal soil conditions requiring standard amendments",
+    "Access for equipment and materials",
+    "Fall or spring seeding timing for optimal establishment"
+  ],
+  "parameters": {
+    "lawn_area": {
+      "type": "number",
+      "description": "Total lawn area in square feet",
+      "default": 2500,
+      "unit": "sq ft",
+      "min": 500,
+      "max": 15000
+    },
+    "soil_condition": {
+      "type": "select",
+      "description": "Existing soil condition", 
+      "default": "fair",
+      "options": ["good", "fair", "poor", "compacted"]
+    },
+    "seed_type": {
+      "type": "select",
+      "description": "Grass seed mixture",
+      "default": "pnw_sun_mix",
+      "options": ["pnw_sun_mix", "pnw_shade_mix", "tall_fescue", "fine_fescue"]
+    },
+    "slope_factor": {
+      "type": "select",
+      "description": "Slope/difficulty factor",
+      "default": "flat",
+      "options": ["flat", "gentle_slope", "steep_slope"]
+    }
+  },
+  "materials": [
+    {
+      "code": "SEED_GRASS_PNW_SUN",
+      "description": "Pacific Northwest sun grass seed mix",
+      "unit": "lb",
+      "qty_formula": "lawn_area / 300",
+      "default_qty": 8.33,
+      "unit_cost": 4.25,
+      "markup": 0.30,
+      "specifications": ["Perennial ryegrass blend", "Fine fescue mix", "PNW climate adapted"]
+    },
+    {
+      "code": "FERTILIZER_STARTER",
+      "description": "Starter fertilizer for new lawns",
+      "unit": "bag",
+      "qty_formula": "ceil(lawn_area / 5000)",
+      "default_qty": 1,
+      "unit_cost": 32.50,
+      "markup": 0.30,
+      "specifications": ["High phosphorus", "Slow release", "Covers 5000 sq ft"]
+    },
+    {
+      "code": "SOIL_AMENDMENT_COMPOST",
+      "description": "Organic compost for soil improvement",
+      "unit": "yard",
+      "qty_formula": "lawn_area * 0.008",
+      "default_qty": 20,
+      "unit_cost": 55.00,
+      "markup": 0.25,
+      "specifications": ["Well-aged compost", "Screened", "Organic matter boost"]
+    },
+    {
+      "code": "LIME_AGRICULTURAL",
+      "description": "Agricultural lime for pH adjustment",
+      "unit": "bag",
+      "qty_formula": "ceil(lawn_area / 1000)",
+      "default_qty": 3,
+      "unit_cost": 8.75,
+      "markup": 0.25,
+      "specifications": ["Pelleted lime", "Fast acting", "Covers 1000 sq ft"]
+    },
+    {
+      "code": "MULCH_STRAW_SEED",
+      "description": "Straw mulch for seed protection",
+      "unit": "bale",
+      "qty_formula": "lawn_area / 1000",
+      "default_qty": 2.5,
+      "unit_cost": 12.50,
+      "markup": 0.25,
+      "specifications": ["Weed-free straw", "Seed protection", "Moisture retention"]
+    },
+    {
+      "code": "EROSION_CONTROL_BLANKET",
+      "description": "Erosion control blanket for slopes",
+      "unit": "sf",
+      "qty_formula": "slope_factor == 'steep_slope' ? lawn_area : 0",
+      "default_qty": 0,
+      "unit_cost": 0.65,
+      "markup": 0.25,
+      "specifications": ["Biodegradable", "Slope protection", "Natural fiber"]
+    }
+  ],
+  "labor": [
+    {
+      "task_code": "SITE_PREP_ROUGH_GRADE",
+      "description": "Rough grading and site preparation",
+      "hrs_formula": "lawn_area * 0.002",
+      "default_hrs": 5.0,
+      "skill_level": "install",
+      "crew_size": 2,
+      "equipment_required": ["rake", "shovel", "wheelbarrow"]
+    },
+    {
+      "task_code": "SOIL_AMENDMENT_SPREAD",
+      "description": "Spread compost and lime amendments",
+      "hrs_formula": "lawn_area * 0.001",
+      "default_hrs": 2.5,
+      "skill_level": "maintenance",
+      "crew_size": 2,
+      "equipment_required": ["rake", "spreader"]
+    },
+    {
+      "task_code": "SOIL_TILL_INCORPORATE",
+      "description": "Till soil to incorporate amendments",
+      "hrs_formula": "lawn_area * 0.0008",
+      "default_hrs": 2.0,
+      "skill_level": "install",
+      "crew_size": 1,
+      "equipment_required": ["rototiller", "rake"]
+    },
+    {
+      "task_code": "FINAL_GRADE_LEVEL",
+      "description": "Final grading and leveling for seeding",
+      "hrs_formula": "lawn_area * 0.0015",
+      "default_hrs": 3.75,
+      "skill_level": "install",
+      "crew_size": 2,
+      "equipment_required": ["rake", "level", "drag_mat"]
+    },
+    {
+      "task_code": "SEED_APPLICATION",
+      "description": "Apply grass seed with spreader",
+      "hrs_formula": "lawn_area * 0.0003",
+      "default_hrs": 0.75,
+      "skill_level": "maintenance",
+      "crew_size": 1,
+      "equipment_required": ["spreader", "measuring_cup"]
+    },
+    {
+      "task_code": "FERTILIZER_APPLICATION",
+      "description": "Apply starter fertilizer",
+      "hrs_formula": "lawn_area * 0.0002",
+      "default_hrs": 0.5,
+      "skill_level": "maintenance",
+      "crew_size": 1,
+      "equipment_required": ["spreader"]
+    },
+    {
+      "task_code": "LIGHT_RAKE_INCORPORATION",
+      "description": "Light raking to incorporate seed",
+      "hrs_formula": "lawn_area * 0.0008",
+      "default_hrs": 2.0,
+      "skill_level": "maintenance",
+      "crew_size": 2,
+      "equipment_required": ["leaf_rake"]
+    },
+    {
+      "task_code": "MULCH_STRAW_APPLICATION", 
+      "description": "Apply protective straw mulch",
+      "hrs_formula": "lawn_area * 0.0006",
+      "default_hrs": 1.5,
+      "skill_level": "maintenance",
+      "crew_size": 2,
+      "equipment_required": ["rake", "pitchfork"]
+    },
+    {
+      "task_code": "INITIAL_WATERING",
+      "description": "Initial watering of seeded area",
+      "hrs_formula": "lawn_area * 0.0002",
+      "default_hrs": 0.5,
+      "skill_level": "maintenance",
+      "crew_size": 1,
+      "equipment_required": ["sprinkler", "hose"]
+    },
+    {
+      "task_code": "EROSION_CONTROL_INSTALL",
+      "description": "Install erosion control on slopes",
+      "hrs_formula": "slope_factor == 'steep_slope' ? lawn_area * 0.002 : 0",
+      "default_hrs": 0,
+      "skill_level": "install",
+      "crew_size": 1,
+      "equipment_required": ["staples", "hammer"]
+    }
+  ],
+  "equipment": [
+    {
+      "equipment_code": "ROTOTILLER_WALK_BEHIND",
+      "description": "Walk-behind rototiller for soil preparation",
+      "usage_formula": "1",
+      "usage_unit": "day",
+      "daily_rate": 65.00
+    },
+    {
+      "equipment_code": "SPREADER_BROADCAST",
+      "description": "Broadcast spreader for seed and fertilizer",
+      "usage_formula": "1",
+      "usage_unit": "day",
+      "daily_rate": 35.00
+    },
+    {
+      "equipment_code": "CREW_TRUCK_1TON",
+      "description": "Crew truck for material transport",
+      "usage_formula": "2",
+      "usage_unit": "day", 
+      "daily_rate": 125.00
+    }
+  ],
+  "validation_expectations": {
+    "required_sections": ["Materials & Equipment", "Labor & Installation"],
+    "required_fields": ["lawn_area", "soil_condition"],
+    "math_checks": [
+      {
+        "formula": "materials_total + labor_total = subtotal",
+        "tolerance": 0.01,
+        "description": "Subtotal calculation check"
+      }
+    ],
+    "outlier_checks": [
+      {
+        "field": "cost_per_sqft",
+        "min_value": 0.35,
+        "max_value": 1.50,
+        "warning_message": "Cost per square foot outside typical seeded lawn range ($0.35-$1.50)"
+      }
+    ]
+  },
+  "render_hints": {
+    "section_order": ["project_header", "materials_equipment", "labor_installation", "project_totals"]
+  }
+}

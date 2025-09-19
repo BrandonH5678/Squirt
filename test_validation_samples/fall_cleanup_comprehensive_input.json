@@ -1,0 +1,16 @@
+{
+  "client_name": "Test Client",
+  "property_address": "123 Test Street, Portland, OR 97205",
+  "estimate_date": "2025-01-04",
+  "project_description": "Template validation test",
+  "contact_info": {
+    "phone": "(503) 555-0123",
+    "email": "test@example.com"
+  },
+  "company_info": {
+    "name": "WaterWizard Irrigation & Landscape",
+    "license": "CCB #12345",
+    "phone": "(503) 555-0199",
+    "email": "info@waterwizard.com"
+  }
+}

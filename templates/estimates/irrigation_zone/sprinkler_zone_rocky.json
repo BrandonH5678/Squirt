@@ -1,0 +1,295 @@
+{
+  "template_id": "sprinkler_zone_rocky",
+  "category": "irrigation_zone", 
+  "subcategory": "sprinkler_installation",
+  "title_format": "Sprinkler Zone - Rocky/Difficult Soil ({zone_size} sq ft)",
+  "description": "Complete sprinkler zone installation in rocky or difficult soil conditions with extended trenching time and specialized equipment",
+  "assumptions": [
+    "Rocky or compacted soil conditions - difficult trenching",
+    "May require power equipment for trenching", 
+    "Normal access for equipment and materials",
+    "Existing controller with available zone capacity",
+    "Underground utilities marked and cleared"
+  ],
+  "parameters": {
+    "zone_size": {
+      "type": "number",
+      "description": "Square footage of irrigation zone",
+      "default": 800,
+      "unit": "sq ft",
+      "min": 100,
+      "max": 4000
+    },
+    "head_spacing": {
+      "type": "number",
+      "description": "Spacing between sprinkler heads in feet", 
+      "default": 15,
+      "unit": "ft",
+      "min": 10,
+      "max": 25
+    },
+    "soil_difficulty": {
+      "type": "select",
+      "description": "Soil difficulty level",
+      "default": "rocky",
+      "options": ["rocky", "clay_compacted", "root_heavy", "extreme"]
+    },
+    "trench_depth": {
+      "type": "number",
+      "description": "Depth of trenching for pipes",
+      "default": 10,
+      "unit": "inches",
+      "min": 8,
+      "max": 14
+    }
+  },
+  "materials": [
+    {
+      "code": "PIPE_PVC_SCH40_1IN",
+      "description": "Schedule 40 PVC pipe, 1 inch",
+      "unit": "lf", 
+      "qty_formula": "zone_size * 0.12",
+      "default_qty": 96,
+      "unit_cost": 2.45,
+      "markup": 0.25,
+      "supplier": "Horizon Distributors"
+    },
+    {
+      "code": "HEAD_RAIN_BIRD_5004_SAM",
+      "description": "Rain Bird 5004 Plus PC Rotor with SAM (Seal-A-Matic)",
+      "unit": "each",
+      "qty_formula": "ceil(zone_size / (head_spacing * head_spacing * 0.8))",
+      "default_qty": 5,
+      "unit_cost": 32.50,
+      "markup": 0.30,
+      "supplier": "Horizon Distributors",
+      "specifications": [
+        "4-inch pop-up with Seal-A-Matic",
+        "Better performance in rocky soil",
+        "Enhanced debris resistance"
+      ]
+    },
+    {
+      "code": "FITTING_PVC_TEE_1IN",
+      "description": "PVC Tee fitting, 1 inch",
+      "unit": "each",
+      "qty_formula": "ceil(zone_size / (head_spacing * head_spacing * 0.8)) - 1", 
+      "default_qty": 4,
+      "unit_cost": 3.25,
+      "markup": 0.25
+    },
+    {
+      "code": "SWING_JOINT_KIT",
+      "description": "Swing joint kit for rocky soil installation",
+      "unit": "each",
+      "qty_formula": "ceil(zone_size / (head_spacing * head_spacing * 0.8))",
+      "default_qty": 5,
+      "unit_cost": 12.75,
+      "markup": 0.30,
+      "specifications": [
+        "Flexible connection to prevent damage",
+        "Essential for rocky soil installations"
+      ]
+    },
+    {
+      "code": "VALVE_RAIN_BIRD_100DVA",
+      "description": "Rain Bird 100-DVA valve, 1 inch",
+      "unit": "each",
+      "qty_formula": "1",
+      "default_qty": 1,
+      "unit_cost": 85.00,
+      "markup": 0.30
+    },
+    {
+      "code": "WIRE_IRRIGATION_14AWG",
+      "description": "14 AWG irrigation wire, direct burial",
+      "unit": "lf",
+      "qty_formula": "zone_size * 0.08 + 50",
+      "default_qty": 114,
+      "unit_cost": 0.85,
+      "markup": 0.25
+    },
+    {
+      "code": "SAND_BEDDING",
+      "description": "Sand for pipe bedding in rocky soil",
+      "unit": "yard",
+      "qty_formula": "zone_size * 0.02",
+      "default_qty": 0.5,
+      "unit_cost": 35.00,
+      "markup": 0.25,
+      "specifications": ["Fine sand for pipe protection"]
+    }
+  ],
+  "labor": [
+    {
+      "task_code": "TRENCH_ROCKY",
+      "description": "Hand trenching in rocky/difficult soil",
+      "hrs_formula": "zone_size * 0.003",
+      "default_hrs": 2.4,
+      "skill_level": "install",
+      "crew_size": 1,
+      "equipment_required": ["pick", "mattock", "trenching_bar", "safety_glasses"]
+    },
+    {
+      "task_code": "PIPE_INSTALL_ROCKY", 
+      "description": "Install PVC pipe with sand bedding",
+      "hrs_formula": "zone_size * 0.0015",
+      "default_hrs": 1.2,
+      "skill_level": "install",
+      "crew_size": 1,
+      "equipment_required": ["pvc_cutter", "primer", "cement", "level"]
+    },
+    {
+      "task_code": "HEAD_INSTALL_SWING",
+      "description": "Install sprinkler heads with swing joints",
+      "hrs_formula": "ceil(zone_size / (head_spacing * head_spacing * 0.8)) * 0.5",
+      "default_hrs": 2.5,
+      "skill_level": "install",
+      "crew_size": 1,
+      "equipment_required": ["swing_joint_kit", "head_alignment_tool", "level"]
+    },
+    {
+      "task_code": "WIRE_INSTALL",
+      "description": "Install wire from valve to controller",
+      "hrs_formula": "(zone_size * 0.08 + 50) * 0.02",
+      "default_hrs": 3.28,
+      "skill_level": "install",
+      "crew_size": 1
+    },
+    {
+      "task_code": "SYSTEM_TEST",
+      "description": "Pressure test and system commissioning",
+      "hrs_formula": "1.5",
+      "default_hrs": 1.5,
+      "skill_level": "install",
+      "crew_size": 1,
+      "equipment_required": ["pressure_gauge", "multimeter"]
+    },
+    {
+      "task_code": "BACKFILL_ROCKY",
+      "description": "Careful backfill and compaction in rocky soil",
+      "hrs_formula": "zone_size * 0.0012",
+      "default_hrs": 1.0,
+      "skill_level": "maintenance", 
+      "crew_size": 1,
+      "equipment_required": ["tamping_tool", "rake"]
+    }
+  ],
+  "equipment": [
+    {
+      "equipment_code": "CREW_TRUCK_1TON",
+      "description": "Crew truck with specialized tools", 
+      "usage_formula": "1",
+      "usage_unit": "day",
+      "daily_rate": 125.00
+    },
+    {
+      "equipment_code": "TRENCHING_TOOLS_ROCKY",
+      "description": "Specialized tools for rocky soil trenching",
+      "usage_formula": "1",
+      "usage_unit": "day", 
+      "daily_rate": 50.00
+    }
+  ],
+  "pricing_bindings": {
+    "material_source": "csv",
+    "labor_rate_source": "hardcoded",
+    "markup_rules": {
+      "pipes_fittings": 0.25,
+      "heads_valves": 0.30,
+      "wire_electrical": 0.25,
+      "specialty_items": 0.30
+    }
+  },
+  "validation_expectations": {
+    "required_sections": [
+      "Materials & Equipment",
+      "Labor & Installation",
+      "Subtotal", 
+      "Tax",
+      "Total"
+    ],
+    "required_fields": [
+      "zone_size",
+      "soil_difficulty", 
+      "head_count",
+      "pipe_footage"
+    ],
+    "math_checks": [
+      {
+        "formula": "materials_total + labor_total = subtotal",
+        "tolerance": 0.01,
+        "description": "Subtotal equals sum of materials and labor"
+      }
+    ],
+    "outlier_checks": [
+      {
+        "field": "total_cost",
+        "min_value": 800,
+        "max_value": 8000,
+        "warning_message": "Total cost outside typical range for rocky soil sprinkler zone"
+      },
+      {
+        "field": "cost_per_sqft",
+        "min_value": 1.00,
+        "max_value": 5.00,
+        "warning_message": "Cost per square foot outside typical range for difficult soil ($1.00-$5.00)"
+      }
+    ]
+  },
+  "render_hints": {
+    "document_type": "estimate",
+    "libreoffice_styles": {
+      "header_style": "WaterWizard_Header",
+      "section_style": "Section_Header_Blue",
+      "table_style": "Materials_Table",
+      "font_family": "Arial",
+      "base_font_size": 11
+    },
+    "table_columns": [
+      {
+        "field": "description",
+        "header": "Description", 
+        "width": "60%",
+        "alignment": "left"
+      },
+      {
+        "field": "unit_cost",
+        "header": "Unit Cost",
+        "width": "15%",
+        "alignment": "right",
+        "format": "currency"
+      },
+      {
+        "field": "quantity",
+        "header": "Quantity",
+        "width": "10%",
+        "alignment": "center"
+      },
+      {
+        "field": "subtotal",
+        "header": "Subtotal",
+        "width": "15%",
+        "alignment": "right",
+        "format": "currency"
+      }
+    ],
+    "section_order": [
+      "project_header",
+      "materials_equipment",
+      "labor_installation",
+      "project_totals"
+    ]
+  },
+  "compatibility": {
+    "squirt_version": "1.2",
+    "schema_version": "1.0",
+    "created_date": "2025-01-04",
+    "last_modified": "2025-01-04",
+    "author": "Claude",
+    "tested_with": [
+      "LibreOffice 7.x",
+      "Squirt UNO Generator"
+    ]
+  }
+}

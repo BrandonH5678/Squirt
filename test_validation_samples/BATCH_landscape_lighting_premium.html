@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>WaterWizard Estimate - Landscape Lighting - Premium System (12 fixtures)</title>
+    <style>
+        @page {
+            size: letter;
+            margin: 0.75in;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            font-size: 11pt;
+            line-height: 1.4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30pt;
+            border-bottom: 3pt solid #2E5984;
+            padding-bottom: 15pt;
+        }
+        .company {
+            font-size: 20pt;
+            font-weight: bold;
+            color: #2E5984;
+            margin-bottom: 5pt;
+        }
+        .tagline {
+            font-size: 12pt;
+            color: #666;
+            margin: 3pt 0;
+        }
+        .credentials {
+            font-size: 10pt;
+            color: #888;
+            font-style: italic;
+        }
+        .estimate-label {
+            font-size: 16pt;
+            font-weight: bold;
+            color: #2E5984;
+            margin: 20pt 0 15pt 0;
+            text-align: center;
+            background-color: #f8f9fa;
+            padding: 10pt;
+            border: 1pt solid #dee2e6;
+        }
+        .client-section {
+            display: table;
+            width: 100%;
+            margin: 20pt 0;
+        }
+        .client-left, .client-right {
+            display: table-cell;
+            width: 50%;
+            vertical-align: top;
+        }
+        .client-right {
+            text-align: right;
+        }
+        .field {
+            margin: 5pt 0;
+        }
+        .field-label {
+            font-weight: bold;
+            color: #2E5984;
+        }
+        .section {
+            margin: 25pt 0;
+        }
+        .section-title {
+            font-size: 14pt;
+            font-weight: bold;
+            color: #2E5984;
+            margin-bottom: 15pt;
+            padding: 8pt 0;
+            border-bottom: 2pt solid #2E5984;
+        }
+        .project-title {
+            font-size: 16pt;
+            font-weight: bold;
+            color: #1a365d;
+            margin: 20pt 0 10pt 0;
+            text-align: center;
+        }
+        .description {
+            background-color: #f8f9fa;
+            padding: 15pt;
+            border-left: 4pt solid #2E5984;
+            margin: 15pt 0;
+            font-style: italic;
+        }
+        .assumptions {
+            background-color: #fff3cd;
+            border: 1pt solid #ffeaa7;
+            padding: 12pt;
+            margin: 15pt 0;
+        }
+        .assumptions h4 {
+            margin: 0 0 10pt 0;
+            color: #856404;
+        }
+        .assumptions ul {
+            margin: 0;
+            padding-left: 20pt;
+        }
+        .assumptions li {
+            margin: 3pt 0;
+            color: #856404;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15pt 0;
+            font-size: 10pt;
+        }
+        th {
+            background-color: #2E5984;
+            color: white;
+            padding: 10pt 8pt;
+            text-align: left;
+            font-weight: bold;
+        }
+        td {
+            padding: 8pt;
+            border-bottom: 1pt solid #dee2e6;
+            vertical-align: top;
+        }
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        .currency {
+            text-align: right;
+            font-weight: bold;
+        }
+        .center {
+            text-align: center;
+        }
+        .section-total {
+            background-color: #e9ecef;
+            font-weight: bold;
+            border-top: 2pt solid #2E5984;
+        }
+        .totals {
+            margin: 30pt 0;
+            background-color: #f8f9fa;
+            border: 2pt solid #2E5984;
+            padding: 20pt;
+        }
+        .total-row {
+            display: table;
+            width: 100%;
+            margin: 8pt 0;
+        }
+        .total-label {
+            display: table-cell;
+            font-size: 12pt;
+            padding: 5pt 0;
+        }
+        .total-amount {
+            display: table-cell;
+            text-align: right;
+            font-size: 12pt;
+            font-weight: bold;
+            padding: 5pt 0;
+            width: 120pt;
+        }
+        .grand-total {
+            border-top: 2pt solid #2E5984;
+            padding-top: 10pt;
+            margin-top: 10pt;
+        }
+        .grand-total .total-label {
+            font-size: 16pt;
+            font-weight: bold;
+            color: #2E5984;
+        }
+        .grand-total .total-amount {
+            font-size: 16pt;
+            font-weight: bold;
+            color: #2E5984;
+        }
+        .footer {
+            margin-top: 40pt;
+            padding-top: 20pt;
+            border-top: 1pt solid #dee2e6;
+            font-size: 10pt;
+            color: #666;
+        }
+        .footer-section {
+            display: table-cell;
+            width: 33%;
+            vertical-align: top;
+        }
+        .specs {
+            font-size: 9pt;
+            color: #666;
+            margin-top: 3pt;
+        }
+        .equipment-note {
+            font-size: 9pt;
+            color: #666;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="company">WaterWizard Irrigation & Landscape</div>
+        <div class="tagline">Professional Landscape Services</div>
+        <div class="credentials">Licensed • Bonded • Insured • CCB #CCB #12345</div>
+    </div>
+    
+    <div class="estimate-label">ESTIMATE</div>
+    
+    <div class="client-section">
+        <div class="client-left">
+            <div class="field">
+                <span class="field-label">Client:</span> Test Client
+            </div>
+            <div class="field">
+                <span class="field-label">Property:</span> 123 Test Street, Portland, OR 97205
+            </div>
+            <div class="field">
+                <span class="field-label">Phone:</span> (503) 555-0123
+            </div>
+            <div class="field">
+                <span class="field-label">Email:</span> test@example.com
+            </div>
+        </div>
+        <div class="client-right">
+            <div class="field">
+                <span class="field-label">Date:</span> 2025-01-04
+            </div>
+            <div class="field">
+                <span class="field-label">Valid:</span> 30 days
+            </div>
+            <div class="field">
+                <span class="field-label">Contact:</span> (503) 555-0199
+            </div>
+            <div class="field">
+                <span class="field-label">Email:</span> info@waterwizard.com
+            </div>
+        </div>
+    </div>
+    
+    <div class="project-title">Landscape Lighting - Premium System (12 fixtures)</div>
+    
+    <div class="description">
+        <strong>Project Description:</strong> Premium landscape lighting system with professional-grade fixtures, smart controls, and comprehensive coverage
+    </div>
+    
+    <div class="assumptions">
+        <h4>Project Assumptions:</h4>
+        <ul>
+            <li>120V power source available within 100 feet</li>
+            <li>Normal soil conditions for trenching</li>
+            <li>Standard residential landscape application</li>
+            <li>Professional design and layout consultation included</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <div class="section-title">MATERIALS & EQUIPMENT</div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 50%;">Description</th>
+                    <th style="width: 8%;">Qty</th>
+                    <th style="width: 8%;">Unit</th>
+                    <th style="width: 12%;">Unit Cost</th>
+                    <th style="width: 12%;">Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td>
+                        Cast brass path lights with LED
+                        <div class="specs">• Cast brass construction • Integrated LED • 20-year warranty</div>
+                    </td>
+                    <td class="center">5</td>
+                    <td class="center">each</td>
+                    <td class="currency">$249.75</td>
+                    <td class="currency">$1248.75</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Premium LED accent spotlights
+                        <div class="specs">• Adjustable beam angle • 3000K color temperature • Die-cast aluminum</div>
+                    </td>
+                    <td class="center">4</td>
+                    <td class="center">each</td>
+                    <td class="currency">$195.75</td>
+                    <td class="currency">$783.00</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        In-ground well lights with LED
+                        <div class="specs">• Waterproof housing • Heavy-duty lens • Adjustable angle</div>
+                    </td>
+                    <td class="center">2</td>
+                    <td class="center">each</td>
+                    <td class="currency">$303.75</td>
+                    <td class="currency">$607.50</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        LED flood/wash lights for large areas
+                        <div class="specs">• Wide beam pattern • Architectural grade • Color temperature selectable</div>
+                    </td>
+                    <td class="center">1</td>
+                    <td class="center">each</td>
+                    <td class="currency">$371.25</td>
+                    <td class="currency">$371.25</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Premium 600W multi-tap transformer
+                        <div class="specs">• 600W capacity • Multiple voltage taps • Stainless steel enclosure</div>
+                    </td>
+                    <td class="center">1</td>
+                    <td class="center">each</td>
+                    <td class="currency">$654.75</td>
+                    <td class="currency">$654.75</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Smart WiFi lighting controller
+                        <div class="specs">• WiFi enabled • Smartphone app control • Astronomical timer</div>
+                    </td>
+                    <td class="center">1</td>
+                    <td class="center">each</td>
+                    <td class="currency">$330.75</td>
+                    <td class="currency">$330.75</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Professional grade 12 AWG lighting cable
+                        <div class="specs">• Direct burial rated • UV resistant jacket • Color coded</div>
+                    </td>
+                    <td class="center">200</td>
+                    <td class="center">lf</td>
+                    <td class="currency">$1.56</td>
+                    <td class="currency">$312.50</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Professional waterproof connectors
+                        <div class="specs">• IP68 rated • Corrosion resistant • Tool-free installation</div>
+                    </td>
+                    <td class="center">24</td>
+                    <td class="center">each</td>
+                    <td class="currency">$3.44</td>
+                    <td class="currency">$82.50</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Flexible PVC conduit for wire protection
+                        <div class="specs">• Schedule 40 equivalent • Underground rated • Flexible installation</div>
+                    </td>
+                    <td class="center">60</td>
+                    <td class="center">lf</td>
+                    <td class="currency">$1.19</td>
+                    <td class="currency">$71.25</td>
+                </tr>
+
+                <tr class="section-total">
+                    <td colspan="4"><strong>MATERIALS TOTAL</strong></td>
+                    <td class="currency"><strong>$4462.25</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <div class="section-title">EQUIPMENT</div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 50%;">Description</th>
+                    <th style="width: 10%;">Quantity</th>
+                    <th style="width: 10%;">Unit</th>
+                    <th style="width: 12%;">Rate</th>
+                    <th style="width: 12%;">Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td>Crew truck with professional tools</td>
+                    <td class="center">2</td>
+                    <td class="center">day</td>
+                    <td class="currency">$125.00</td>
+                    <td class="currency">$250.00</td>
+                </tr>
+
+                <tr>
+                    <td>Professional trenching and electrical tools</td>
+                    <td class="center">2</td>
+                    <td class="center">day</td>
+                    <td class="currency">$75.00</td>
+                    <td class="currency">$150.00</td>
+                </tr>
+
+                <tr class="section-total">
+                    <td colspan="4"><strong>EQUIPMENT TOTAL</strong></td>
+                    <td class="currency"><strong>$400.00</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <div class="section-title">LABOR & INSTALLATION</div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 50%;">Task Description</th>
+                    <th style="width: 8%;">Hours</th>
+                    <th style="width: 8%;">Crew</th>
+                    <th style="width: 12%;">Rate</th>
+                    <th style="width: 12%;">Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td>
+                        Professional lighting design and layout
+                        <div class="equipment-note">Equipment: measuring_tape, design_software, lux_meter</div>
+                    </td>
+                    <td class="center">3.0</td>
+                    <td class="center">1</td>
+                    <td class="currency">$85.00/hr</td>
+                    <td class="currency">$255.00</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Professional trenching for lighting installation
+                        <div class="equipment-note">Equipment: trenching_shovel, mattock, wire_locator</div>
+                    </td>
+                    <td class="center">3.0</td>
+                    <td class="center">1</td>
+                    <td class="currency">$65.00/hr</td>
+                    <td class="currency">$195.00</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Install premium transformer with electrical connection
+                        <div class="equipment-note">Equipment: electrical_tools, multimeter, level</div>
+                    </td>
+                    <td class="center">2.5</td>
+                    <td class="center">1</td>
+                    <td class="currency">$85.00/hr</td>
+                    <td class="currency">$212.50</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Install and configure smart lighting controller
+                        <div class="equipment-note">Equipment: smartphone, electrical_tools, wifi_tester</div>
+                    </td>
+                    <td class="center">2.0</td>
+                    <td class="center">1</td>
+                    <td class="currency">$85.00/hr</td>
+                    <td class="currency">$170.00</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Install professional grade wiring system
+                        <div class="equipment-note">Equipment: wire_stripper, voltage_meter, wire_nuts</div>
+                    </td>
+                    <td class="center">10.0</td>
+                    <td class="center">1</td>
+                    <td class="currency">$85.00/hr</td>
+                    <td class="currency">$850.00</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Precision installation and alignment of fixtures
+                        <div class="equipment-note">Equipment: level, measuring_tape, alignment_tools</div>
+                    </td>
+                    <td class="center">9.0</td>
+                    <td class="center">1</td>
+                    <td class="currency">$65.00/hr</td>
+                    <td class="currency">$585.00</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Complete system commissioning and testing
+                        <div class="equipment-note">Equipment: multimeter, lux_meter, smartphone</div>
+                    </td>
+                    <td class="center">2.5</td>
+                    <td class="center">1</td>
+                    <td class="currency">$85.00/hr</td>
+                    <td class="currency">$212.50</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Client training on system operation
+                        <div class="equipment-note">Equipment: user_manual, smartphone_app</div>
+                    </td>
+                    <td class="center">1.0</td>
+                    <td class="center">1</td>
+                    <td class="currency">$50.00/hr</td>
+                    <td class="currency">$50.00</td>
+                </tr>
+
+                <tr class="section-total">
+                    <td colspan="4"><strong>LABOR TOTAL</strong></td>
+                    <td class="currency"><strong>$2530.00</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="totals">
+        <div class="total-row">
+            <div class="total-label">Subtotal:</div>
+            <div class="total-amount">$7392.25</div>
+        </div>
+        <div class="total-row">
+            <div class="total-label">Tax (Oregon):</div>
+            <div class="total-amount">$0.00</div>
+        </div>
+        <div class="total-row grand-total">
+            <div class="total-label">TOTAL:</div>
+            <div class="total-amount">$7392.25</div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <div style="display: table; width: 100%;">
+            <div class="footer-section">
+                <strong>Payment Terms:</strong><br>
+                Due upon completion
+            </div>
+            <div class="footer-section" style="text-align: center;">
+                <strong>Template:</strong> landscape_lighting_premium<br>
+                <strong>Category:</strong> lighting
+            </div>
+            <div class="footer-section" style="text-align: right;">
+                <strong>Generated:</strong> Template-driven<br>
+                (Not hardcoded data)
+            </div>
+        </div>
+    </div>
+</body>
+</html>

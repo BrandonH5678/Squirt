@@ -7,9 +7,11 @@ Generates professional contracts, invoices, and receipts from templates
 from decimal import Decimal, ROUND_HALF_UP
 from datetime import datetime
 import json
+from pathlib import Path
 from template_processor import TemplateProcessor
 from tax_rules import TaxRulesEngine
 from format_converter import SquirtFormatConverter, DocumentType as FmtDocType, OutputFormat
+from modern_html_document_generator import ModernHtmlDocumentGenerator
 
 class DocumentGenerator:
     def __init__(self):
@@ -17,6 +19,9 @@ class DocumentGenerator:
         self.tax_engine = TaxRulesEngine()
         self.format_converter = SquirtFormatConverter()
         self.default_tax_rate = Decimal("0.0875")  # 8.75% fallback rate
+        
+        # Use modern HTML>ODT generator for better reliability
+        self.modern_generator = ModernHtmlDocumentGenerator()
         
     def generate_contract(self, client_info: dict, project_info: dict, templates_with_params: list) -> str:
         """Generate a professional contract document"""
@@ -69,6 +74,48 @@ class DocumentGenerator:
         )
         
         return invoice
+    
+    def generate_contract_odt(self, client_info: dict, project_info: dict, 
+                             templates_with_params: list, output_path: str) -> bool:
+        """Generate a professional contract in ODT format using modern pipeline"""
+        print(f"📄 Generating modern contract ODT...")
+        
+        try:
+            success = self.modern_generator.generate_contract(
+                client_info, project_info, templates_with_params, output_path
+            )
+            
+            if success:
+                print(f"✅ Modern contract ODT generated: {output_path}")
+                return True
+            else:
+                print(f"❌ Modern contract ODT generation failed")
+                return False
+                
+        except Exception as e:
+            print(f"❌ Contract ODT generation error: {e}")
+            return False
+    
+    def generate_invoice_odt(self, client_info: dict, project_info: dict,
+                           templates_with_params: list, output_path: str) -> bool:
+        """Generate a professional invoice in ODT format using modern pipeline"""
+        print(f"📄 Generating modern invoice ODT...")
+        
+        try:
+            success = self.modern_generator.generate_invoice(
+                client_info, project_info, templates_with_params, output_path
+            )
+            
+            if success:
+                print(f"✅ Modern invoice ODT generated: {output_path}")
+                return True
+            else:
+                print(f"❌ Modern invoice ODT generation failed")
+                return False
+                
+        except Exception as e:
+            print(f"❌ Invoice ODT generation error: {e}")
+            return False
     
     def _format_contract(self, doc_number, client_info, project_info, line_items, 
                         subtotal, tax_amount, total, narratives):

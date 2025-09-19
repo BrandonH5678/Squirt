@@ -1,0 +1,222 @@
+{
+  "template_id": "mulch_bed_refresh",
+  "category": "mulching",
+  "subcategory": "bed_maintenance",
+  "title_format": "Mulch Bed Refresh ({bed_area} sq ft, {mulch_type})",
+  "description": "Complete bed refresh with weed removal, edging, and fresh mulch application",
+  "assumptions": [
+    "Existing mulch beds with defined edges",
+    "Standard residential bed maintenance",
+    "Normal weed pressure and debris accumulation",
+    "Access for wheelbarrow and materials"
+  ],
+  "parameters": {
+    "bed_area": {
+      "type": "number",
+      "description": "Total bed area to be mulched",
+      "default": 600,
+      "unit": "sq ft", 
+      "min": 100,
+      "max": 3000
+    },
+    "mulch_type": {
+      "type": "select",
+      "description": "Type of mulch material",
+      "default": "fir_bark_medium",
+      "options": ["fir_bark_medium", "cedar_chips", "hemlock_bark", "compost_blend", "gravel_decorative"]
+    },
+    "mulch_depth": {
+      "type": "number",
+      "description": "Depth of mulch application",
+      "default": 2,
+      "unit": "inches",
+      "min": 1,
+      "max": 4
+    },
+    "edge_renewal": {
+      "type": "boolean",
+      "description": "Renew/redefine bed edges",
+      "default": true
+    },
+    "weed_level": {
+      "type": "select",
+      "description": "Current weed pressure in beds",
+      "default": "moderate",
+      "options": ["light", "moderate", "heavy", "severe"]
+    }
+  },
+  "materials": [
+    {
+      "code": "MULCH_FIR_BARK_MEDIUM",
+      "description": "Fir bark mulch, medium grade",
+      "unit": "yard",
+      "qty_formula": "mulch_type == 'fir_bark_medium' ? bed_area * mulch_depth / 324 : 0",
+      "default_qty": 3.7,
+      "unit_cost": 45.00,
+      "markup": 0.30,
+      "specifications": ["Medium bark chips", "PNW sourced", "Natural color"]
+    },
+    {
+      "code": "MULCH_CEDAR_CHIPS",
+      "description": "Western red cedar chips",
+      "unit": "yard",
+      "qty_formula": "mulch_type == 'cedar_chips' ? bed_area * mulch_depth / 324 : 0",
+      "default_qty": 0,
+      "unit_cost": 52.00,
+      "markup": 0.30,
+      "specifications": ["Natural pest deterrent", "Long lasting", "Pleasant aroma"]
+    },
+    {
+      "code": "MULCH_HEMLOCK_BARK",
+      "description": "Hemlock bark mulch",
+      "unit": "yard",
+      "qty_formula": "mulch_type == 'hemlock_bark' ? bed_area * mulch_depth / 324 : 0",
+      "default_qty": 0,
+      "unit_cost": 48.00,
+      "markup": 0.30,
+      "specifications": ["Fine texture", "Rich brown color", "Slow decomposition"]
+    },
+    {
+      "code": "MULCH_COMPOST_BLEND",
+      "description": "Compost and bark blend mulch",
+      "unit": "yard",
+      "qty_formula": "mulch_type == 'compost_blend' ? bed_area * mulch_depth / 324 : 0",
+      "default_qty": 0,
+      "unit_cost": 58.00,
+      "markup": 0.30,
+      "specifications": ["Nutrient rich", "Soil building", "Organic certified"]
+    },
+    {
+      "code": "GRAVEL_DECORATIVE_RIVER",
+      "description": "Decorative river rock mulch",
+      "unit": "yard",
+      "qty_formula": "mulch_type == 'gravel_decorative' ? bed_area * mulch_depth / 324 : 0",
+      "default_qty": 0,
+      "unit_cost": 65.00,
+      "markup": 0.30,
+      "specifications": ["1-3 inch river rock", "Mixed natural colors", "Long lasting"]
+    },
+    {
+      "code": "PRE_EMERGENT_GRANULAR",
+      "description": "Granular pre-emergent herbicide",
+      "unit": "bag",
+      "qty_formula": "weed_level == 'heavy' || weed_level == 'severe' ? ceil(bed_area / 1000) : 0",
+      "default_qty": 0,
+      "unit_cost": 32.50,
+      "markup": 0.30,
+      "specifications": ["Season-long control", "Safe around plants", "Covers 1000 sq ft"]
+    }
+  ],
+  "labor": [
+    {
+      "task_code": "BED_ASSESSMENT_PREP",
+      "description": "Assess bed conditions and prepare work area",
+      "hrs_formula": "bed_area * 0.001",
+      "default_hrs": 0.6,
+      "skill_level": "maintenance",
+      "crew_size": 1,
+      "equipment_required": ["measuring_tape", "notepad"]
+    },
+    {
+      "task_code": "WEED_REMOVAL_HAND",
+      "description": "Hand removal of weeds and unwanted growth",
+      "hrs_formula": "bed_area * (weed_level == 'light' ? 0.002 : weed_level == 'moderate' ? 0.004 : weed_level == 'heavy' ? 0.007 : 0.012)",
+      "default_hrs": 2.4,
+      "skill_level": "maintenance",
+      "crew_size": 2,
+      "equipment_required": ["hand_tools", "kneepads", "yard_waste_bags"]
+    },
+    {
+      "task_code": "EDGE_RENEWAL_CUTTING",
+      "description": "Renew and define bed edges",
+      "hrs_formula": "edge_renewal ? sqrt(bed_area) * 4 * 0.08 : 0",
+      "default_hrs": 7.8,
+      "skill_level": "maintenance",
+      "crew_size": 1,
+      "equipment_required": ["edging_tool", "half_moon_spade", "string_line"]
+    },
+    {
+      "task_code": "OLD_MULCH_FLUFF",
+      "description": "Cultivate and fluff existing mulch",
+      "hrs_formula": "bed_area * 0.002",
+      "default_hrs": 1.2,
+      "skill_level": "maintenance",
+      "crew_size": 2,
+      "equipment_required": ["cultivation_fork", "rake"]
+    },
+    {
+      "task_code": "PRE_EMERGENT_APPLICATION",
+      "description": "Apply granular pre-emergent herbicide",
+      "hrs_formula": "weed_level == 'heavy' || weed_level == 'severe' ? bed_area * 0.001 : 0",
+      "default_hrs": 0,
+      "skill_level": "certified_applicator",
+      "crew_size": 1,
+      "equipment_required": ["spreader_drop", "measuring_cup"]
+    },
+    {
+      "task_code": "MULCH_APPLICATION_SPREAD",
+      "description": "Apply and spread fresh mulch",
+      "hrs_formula": "bed_area * 0.003",
+      "default_hrs": 1.8,
+      "skill_level": "maintenance",
+      "crew_size": 2,
+      "equipment_required": ["wheelbarrow", "rakes", "shovels"]
+    },
+    {
+      "task_code": "MULCH_DETAIL_FINISH",
+      "description": "Detail work around plants and edges",
+      "hrs_formula": "bed_area * 0.001",
+      "default_hrs": 0.6,
+      "skill_level": "maintenance",
+      "crew_size": 2,
+      "equipment_required": ["hand_rakes", "detail_tools"]
+    },
+    {
+      "task_code": "CLEANUP_SITE_RESTORATION",
+      "description": "Clean up work area and restore pathways",
+      "hrs_formula": "bed_area * 0.0005",
+      "default_hrs": 0.3,
+      "skill_level": "maintenance",
+      "crew_size": 2,
+      "equipment_required": ["broom", "blower", "hose"]
+    }
+  ],
+  "equipment": [
+    {
+      "equipment_code": "CREW_TRUCK_1TON",
+      "description": "Crew truck for material transport",
+      "usage_formula": "1",
+      "usage_unit": "day",
+      "daily_rate": 125.00
+    },
+    {
+      "equipment_code": "WHEELBARROW_COMMERCIAL",
+      "description": "Heavy-duty wheelbarrows for mulch",
+      "usage_formula": "2",
+      "usage_unit": "day",
+      "daily_rate": 15.00
+    }
+  ],
+  "validation_expectations": {
+    "required_sections": ["Materials & Equipment", "Labor & Installation"],
+    "required_fields": ["bed_area", "mulch_type"],
+    "math_checks": [
+      {
+        "formula": "materials_total + labor_total = subtotal",
+        "tolerance": 0.01,
+        "description": "Subtotal calculation check"
+      }
+    ],
+    "outlier_checks": [
+      {
+        "field": "cost_per_sqft",
+        "min_value": 1.50,
+        "max_value": 6.00,
+        "warning_message": "Cost per square foot outside typical mulching range ($1.50-$6.00)"
+      }
+    ]
+  },
+  "render_hints": {
+    "section_order": ["project_header", "materials_equipment", "labor_installation", "project_totals"]
+  }
+}

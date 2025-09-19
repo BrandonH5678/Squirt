@@ -15,6 +15,7 @@ import subprocess
 import time
 import os
 import tempfile
+from file_tracking_system import get_tracked_path
 
 
 class UnoInvoiceGenerator:
@@ -561,7 +562,7 @@ def main():
         tax_amount = Decimal("0.00")  # Oregon no sales tax
         total = Decimal("665.00")
         
-        output_path = "/tmp/liam_smith_uno_invoice.odt"
+        output_path = get_tracked_path("liam_smith_uno_invoice.odt", "Liam Smith", "invoice")
         
         print("📋 Generating invoice with UNO API...")
         success = generator.generate_invoice(

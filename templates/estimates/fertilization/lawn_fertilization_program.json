@@ -1,0 +1,213 @@
+{
+  "template_id": "lawn_fertilization_program",
+  "category": "fertilization",
+  "subcategory": "lawn_care",
+  "title_format": "Lawn Fertilization Program - 4 Applications ({lawn_area} sq ft)",
+  "description": "Complete 4-season lawn fertilization program with pre-emergent, summer feeding, fall treatment, and winterization",
+  "assumptions": [
+    "Standard PNW turf grass varieties",
+    "Normal lawn health and density",
+    "Client maintains regular watering",
+    "No major pest or disease issues"
+  ],
+  "parameters": {
+    "lawn_area": {
+      "type": "number", 
+      "description": "Total lawn area in square feet",
+      "default": 4000,
+      "unit": "sq ft",
+      "min": 1000,
+      "max": 15000
+    },
+    "grass_type": {
+      "type": "select",
+      "description": "Primary grass type",
+      "default": "perennial_rye",
+      "options": ["perennial_rye", "tall_fescue", "fine_fescue", "mixed"]
+    },
+    "soil_condition": {
+      "type": "select",
+      "description": "Current soil/lawn condition",
+      "default": "fair",
+      "options": ["excellent", "good", "fair", "poor"]
+    },
+    "weed_pressure": {
+      "type": "select",
+      "description": "Weed pressure level",
+      "default": "moderate",
+      "options": ["low", "moderate", "high", "severe"]
+    }
+  },
+  "materials": [
+    {
+      "code": "FERTILIZER_PRE_EMERGENT_SPRING",
+      "description": "Spring pre-emergent with fertilizer",
+      "unit": "bag",
+      "qty_formula": "ceil(lawn_area / 5000)",
+      "default_qty": 1,
+      "unit_cost": 42.50,
+      "markup": 0.30,
+      "specifications": ["Prevents crabgrass", "Early spring application", "Covers 5000 sq ft"]
+    },
+    {
+      "code": "FERTILIZER_SUMMER_HIGH_NITROGEN",
+      "description": "Summer fertilizer, high nitrogen blend",
+      "unit": "bag",
+      "qty_formula": "ceil(lawn_area / 5000)",
+      "default_qty": 1,
+      "unit_cost": 38.75,
+      "markup": 0.30,
+      "specifications": ["Quick green-up", "Heat stress protection", "Covers 5000 sq ft"]
+    },
+    {
+      "code": "FERTILIZER_FALL_PHOSPHORUS",
+      "description": "Fall fertilizer with phosphorus for root development",
+      "unit": "bag",
+      "qty_formula": "ceil(lawn_area / 5000)",
+      "default_qty": 1,
+      "unit_cost": 35.25,
+      "markup": 0.30,
+      "specifications": ["Root development", "Winter prep", "Covers 5000 sq ft"]
+    },
+    {
+      "code": "FERTILIZER_WINTER_SLOW_RELEASE",
+      "description": "Winter fertilizer, slow release formula",
+      "unit": "bag",
+      "qty_formula": "ceil(lawn_area / 5000)",
+      "default_qty": 1,
+      "unit_cost": 32.50,
+      "markup": 0.30,
+      "specifications": ["Slow release", "Cold weather formula", "Covers 5000 sq ft"]
+    },
+    {
+      "code": "HERBICIDE_POST_EMERGENT",
+      "description": "Post-emergent broadleaf herbicide",
+      "unit": "bottle",
+      "qty_formula": "weed_pressure == 'high' || weed_pressure == 'severe' ? ceil(lawn_area / 10000) : 0",
+      "default_qty": 0,
+      "unit_cost": 28.75,
+      "markup": 0.30,
+      "specifications": ["Broadleaf control", "Selective herbicide", "Covers 10000 sq ft"]
+    },
+    {
+      "code": "LIME_PELLETIZED_FAST",
+      "description": "Pelletized lime for pH adjustment",
+      "unit": "bag",
+      "qty_formula": "soil_condition == 'poor' ? ceil(lawn_area / 1000) : 0",
+      "default_qty": 0,
+      "unit_cost": 8.75,
+      "markup": 0.25,
+      "specifications": ["Fast acting", "Raises pH", "Covers 1000 sq ft"]
+    }
+  ],
+  "labor": [
+    {
+      "task_code": "SPRING_APPLICATION_PRE_EMERGENT",
+      "description": "Spring pre-emergent fertilizer application (March)",
+      "hrs_formula": "lawn_area * 0.0003",
+      "default_hrs": 1.2,
+      "skill_level": "certified_applicator",
+      "crew_size": 1,
+      "equipment_required": ["spreader_broadcast", "measuring_tools", "application_records"]
+    },
+    {
+      "task_code": "EARLY_SUMMER_FEEDING",
+      "description": "Early summer fertilizer application (June)",
+      "hrs_formula": "lawn_area * 0.0003",
+      "default_hrs": 1.2,
+      "skill_level": "certified_applicator",
+      "crew_size": 1,
+      "equipment_required": ["spreader_broadcast", "measuring_tools"]
+    },
+    {
+      "task_code": "FALL_ROOT_DEVELOPMENT",
+      "description": "Fall fertilizer for root development (September)",
+      "hrs_formula": "lawn_area * 0.0003",
+      "default_hrs": 1.2,
+      "skill_level": "certified_applicator",
+      "crew_size": 1,
+      "equipment_required": ["spreader_broadcast", "measuring_tools"]
+    },
+    {
+      "task_code": "WINTER_PREPARATION",
+      "description": "Winter preparation fertilizer (November)",
+      "hrs_formula": "lawn_area * 0.0003",
+      "default_hrs": 1.2,
+      "skill_level": "certified_applicator",
+      "crew_size": 1,
+      "equipment_required": ["spreader_broadcast", "measuring_tools"]
+    },
+    {
+      "task_code": "WEED_CONTROL_TREATMENT",
+      "description": "Spot treatment for broadleaf weeds",
+      "hrs_formula": "weed_pressure == 'high' || weed_pressure == 'severe' ? lawn_area * 0.0005 : 0",
+      "default_hrs": 0,
+      "skill_level": "certified_applicator",
+      "crew_size": 1,
+      "equipment_required": ["sprayer_pump", "protective_equipment"]
+    },
+    {
+      "task_code": "SOIL_AMENDMENT_LIME",
+      "description": "Lime application for soil pH adjustment",
+      "hrs_formula": "soil_condition == 'poor' ? lawn_area * 0.0002 : 0",
+      "default_hrs": 0,
+      "skill_level": "certified_applicator", 
+      "crew_size": 1,
+      "equipment_required": ["spreader_broadcast"]
+    },
+    {
+      "task_code": "PROGRAM_MONITORING_REPORTS",
+      "description": "Lawn monitoring and customer reports",
+      "hrs_formula": "2",
+      "default_hrs": 2.0,
+      "skill_level": "certified_applicator",
+      "crew_size": 1,
+      "equipment_required": ["camera", "report_forms", "soil_probe"]
+    }
+  ],
+  "equipment": [
+    {
+      "equipment_code": "SPREADER_BROADCAST_COMMERCIAL",
+      "description": "Commercial broadcast spreader",
+      "usage_formula": "4",
+      "usage_unit": "application",
+      "daily_rate": 25.00
+    },
+    {
+      "equipment_code": "SPRAYER_PUMP_BACKPACK",
+      "description": "Backpack pump sprayer for herbicides",
+      "usage_formula": "weed_pressure == 'high' || weed_pressure == 'severe' ? 1 : 0",
+      "usage_unit": "application",
+      "daily_rate": 15.00
+    },
+    {
+      "equipment_code": "SERVICE_TRUCK_FERTILIZER",
+      "description": "Service truck with storage and equipment",
+      "usage_formula": "4",
+      "usage_unit": "trip",
+      "daily_rate": 35.00
+    }
+  ],
+  "validation_expectations": {
+    "required_sections": ["Materials & Equipment", "Labor & Installation"],
+    "required_fields": ["lawn_area", "grass_type"],
+    "math_checks": [
+      {
+        "formula": "materials_total + labor_total = subtotal",
+        "tolerance": 0.01,
+        "description": "Subtotal calculation check"
+      }
+    ],
+    "outlier_checks": [
+      {
+        "field": "cost_per_sqft",
+        "min_value": 0.08,
+        "max_value": 0.35,
+        "warning_message": "Cost per square foot outside typical fertilization range ($0.08-$0.35)"
+      }
+    ]
+  },
+  "render_hints": {
+    "section_order": ["project_header", "materials_equipment", "labor_installation", "project_totals"]
+  }
+}

@@ -1,0 +1,299 @@
+{
+  "template_id": "sprinkler_zone_turf",
+  "category": "irrigation_zone",
+  "subcategory": "sprinkler_installation",
+  "title_format": "Sprinkler Zone - Turf Area ({zone_size} sq ft)",
+  "description": "Complete sprinkler zone installation for turf areas including trenching, piping, heads, and controller wiring",
+  "assumptions": [
+    "Turf soil conditions - easy trenching",
+    "Normal access for equipment and materials",
+    "Existing controller with available zone capacity",
+    "Underground utilities marked and cleared"
+  ],
+  "parameters": {
+    "zone_size": {
+      "type": "number",
+      "description": "Square footage of irrigation zone",
+      "default": 1000,
+      "unit": "sq ft",
+      "min": 100,
+      "max": 5000
+    },
+    "head_spacing": {
+      "type": "number", 
+      "description": "Spacing between sprinkler heads in feet",
+      "default": 15,
+      "unit": "ft",
+      "min": 10,
+      "max": 25
+    },
+    "trench_depth": {
+      "type": "number",
+      "description": "Depth of trenching for pipes",
+      "default": 8,
+      "unit": "inches",
+      "min": 6,
+      "max": 12
+    },
+    "head_type": {
+      "type": "select",
+      "description": "Type of sprinkler heads",
+      "default": "rain_bird_5004",
+      "options": ["rain_bird_5004", "hunter_pgp_04", "rain_bird_1804"]
+    }
+  },
+  "materials": [
+    {
+      "code": "PIPE_PVC_SCH40_1IN",
+      "description": "Schedule 40 PVC pipe, 1 inch",
+      "unit": "lf",
+      "qty_formula": "zone_size * 0.12",
+      "default_qty": 120,
+      "unit_cost": 2.45,
+      "markup": 0.25,
+      "supplier": "Horizon Distributors",
+      "specifications": [
+        "Schedule 40 PVC",
+        "NSF certified for potable water",
+        "Purple marking for recycled water where applicable"
+      ]
+    },
+    {
+      "code": "HEAD_RAIN_BIRD_5004",
+      "description": "Rain Bird 5004 Plus PC Rotor, 4 inch pop-up",
+      "unit": "each",
+      "qty_formula": "ceil(zone_size / (head_spacing * head_spacing * 0.8))",
+      "default_qty": 6,
+      "unit_cost": 28.50,
+      "markup": 0.30,
+      "supplier": "Horizon Distributors",
+      "specifications": [
+        "4-inch pop-up height",
+        "15-46 foot radius",
+        "Pressure compensating",
+        "Stainless steel riser"
+      ]
+    },
+    {
+      "code": "FITTING_PVC_TEE_1IN", 
+      "description": "PVC Tee fitting, 1 inch",
+      "unit": "each",
+      "qty_formula": "ceil(zone_size / (head_spacing * head_spacing * 0.8)) - 1",
+      "default_qty": 5,
+      "unit_cost": 3.25,
+      "markup": 0.25,
+      "specifications": ["Schedule 40 PVC", "Slip connections"]
+    },
+    {
+      "code": "FITTING_PVC_ELL_1IN",
+      "description": "PVC Elbow fitting, 1 inch, 90 degree",
+      "unit": "each",
+      "qty_formula": "2",
+      "default_qty": 2,
+      "unit_cost": 2.85,
+      "markup": 0.25
+    },
+    {
+      "code": "VALVE_RAIN_BIRD_100DVA",
+      "description": "Rain Bird 100-DVA valve, 1 inch",
+      "unit": "each", 
+      "qty_formula": "1",
+      "default_qty": 1,
+      "unit_cost": 85.00,
+      "markup": 0.30,
+      "specifications": [
+        "24V AC solenoid",
+        "Manual bleed screw",
+        "Flow control adjustment"
+      ]
+    },
+    {
+      "code": "WIRE_IRRIGATION_14AWG",
+      "description": "14 AWG irrigation wire, multi-conductor",
+      "unit": "lf",
+      "qty_formula": "zone_size * 0.08 + 50",
+      "default_qty": 130,
+      "unit_cost": 0.85,
+      "markup": 0.25,
+      "specifications": ["Direct burial rated", "Multi-conductor", "Color coded"]
+    },
+    {
+      "code": "CONNECTOR_WIRE_NUT",
+      "description": "Waterproof wire nuts",
+      "unit": "each",
+      "qty_formula": "4",
+      "default_qty": 4,
+      "unit_cost": 2.50,
+      "markup": 0.25
+    }
+  ],
+  "labor": [
+    {
+      "task_code": "TRENCH_TURF",
+      "description": "Hand trenching in turf for irrigation pipes",
+      "hrs_formula": "zone_size * 0.0015",
+      "default_hrs": 1.5,
+      "skill_level": "install",
+      "crew_size": 1,
+      "equipment_required": ["trenching_shovel", "marking_paint"]
+    },
+    {
+      "task_code": "PIPE_INSTALL",
+      "description": "Install PVC pipe and fittings",
+      "hrs_formula": "zone_size * 0.001",
+      "default_hrs": 1.0,
+      "skill_level": "install",
+      "crew_size": 1,
+      "equipment_required": ["pvc_cutter", "primer", "cement"]
+    },
+    {
+      "task_code": "HEAD_INSTALL",
+      "description": "Install and align sprinkler heads",
+      "hrs_formula": "ceil(zone_size / (head_spacing * head_spacing * 0.8)) * 0.33",
+      "default_hrs": 2.0,
+      "skill_level": "install", 
+      "crew_size": 1,
+      "equipment_required": ["swing_joint", "head_alignment_tool"]
+    },
+    {
+      "task_code": "WIRE_INSTALL",
+      "description": "Install wire from valve to controller",
+      "hrs_formula": "(zone_size * 0.08 + 50) * 0.02",
+      "default_hrs": 3.6,
+      "skill_level": "install",
+      "crew_size": 1,
+      "equipment_required": ["wire_stripper", "tracer_wire"]
+    },
+    {
+      "task_code": "SYSTEM_TEST",
+      "description": "Pressure test and system commissioning",
+      "hrs_formula": "1",
+      "default_hrs": 1.0,
+      "skill_level": "install",
+      "crew_size": 1,
+      "equipment_required": ["pressure_gauge", "multimeter"]
+    },
+    {
+      "task_code": "BACKFILL_COMPACT",
+      "description": "Backfill trenches and compact soil",
+      "hrs_formula": "zone_size * 0.0008",
+      "default_hrs": 0.8,
+      "skill_level": "maintenance",
+      "crew_size": 1,
+      "equipment_required": ["tamping_tool"]
+    }
+  ],
+  "equipment": [
+    {
+      "equipment_code": "CREW_TRUCK_1TON",
+      "description": "Crew truck with tools and materials",
+      "usage_formula": "1",
+      "usage_unit": "day",
+      "daily_rate": 125.00
+    }
+  ],
+  "pricing_bindings": {
+    "material_source": "csv",
+    "labor_rate_source": "hardcoded",
+    "markup_rules": {
+      "pipes_fittings": 0.25,
+      "heads_valves": 0.30,
+      "wire_electrical": 0.25
+    }
+  },
+  "validation_expectations": {
+    "required_sections": [
+      "Materials & Equipment",
+      "Labor & Installation", 
+      "Subtotal",
+      "Tax",
+      "Total"
+    ],
+    "required_fields": [
+      "zone_size",
+      "head_count",
+      "pipe_footage",
+      "labor_hours"
+    ],
+    "math_checks": [
+      {
+        "formula": "materials_total + labor_total = subtotal",
+        "tolerance": 0.01,
+        "description": "Subtotal equals sum of materials and labor"
+      }
+    ],
+    "outlier_checks": [
+      {
+        "field": "total_cost",
+        "min_value": 500,
+        "max_value": 5000,
+        "warning_message": "Total cost outside typical range for turf sprinkler zone"
+      },
+      {
+        "field": "cost_per_sqft", 
+        "min_value": 0.50,
+        "max_value": 3.00,
+        "warning_message": "Cost per square foot outside typical range ($0.50-$3.00)"
+      }
+    ]
+  },
+  "render_hints": {
+    "document_type": "estimate",
+    "libreoffice_styles": {
+      "header_style": "WaterWizard_Header",
+      "section_style": "Section_Header_Blue",
+      "table_style": "Materials_Table",
+      "font_family": "Arial",
+      "base_font_size": 11
+    },
+    "table_columns": [
+      {
+        "field": "description",
+        "header": "Description",
+        "width": "60%",
+        "alignment": "left"
+      },
+      {
+        "field": "unit_cost",
+        "header": "Unit Cost",
+        "width": "15%",
+        "alignment": "right",
+        "format": "currency"
+      },
+      {
+        "field": "quantity",
+        "header": "Quantity", 
+        "width": "10%",
+        "alignment": "center"
+      },
+      {
+        "field": "subtotal",
+        "header": "Subtotal",
+        "width": "15%",
+        "alignment": "right",
+        "format": "currency"
+      }
+    ],
+    "section_order": [
+      "project_header",
+      "materials_equipment",
+      "labor_installation", 
+      "project_totals"
+    ],
+    "page_layout": {
+      "margins": "1in",
+      "orientation": "portrait"
+    }
+  },
+  "compatibility": {
+    "squirt_version": "1.2",
+    "schema_version": "1.0",
+    "created_date": "2025-01-04",
+    "last_modified": "2025-01-04", 
+    "author": "Claude",
+    "tested_with": [
+      "LibreOffice 7.x",
+      "Squirt UNO Generator"
+    ]
+  }
+}

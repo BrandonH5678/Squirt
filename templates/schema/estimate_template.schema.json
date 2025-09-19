@@ -1,0 +1,348 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://waterwizard.com/schemas/estimate_template.schema.json",
+  "title": "WaterWizard Estimate Template Schema",
+  "description": "Strict schema for granular landscape and irrigation estimate templates",
+  "type": "object",
+  "required": [
+    "template_id",
+    "category", 
+    "title_format",
+    "description",
+    "assumptions",
+    "materials",
+    "labor",
+    "validation_expectations",
+    "render_hints"
+  ],
+  "properties": {
+    "template_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9_]+$",
+      "description": "Unique identifier for template (lowercase, underscore-separated)"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "irrigation_zone",
+        "irrigation_repair", 
+        "drip_system",
+        "drainage",
+        "water_feature",
+        "earthworks",
+        "hardscape",
+        "lighting",
+        "planting",
+        "maintenance",
+        "cleanup"
+      ],
+      "description": "Primary service category for template"
+    },
+    "subcategory": {
+      "type": "string",
+      "description": "Optional subcategory for more specific classification"
+    },
+    "title_format": {
+      "type": "string",
+      "description": "Display title with parameter placeholders: {param_name}"
+    },
+    "description": {
+      "type": "string",
+      "description": "Detailed description of work performed by this template"
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Default assumptions about conditions, access, etc."
+    },
+    "parameters": {
+      "type": "object",
+      "description": "Input parameters for template customization",
+      "patternProperties": {
+        "^[a-z_]+$": {
+          "type": "object",
+          "required": ["type", "description", "default"],
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": ["number", "string", "boolean", "select"]
+            },
+            "description": {
+              "type": "string"
+            },
+            "default": {},
+            "options": {
+              "type": "array",
+              "description": "Options for select type parameters"
+            },
+            "unit": {
+              "type": "string",
+              "description": "Unit of measurement for number parameters"
+            },
+            "min": {
+              "type": "number",
+              "description": "Minimum value for number parameters"
+            },
+            "max": {
+              "type": "number", 
+              "description": "Maximum value for number parameters"
+            }
+          }
+        }
+      }
+    },
+    "materials": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["code", "description", "unit", "qty_formula"],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Material/part code or SKU"
+          },
+          "description": {
+            "type": "string",
+            "description": "Human-readable material description"
+          },
+          "unit": {
+            "type": "string",
+            "enum": ["each", "ft", "lf", "sf", "cf", "yard", "lb", "gal", "hour"],
+            "description": "Unit of measurement"
+          },
+          "qty_formula": {
+            "type": "string",
+            "description": "Formula to calculate quantity from parameters"
+          },
+          "default_qty": {
+            "type": "number",
+            "description": "Default quantity if formula fails"
+          },
+          "unit_cost": {
+            "type": "number",
+            "description": "Cost per unit (can be overridden by pricing system)"
+          },
+          "markup": {
+            "type": "number",
+            "description": "Markup percentage (0.20 = 20%)",
+            "default": 0.25
+          },
+          "supplier": {
+            "type": "string",
+            "description": "Preferred supplier or brand"
+          },
+          "specifications": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "Technical specifications or requirements"
+          }
+        }
+      }
+    },
+    "labor": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["task_code", "description", "hrs_formula"],
+        "properties": {
+          "task_code": {
+            "type": "string", 
+            "description": "Labor task identifier"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of labor task"
+          },
+          "hrs_formula": {
+            "type": "string",
+            "description": "Formula to calculate labor hours from parameters"
+          },
+          "default_hrs": {
+            "type": "number",
+            "description": "Default hours if formula fails"
+          },
+          "skill_level": {
+            "type": "string",
+            "enum": ["maintenance", "install", "fine_pruning", "specialist"],
+            "description": "Required skill level determining hourly rate"
+          },
+          "crew_size": {
+            "type": "integer",
+            "minimum": 1,
+            "default": 1,
+            "description": "Number of workers required"
+          },
+          "equipment_required": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "Equipment needed for this task"
+          }
+        }
+      }
+    },
+    "equipment": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["equipment_code", "description", "usage_formula"],
+        "properties": {
+          "equipment_code": {
+            "type": "string",
+            "description": "Equipment identifier"
+          },
+          "description": {
+            "type": "string",
+            "description": "Equipment description"
+          },
+          "usage_formula": {
+            "type": "string", 
+            "description": "Formula for equipment usage (hours or days)"
+          },
+          "usage_unit": {
+            "type": "string",
+            "enum": ["hour", "day", "week"],
+            "default": "day"
+          },
+          "daily_rate": {
+            "type": "number",
+            "description": "Daily rental/usage rate"
+          }
+        }
+      }
+    },
+    "pricing_bindings": {
+      "type": "object",
+      "description": "Map template elements to external pricing systems",
+      "properties": {
+        "material_source": {
+          "type": "string",
+          "enum": ["csv", "sqlite", "api", "hardcoded"],
+          "description": "Where to lookup material prices"
+        },
+        "labor_rate_source": {
+          "type": "string", 
+          "enum": ["csv", "sqlite", "api", "hardcoded"],
+          "description": "Where to lookup labor rates"
+        },
+        "markup_rules": {
+          "type": "object",
+          "description": "Markup rules by material category"
+        }
+      }
+    },
+    "validation_expectations": {
+      "type": "object",
+      "required": ["required_sections", "math_checks"],
+      "properties": {
+        "required_sections": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Sections that must be present in output"
+        },
+        "required_fields": {
+          "type": "array",
+          "items": {"type": "string"}, 
+          "description": "Fields that must be populated"
+        },
+        "math_checks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["formula", "tolerance"],
+            "properties": {
+              "formula": {"type": "string"},
+              "tolerance": {"type": "number"},
+              "description": {"type": "string"}
+            }
+          }
+        },
+        "outlier_checks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["field", "min_value", "max_value"],
+            "properties": {
+              "field": {"type": "string"},
+              "min_value": {"type": "number"},
+              "max_value": {"type": "number"},
+              "warning_message": {"type": "string"}
+            }
+          }
+        }
+      }
+    },
+    "render_hints": {
+      "type": "object",
+      "description": "Instructions for document rendering",
+      "properties": {
+        "document_type": {
+          "type": "string",
+          "enum": ["estimate", "contract", "invoice", "work_order"],
+          "description": "Primary document type"
+        },
+        "libreoffice_styles": {
+          "type": "object",
+          "description": "LibreOffice/ODT specific formatting",
+          "properties": {
+            "header_style": {"type": "string"},
+            "section_style": {"type": "string"},
+            "table_style": {"type": "string"},
+            "font_family": {"type": "string", "default": "Arial"},
+            "base_font_size": {"type": "number", "default": 11}
+          }
+        },
+        "table_columns": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["field", "header", "width"],
+            "properties": {
+              "field": {"type": "string"},
+              "header": {"type": "string"},
+              "width": {"type": "string"},
+              "alignment": {
+                "type": "string",
+                "enum": ["left", "center", "right"],
+                "default": "left"
+              },
+              "format": {"type": "string"}
+            }
+          }
+        },
+        "section_order": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Order of sections in final document"
+        },
+        "page_layout": {
+          "type": "object",
+          "properties": {
+            "margins": {"type": "string", "default": "1in"},
+            "orientation": {
+              "type": "string", 
+              "enum": ["portrait", "landscape"],
+              "default": "portrait"
+            }
+          }
+        }
+      }
+    },
+    "compatibility": {
+      "type": "object",
+      "description": "Template compatibility and version info",
+      "properties": {
+        "squirt_version": {"type": "string"},
+        "schema_version": {"type": "string", "default": "1.0"},
+        "created_date": {"type": "string", "format": "date"},
+        "last_modified": {"type": "string", "format": "date"},
+        "author": {"type": "string"},
+        "tested_with": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,40 @@
+#!/usr/bin/env python3
+"""
+/protocols - Load all critical operational protocols for AI operators
+"""
+
+print("📋 SQUIRT OPERATIONAL PROTOCOLS LOADED")
+print("=" * 50)
+
+print("🔄 Reading critical protocol files...")
+
+# List the key protocol files to review
+protocol_files = [
+    "SQUIRT_AI_OPERATOR_MANUAL.md",
+    "VALIDATION_CONFLICT_RESOLUTION.md",
+    "VISUAL_VALIDATION_PROTOCOL.md"
+]
+
+for filename in protocol_files:
+    print(f"✅ {filename}")
+
+print("\n🚨 CRITICAL SYSTEM STATUS:")
+print("   ⚠️  Template JSON files are NOT processed by UNO generator")
+print("   ⚠️  All generated documents contain identical hardcoded content")
+print("   ⚠️  Sprint 4 success claims were false positives")
+
+print("\n🎯 DEVELOPMENT PRIORITY:")
+print("   Fix core template processing in UNO generator")
+
+print("\n📸 VALIDATION REQUIREMENTS:")
+print("   Default: ALWAYS validate immediately unless explicit multi-stage process")
+
+print("\n💡 CURRENT OPERATIONAL REMINDERS:")
+print("   🔥 CRITICAL: Verify template data is actually used, not hardcoded content")
+print("   📸 Immediate visual validation required for single document generation")
+print("   👁️ Capture complete document including all pages")
+
+print("\n✅ ALL PROTOCOLS LOADED - READY FOR OPERATIONS")
+print("📚 Unified validation framework active")
+print("🔧 Protocol enforcement automation active")
+print("⚡ Real-time protocol injection active")

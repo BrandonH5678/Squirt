@@ -1,0 +1,253 @@
+{
+  "template_id": "composite_deck_install",
+  "category": "deck_patio",
+  "subcategory": "decking",
+  "title_format": "Composite Deck Installation ({deck_area} sq ft)",
+  "description": "Complete composite deck installation including framing, decking, railings, and finishing",
+  "assumptions": [
+    "Level building site with normal access",
+    "Standard residential deck height (under 30 inches)",
+    "Normal soil conditions for footings",
+    "Building permits obtained separately"
+  ],
+  "parameters": {
+    "deck_area": {
+      "type": "number",
+      "description": "Total deck area in square feet",
+      "default": 300,
+      "unit": "sq ft",
+      "min": 100,
+      "max": 800
+    },
+    "deck_height": {
+      "type": "number",
+      "description": "Height of deck above grade",
+      "default": 24,
+      "unit": "inches",
+      "min": 8,
+      "max": 36
+    },
+    "railing_length": {
+      "type": "number",
+      "description": "Linear feet of railing required",
+      "default": 60,
+      "unit": "lf",
+      "min": 20,
+      "max": 150
+    },
+    "composite_grade": {
+      "type": "select",
+      "description": "Grade of composite decking",
+      "default": "premium",
+      "options": ["standard", "premium", "ultra_premium"]
+    },
+    "railing_style": {
+      "type": "select",
+      "description": "Railing system style",
+      "default": "composite_match",
+      "options": ["composite_match", "aluminum", "cable", "glass"]
+    }
+  },
+  "materials": [
+    {
+      "code": "DECKING_COMPOSITE_PREMIUM",
+      "description": "Premium composite decking boards",
+      "unit": "sf",
+      "qty_formula": "deck_area * 1.1",
+      "default_qty": 330,
+      "unit_cost": 8.50,
+      "markup": 0.30,
+      "specifications": ["Capped composite", "25-year warranty", "Fade resistant"]
+    },
+    {
+      "code": "LUMBER_TREATED_2X10_16",
+      "description": "Pressure treated 2x10 joists, 16 ft",
+      "unit": "each",
+      "qty_formula": "deck_area / 16",
+      "default_qty": 19,
+      "unit_cost": 32.50,
+      "markup": 0.25,
+      "specifications": ["Ground contact rated", "Kiln dried", "16 ft length"]
+    },
+    {
+      "code": "LUMBER_TREATED_2X12_BEAM",
+      "description": "Pressure treated 2x12 beam lumber",
+      "unit": "lf",
+      "qty_formula": "sqrt(deck_area) * 2",
+      "default_qty": 35,
+      "unit_cost": 4.25,
+      "markup": 0.25,
+      "specifications": ["Ground contact rated", "Structural grade"]
+    },
+    {
+      "code": "POST_6X6_TREATED", 
+      "description": "6x6 pressure treated posts",
+      "unit": "each",
+      "qty_formula": "deck_area / 75",
+      "default_qty": 4,
+      "unit_cost": 45.00,
+      "markup": 0.25,
+      "specifications": ["Ground contact rated", "8 ft length", "Structural grade"]
+    },
+    {
+      "code": "CONCRETE_FOOTING_MIX",
+      "description": "Concrete mix for footings",
+      "unit": "bag",
+      "qty_formula": "deck_area / 75 * 3",
+      "default_qty": 12,
+      "unit_cost": 8.75,
+      "markup": 0.25,
+      "specifications": ["80 lb bags", "Fast-setting concrete", "Weather resistant"]
+    },
+    {
+      "code": "HARDWARE_DECK_JOIST",
+      "description": "Galvanized joist hangers and fasteners",
+      "unit": "lot",
+      "qty_formula": "1",
+      "default_qty": 1,
+      "unit_cost": 125.00,
+      "markup": 0.25,
+      "specifications": ["Hot-dip galvanized", "Simpson Strong-Tie", "Complete hardware kit"]
+    },
+    {
+      "code": "FASTENERS_COMPOSITE_HIDDEN",
+      "description": "Hidden fasteners for composite decking",
+      "unit": "sf",
+      "qty_formula": "deck_area",
+      "default_qty": 300,
+      "unit_cost": 0.75,
+      "markup": 0.25,
+      "specifications": ["Stainless steel", "Hidden fastener system", "Pre-drill"]
+    },
+    {
+      "code": "RAILING_COMPOSITE_SYSTEM",
+      "description": "Composite railing system with balusters",
+      "unit": "lf",
+      "qty_formula": "railing_style == 'composite_match' ? railing_length : 0",
+      "default_qty": 60,
+      "unit_cost": 35.00,
+      "markup": 0.30,
+      "specifications": ["Matching composite", "Complete system", "Easy assembly"]
+    },
+    {
+      "code": "RAILING_ALUMINUM_SYSTEM",
+      "description": "Aluminum railing system",
+      "unit": "lf", 
+      "qty_formula": "railing_style == 'aluminum' ? railing_length : 0",
+      "default_qty": 0,
+      "unit_cost": 42.00,
+      "markup": 0.30,
+      "specifications": ["Powder coated", "Low maintenance", "Various colors"]
+    }
+  ],
+  "labor": [
+    {
+      "task_code": "LAYOUT_DECK_FOUNDATION",
+      "description": "Layout and mark deck foundation locations",
+      "hrs_formula": "deck_area * 0.01",
+      "default_hrs": 3.0,
+      "skill_level": "carpenter",
+      "crew_size": 2,
+      "equipment_required": ["transit_level", "measuring_tape", "marking_paint"]
+    },
+    {
+      "task_code": "EXCAVATE_FOOTINGS",
+      "description": "Excavate holes for concrete footings",
+      "hrs_formula": "deck_area / 75 * 0.5",
+      "default_hrs": 2.0,
+      "skill_level": "install",
+      "crew_size": 2,
+      "equipment_required": ["post_hole_digger", "shovel", "level"]
+    },
+    {
+      "task_code": "POUR_CONCRETE_FOOTINGS",
+      "description": "Set posts and pour concrete footings",
+      "hrs_formula": "deck_area / 75 * 0.75",
+      "default_hrs": 3.0,
+      "skill_level": "concrete",
+      "crew_size": 2,
+      "equipment_required": ["concrete_mixer", "level", "braces"]
+    },
+    {
+      "task_code": "FRAME_DECK_STRUCTURE",
+      "description": "Build deck frame with beams and joists",
+      "hrs_formula": "deck_area * 0.02",
+      "default_hrs": 6.0,
+      "skill_level": "carpenter",
+      "crew_size": 2,
+      "equipment_required": ["circular_saw", "drill", "level", "speed_square"]
+    },
+    {
+      "task_code": "INSTALL_COMPOSITE_DECKING",
+      "description": "Install composite decking boards with hidden fasteners",
+      "hrs_formula": "deck_area * 0.015",
+      "default_hrs": 4.5,
+      "skill_level": "carpenter",
+      "crew_size": 2,
+      "equipment_required": ["circular_saw", "drill", "chalk_line", "fastener_tool"]
+    },
+    {
+      "task_code": "INSTALL_RAILING_SYSTEM",
+      "description": "Install railing posts, rails, and balusters",
+      "hrs_formula": "railing_length * 0.25",
+      "default_hrs": 15.0,
+      "skill_level": "carpenter",
+      "crew_size": 2,
+      "equipment_required": ["miter_saw", "drill", "level", "clamps"]
+    },
+    {
+      "task_code": "DECK_FINISHING_CLEANUP",
+      "description": "Final sanding, touch-ups, and cleanup",
+      "hrs_formula": "deck_area * 0.008",
+      "default_hrs": 2.4,
+      "skill_level": "carpenter",
+      "crew_size": 2,
+      "equipment_required": ["sanders", "broom", "vacuum"]
+    }
+  ],
+  "equipment": [
+    {
+      "equipment_code": "CREW_TRUCK_1TON",
+      "description": "Crew truck for materials and tools",
+      "usage_formula": "4",
+      "usage_unit": "day",
+      "daily_rate": 125.00
+    },
+    {
+      "equipment_code": "CONCRETE_MIXER",
+      "description": "Portable concrete mixer",
+      "usage_formula": "1",
+      "usage_unit": "day",
+      "daily_rate": 65.00
+    },
+    {
+      "equipment_code": "POWER_TOOLS_CARPENTRY",
+      "description": "Complete carpentry power tool set",
+      "usage_formula": "4",
+      "usage_unit": "day",
+      "daily_rate": 45.00
+    }
+  ],
+  "validation_expectations": {
+    "required_sections": ["Materials & Equipment", "Labor & Installation"],
+    "required_fields": ["deck_area", "deck_height", "railing_length"],
+    "math_checks": [
+      {
+        "formula": "materials_total + labor_total = subtotal",
+        "tolerance": 0.01,
+        "description": "Subtotal calculation check"
+      }
+    ],
+    "outlier_checks": [
+      {
+        "field": "cost_per_sqft",
+        "min_value": 25,
+        "max_value": 75,
+        "warning_message": "Cost per square foot outside typical composite deck range ($25-$75)"
+      }
+    ]
+  },
+  "render_hints": {
+    "section_order": ["project_header", "materials_equipment", "labor_installation", "project_totals"]
+  }
+}

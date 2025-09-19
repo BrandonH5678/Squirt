@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>WaterWizard Estimate - Sprinkler Valve Replacement (2 valves)</title>
+    <style>
+        @page {
+            size: letter;
+            margin: 0.75in;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            font-size: 11pt;
+            line-height: 1.4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30pt;
+            border-bottom: 3pt solid #2E5984;
+            padding-bottom: 15pt;
+        }
+        .company {
+            font-size: 20pt;
+            font-weight: bold;
+            color: #2E5984;
+            margin-bottom: 5pt;
+        }
+        .tagline {
+            font-size: 12pt;
+            color: #666;
+            margin: 3pt 0;
+        }
+        .credentials {
+            font-size: 10pt;
+            color: #888;
+            font-style: italic;
+        }
+        .estimate-label {
+            font-size: 16pt;
+            font-weight: bold;
+            color: #2E5984;
+            margin: 20pt 0 15pt 0;
+            text-align: center;
+            background-color: #f8f9fa;
+            padding: 10pt;
+            border: 1pt solid #dee2e6;
+        }
+        .client-section {
+            display: table;
+            width: 100%;
+            margin: 20pt 0;
+        }
+        .client-left, .client-right {
+            display: table-cell;
+            width: 50%;
+            vertical-align: top;
+        }
+        .client-right {
+            text-align: right;
+        }
+        .field {
+            margin: 5pt 0;
+        }
+        .field-label {
+            font-weight: bold;
+            color: #2E5984;
+        }
+        .section {
+            margin: 25pt 0;
+        }
+        .section-title {
+            font-size: 14pt;
+            font-weight: bold;
+            color: #2E5984;
+            margin-bottom: 15pt;
+            padding: 8pt 0;
+            border-bottom: 2pt solid #2E5984;
+        }
+        .project-title {
+            font-size: 16pt;
+            font-weight: bold;
+            color: #1a365d;
+            margin: 20pt 0 10pt 0;
+            text-align: center;
+        }
+        .description {
+            background-color: #f8f9fa;
+            padding: 15pt;
+            border-left: 4pt solid #2E5984;
+            margin: 15pt 0;
+            font-style: italic;
+        }
+        .assumptions {
+            background-color: #fff3cd;
+            border: 1pt solid #ffeaa7;
+            padding: 12pt;
+            margin: 15pt 0;
+        }
+        .assumptions h4 {
+            margin: 0 0 10pt 0;
+            color: #856404;
+        }
+        .assumptions ul {
+            margin: 0;
+            padding-left: 20pt;
+        }
+        .assumptions li {
+            margin: 3pt 0;
+            color: #856404;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15pt 0;
+            font-size: 10pt;
+        }
+        th {
+            background-color: #2E5984;
+            color: white;
+            padding: 10pt 8pt;
+            text-align: left;
+            font-weight: bold;
+        }
+        td {
+            padding: 8pt;
+            border-bottom: 1pt solid #dee2e6;
+            vertical-align: top;
+        }
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        .currency {
+            text-align: right;
+            font-weight: bold;
+        }
+        .center {
+            text-align: center;
+        }
+        .section-total {
+            background-color: #e9ecef;
+            font-weight: bold;
+            border-top: 2pt solid #2E5984;
+        }
+        .totals {
+            margin: 30pt 0;
+            background-color: #f8f9fa;
+            border: 2pt solid #2E5984;
+            padding: 20pt;
+        }
+        .total-row {
+            display: table;
+            width: 100%;
+            margin: 8pt 0;
+        }
+        .total-label {
+            display: table-cell;
+            font-size: 12pt;
+            padding: 5pt 0;
+        }
+        .total-amount {
+            display: table-cell;
+            text-align: right;
+            font-size: 12pt;
+            font-weight: bold;
+            padding: 5pt 0;
+            width: 120pt;
+        }
+        .grand-total {
+            border-top: 2pt solid #2E5984;
+            padding-top: 10pt;
+            margin-top: 10pt;
+        }
+        .grand-total .total-label {
+            font-size: 16pt;
+            font-weight: bold;
+            color: #2E5984;
+        }
+        .grand-total .total-amount {
+            font-size: 16pt;
+            font-weight: bold;
+            color: #2E5984;
+        }
+        .footer {
+            margin-top: 40pt;
+            padding-top: 20pt;
+            border-top: 1pt solid #dee2e6;
+            font-size: 10pt;
+            color: #666;
+        }
+        .footer-section {
+            display: table-cell;
+            width: 33%;
+            vertical-align: top;
+        }
+        .specs {
+            font-size: 9pt;
+            color: #666;
+            margin-top: 3pt;
+        }
+        .equipment-note {
+            font-size: 9pt;
+            color: #666;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="company">WaterWizard Irrigation & Landscape</div>
+        <div class="tagline">Professional Landscape Services</div>
+        <div class="credentials">Licensed • Bonded • Insured • CCB #CCB #12345</div>
+    </div>
+    
+    <div class="estimate-label">ESTIMATE</div>
+    
+    <div class="client-section">
+        <div class="client-left">
+            <div class="field">
+                <span class="field-label">Client:</span> Test Client
+            </div>
+            <div class="field">
+                <span class="field-label">Property:</span> 123 Test Street, Portland, OR 97205
+            </div>
+            <div class="field">
+                <span class="field-label">Phone:</span> (503) 555-0123
+            </div>
+            <div class="field">
+                <span class="field-label">Email:</span> test@example.com
+            </div>
+        </div>
+        <div class="client-right">
+            <div class="field">
+                <span class="field-label">Date:</span> 2025-01-04
+            </div>
+            <div class="field">
+                <span class="field-label">Valid:</span> 30 days
+            </div>
+            <div class="field">
+                <span class="field-label">Contact:</span> (503) 555-0199
+            </div>
+            <div class="field">
+                <span class="field-label">Email:</span> info@waterwizard.com
+            </div>
+        </div>
+    </div>
+    
+    <div class="project-title">Sprinkler Valve Replacement (2 valves)</div>
+    
+    <div class="description">
+        <strong>Project Description:</strong> Professional replacement of irrigation valves including excavation, valve installation, and system testing
+    </div>
+    
+    <div class="assumptions">
+        <h4>Project Assumptions:</h4>
+        <ul>
+            <li>Existing valve box and wiring in serviceable condition</li>
+            <li>Standard residential valve depth and access</li>
+            <li>Normal soil conditions around valve box</li>
+            <li>Replacement with equivalent capacity valves</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <div class="section-title">MATERIALS & EQUIPMENT</div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 50%;">Description</th>
+                    <th style="width: 8%;">Qty</th>
+                    <th style="width: 8%;">Unit</th>
+                    <th style="width: 12%;">Unit Cost</th>
+                    <th style="width: 12%;">Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td>
+                        Rain Bird 100-DVA valve, 3/4 inch
+                        <div class="specs">• 24V AC solenoid • Manual bleed screw • Flow control</div>
+                    </td>
+                    <td class="center">0</td>
+                    <td class="center">each</td>
+                    <td class="currency">$97.50</td>
+                    <td class="currency">$0.00</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Rain Bird 100-DVA valve, 1 inch
+                        <div class="specs">• 24V AC solenoid • Manual bleed screw • Flow control</div>
+                    </td>
+                    <td class="center">2</td>
+                    <td class="center">each</td>
+                    <td class="currency">$110.50</td>
+                    <td class="currency">$221.00</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Rain Bird 100-DVA valve, 1-1/4 inch
+                        <div class="specs">• 24V AC solenoid • Heavy duty construction</div>
+                    </td>
+                    <td class="center">0</td>
+                    <td class="center">each</td>
+                    <td class="currency">$136.50</td>
+                    <td class="currency">$0.00</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Rain Bird 100-DVA valve, 1-1/2 inch
+                        <div class="specs">• 24V AC solenoid • Commercial grade</div>
+                    </td>
+                    <td class="center">0</td>
+                    <td class="center">each</td>
+                    <td class="currency">$162.50</td>
+                    <td class="currency">$0.00</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        PVC union fittings for valve connections
+                        <div class="specs">• Schedule 40 PVC • Easy maintenance access</div>
+                    </td>
+                    <td class="center">4</td>
+                    <td class="center">each</td>
+                    <td class="currency">$10.62</td>
+                    <td class="currency">$42.50</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Schedule 40 PVC pipe for repairs
+                        <div class="specs">• Various sizes as needed • Schedule 40 grade</div>
+                    </td>
+                    <td class="center">4</td>
+                    <td class="center">lf</td>
+                    <td class="currency">$3.06</td>
+                    <td class="currency">$12.25</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        PVC primer and cement kit
+                        <div class="specs">• Purple primer • Medium-body cement • Applicator brush</div>
+                    </td>
+                    <td class="center">1</td>
+                    <td class="center">kit</td>
+                    <td class="currency">$19.69</td>
+                    <td class="currency">$19.69</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Waterproof wire splice connectors
+                        <div class="specs">• Waterproof gel caps • Wire nuts • Electrical tape</div>
+                    </td>
+                    <td class="center">2</td>
+                    <td class="center">kit</td>
+                    <td class="currency">$10.31</td>
+                    <td class="currency">$20.62</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Drainage gravel for valve box
+                        <div class="specs">• Pea gravel • Drainage purposes • 50 lb bag</div>
+                    </td>
+                    <td class="center">1</td>
+                    <td class="center">bag</td>
+                    <td class="currency">$5.62</td>
+                    <td class="currency">$5.62</td>
+                </tr>
+
+                <tr class="section-total">
+                    <td colspan="4"><strong>MATERIALS TOTAL</strong></td>
+                    <td class="currency"><strong>$321.69</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <div class="section-title">EQUIPMENT</div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 50%;">Description</th>
+                    <th style="width: 10%;">Quantity</th>
+                    <th style="width: 10%;">Unit</th>
+                    <th style="width: 12%;">Rate</th>
+                    <th style="width: 12%;">Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td>Service truck with irrigation tools</td>
+                    <td class="center">1</td>
+                    <td class="center">day</td>
+                    <td class="currency">$125.00</td>
+                    <td class="currency">$125.00</td>
+                </tr>
+
+                <tr class="section-total">
+                    <td colspan="4"><strong>EQUIPMENT TOTAL</strong></td>
+                    <td class="currency"><strong>$125.00</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <div class="section-title">LABOR & INSTALLATION</div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 50%;">Task Description</th>
+                    <th style="width: 8%;">Hours</th>
+                    <th style="width: 8%;">Crew</th>
+                    <th style="width: 12%;">Rate</th>
+                    <th style="width: 12%;">Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td>
+                        Diagnose valve problems and plan replacement
+                        <div class="equipment-note">Equipment: multimeter, pressure_gauge, inspection_tools</div>
+                    </td>
+                    <td class="center">0.5</td>
+                    <td class="center">1</td>
+                    <td class="currency">$75.00/hr</td>
+                    <td class="currency">$37.50</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Carefully excavate around existing valves
+                        <div class="equipment-note">Equipment: hand_shovel, pick, valve_box_tools</div>
+                    </td>
+                    <td class="center">1.5</td>
+                    <td class="center">1</td>
+                    <td class="currency">$65.00/hr</td>
+                    <td class="currency">$97.50</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Safely disconnect and remove old valves
+                        <div class="equipment-note">Equipment: pipe_wrench, pvc_cutter, wire_tools</div>
+                    </td>
+                    <td class="center">0.7</td>
+                    <td class="center">1</td>
+                    <td class="currency">$75.00/hr</td>
+                    <td class="currency">$49.50</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Prepare pipe connections for new valves
+                        <div class="equipment-note">Equipment: pvc_cutter, deburring_tool, measuring_tape</div>
+                    </td>
+                    <td class="center">1.0</td>
+                    <td class="center">1</td>
+                    <td class="currency">$75.00/hr</td>
+                    <td class="currency">$75.00</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Install and connect new irrigation valves
+                        <div class="equipment-note">Equipment: pipe_wrench, pvc_cement, teflon_tape</div>
+                    </td>
+                    <td class="center">1.5</td>
+                    <td class="center">1</td>
+                    <td class="currency">$75.00/hr</td>
+                    <td class="currency">$112.50</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Connect valve wiring and test electrical
+                        <div class="equipment-note">Equipment: wire_stripper, multimeter, waterproof_connectors</div>
+                    </td>
+                    <td class="center">0.7</td>
+                    <td class="center">1</td>
+                    <td class="currency">$75.00/hr</td>
+                    <td class="currency">$49.50</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Pressure test new valve installation
+                        <div class="equipment-note">Equipment: pressure_gauge, valve_key</div>
+                    </td>
+                    <td class="center">0.5</td>
+                    <td class="center">1</td>
+                    <td class="currency">$75.00/hr</td>
+                    <td class="currency">$37.50</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Backfill around valves and restore grade
+                        <div class="equipment-note">Equipment: hand_shovel, tamping_tool, rake</div>
+                    </td>
+                    <td class="center">0.7</td>
+                    <td class="center">1</td>
+                    <td class="currency">$45.00/hr</td>
+                    <td class="currency">$29.70</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Complete system test and zone operation check
+                        <div class="equipment-note">Equipment: controller_interface, stopwatch, pressure_gauge</div>
+                    </td>
+                    <td class="center">1.0</td>
+                    <td class="center">1</td>
+                    <td class="currency">$75.00/hr</td>
+                    <td class="currency">$75.00</td>
+                </tr>
+
+                <tr class="section-total">
+                    <td colspan="4"><strong>LABOR TOTAL</strong></td>
+                    <td class="currency"><strong>$563.70</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="totals">
+        <div class="total-row">
+            <div class="total-label">Subtotal:</div>
+            <div class="total-amount">$1010.39</div>
+        </div>
+        <div class="total-row">
+            <div class="total-label">Tax (Oregon):</div>
+            <div class="total-amount">$0.00</div>
+        </div>
+        <div class="total-row grand-total">
+            <div class="total-label">TOTAL:</div>
+            <div class="total-amount">$1010.39</div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <div style="display: table; width: 100%;">
+            <div class="footer-section">
+                <strong>Payment Terms:</strong><br>
+                Due upon completion
+            </div>
+            <div class="footer-section" style="text-align: center;">
+                <strong>Template:</strong> sprinkler_valve_replacement<br>
+                <strong>Category:</strong> irrigation_repair
+            </div>
+            <div class="footer-section" style="text-align: right;">
+                <strong>Generated:</strong> Template-driven<br>
+                (Not hardcoded data)
+            </div>
+        </div>
+    </div>
+</body>
+</html>

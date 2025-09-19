@@ -1,0 +1,106 @@
+{
+  "success": true,
+  "level": "standard",
+  "document_path": "/home/johnny5/Squirt/test_validation_samples/drip_zone_shrubs.odt",
+  "timestamp": "2025-09-17T18:19:52.680476",
+  "checks": {
+    "file_exists": {
+      "passed": true,
+      "message": "Document file found",
+      "data": null,
+      "timestamp": "2025-09-17T18:19:52.680577"
+    },
+    "odt_structure": {
+      "passed": true,
+      "message": "Valid ODT file structure",
+      "data": [
+        "mimetype",
+        "Configurations2/accelerator/",
+        "Configurations2/images/Bitmaps/",
+        "Configurations2/toolpanel/",
+        "Configurations2/floater/",
+        "Configurations2/statusbar/",
+        "Configurations2/toolbar/",
+        "Configurations2/progressbar/",
+        "Configurations2/popupmenu/",
+        "Configurations2/menubar/",
+        "styles.xml",
+        "manifest.rdf",
+        "content.xml",
+        "meta.xml",
+        "settings.xml",
+        "Thumbnails/thumbnail.png",
+        "META-INF/manifest.xml"
+      ],
+      "timestamp": "2025-09-17T18:19:52.681024"
+    },
+    "content_extraction": {
+      "passed": true,
+      "message": "Content extracted: 45115 characters",
+      "data": {
+        "content_length": 45115,
+        "preview": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<office:document-content xmlns:css3t=\"http://www.w3.org/TR/css3-text/\" xmlns:grddl=\"http://www.w3.org/2003/g/data-view#\" xmlns:xhtml=\"http://www.w3.org/1999/xhtm"
+      },
+      "timestamp": "2025-09-17T18:19:52.681951"
+    },
+    "headless_processing": {
+      "passed": true,
+      "message": "LibreOffice can process document",
+      "data": null,
+      "timestamp": "2025-09-17T18:19:53.325593"
+    },
+    "currency_format": {
+      "passed": true,
+      "message": "Found 18 currency values",
+      "data": [
+        "$315.00",
+        "$40.00",
+        "$40.00",
+        "$75.00",
+        "$150.00",
+        "$50.00",
+        "$300.00",
+        "$225.00",
+        "$75.00",
+        "$162.50",
+        "$37.50",
+        "$25.00",
+        "$100.00",
+        "$100.00",
+        "$777.50",
+        "$0.00",
+        "$0.00",
+        "$777.50"
+      ],
+      "timestamp": "2025-09-17T18:19:53.327653"
+    },
+    "company_info": {
+      "passed": true,
+      "message": "Company info present: 3/4 checks",
+      "data": {
+        "company_name": true,
+        "license_number": false,
+        "phone_number": true,
+        "email": true
+      },
+      "timestamp": "2025-09-17T18:19:53.330516"
+    },
+    "required_sections": {
+      "passed": true,
+      "message": "Found 4/4 sections",
+      "data": [
+        "materials",
+        "labor",
+        "total",
+        "project"
+      ],
+      "timestamp": "2025-09-17T18:19:53.334247"
+    }
+  },
+  "errors": [],
+  "warnings": [],
+  "screenshots": [],
+  "metadata": {
+    "content_length": 45115
+  }
+}

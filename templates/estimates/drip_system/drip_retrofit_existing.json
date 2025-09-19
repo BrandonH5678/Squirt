@@ -1,0 +1,190 @@
+{
+  "template_id": "drip_retrofit_existing",
+  "category": "drip_system",
+  "subcategory": "retrofit",
+  "title_format": "Drip System Retrofit - Convert Existing Sprinklers ({plant_count} plants)",
+  "description": "Convert existing overhead sprinkler system to efficient drip irrigation for plant beds and shrub areas",
+  "assumptions": [
+    "Existing irrigation valve and wiring in place",
+    "Plants suitable for drip irrigation",
+    "Normal access to planting areas",
+    "Pressure regulation may be required"
+  ],
+  "parameters": {
+    "plant_count": {
+      "type": "number",
+      "description": "Number of plants to be irrigated",
+      "default": 25,
+      "min": 5,
+      "max": 100
+    },
+    "bed_area": {
+      "type": "number",
+      "description": "Total square footage of planting beds",
+      "default": 400,
+      "unit": "sq ft",
+      "min": 50,
+      "max": 2000
+    },
+    "plant_spacing": {
+      "type": "number",
+      "description": "Average spacing between plants",
+      "default": 4,
+      "unit": "ft",
+      "min": 2,
+      "max": 8
+    }
+  },
+  "materials": [
+    {
+      "code": "TUBING_DRIP_POLY_HALF",
+      "description": "Drip tubing, 1/2 inch polyethylene",
+      "unit": "lf",
+      "qty_formula": "bed_area * 0.25",
+      "default_qty": 100,
+      "unit_cost": 0.35,
+      "markup": 0.25,
+      "specifications": ["UV resistant", "Pressure rated to 25 PSI"]
+    },
+    {
+      "code": "EMITTER_DRIP_2GPH",
+      "description": "Pressure compensating drip emitters, 2 GPH",
+      "unit": "each",
+      "qty_formula": "plant_count * 2",
+      "default_qty": 50,
+      "unit_cost": 1.25,
+      "markup": 0.30,
+      "specifications": ["Self-flushing", "Pressure compensating"]
+    },
+    {
+      "code": "FITTING_BARB_TEE_HALF",
+      "description": "Barbed tee fittings, 1/2 inch",
+      "unit": "each", 
+      "qty_formula": "10",
+      "default_qty": 10,
+      "unit_cost": 0.85,
+      "markup": 0.25
+    },
+    {
+      "code": "PRESSURE_REG_25PSI",
+      "description": "Pressure regulator, 25 PSI",
+      "unit": "each",
+      "qty_formula": "1",
+      "default_qty": 1,
+      "unit_cost": 28.50,
+      "markup": 0.30,
+      "specifications": ["Flow range 5-30 GPM"]
+    },
+    {
+      "code": "FILTER_SCREEN_100MESH",
+      "description": "Screen filter, 100 mesh",
+      "unit": "each",
+      "qty_formula": "1", 
+      "default_qty": 1,
+      "unit_cost": 15.75,
+      "markup": 0.30
+    },
+    {
+      "code": "LANDSCAPE_STAPLES",
+      "description": "Landscape staples for drip tubing",
+      "unit": "each",
+      "qty_formula": "(bed_area * 0.25) * 0.4",
+      "default_qty": 40,
+      "unit_cost": 0.15,
+      "markup": 0.25,
+      "specifications": ["6 inch galvanized steel", "40 staples per 100 ft of tubing"]
+    },
+    {
+      "code": "FITTING_FIGURE_EIGHT_HALF",
+      "description": "Figure eight end fittings, 1/2 inch",
+      "unit": "each",
+      "qty_formula": "2",
+      "default_qty": 2,
+      "unit_cost": 1.25,
+      "markup": 0.25,
+      "specifications": ["Secure line end closure", "Reusable"]
+    },
+    {
+      "code": "SPRAY_TO_DRIP_CONVERSION_KIT",
+      "description": "Spray head to drip conversion kit",
+      "unit": "each",
+      "qty_formula": "1",
+      "default_qty": 1,
+      "unit_cost": 24.50,
+      "markup": 0.30,
+      "specifications": ["Includes pressure reducer", "Multiple outlet manifold"]
+    },
+    {
+      "code": "EMITTER_INLINE_TUBING_09GPH",
+      "description": "Emitter-in-line tubing, 0.9 GPH, 1 ft spacing",
+      "unit": "lf",
+      "qty_formula": "100",
+      "default_qty": 100,
+      "unit_cost": 0.95,
+      "markup": 0.30,
+      "specifications": ["Pressure compensating", "Self-flushing", "1 ft emitter spacing"]
+    }
+  ],
+  "labor": [
+    {
+      "task_code": "REMOVE_EXISTING_HEADS",
+      "description": "Remove existing sprinkler heads and cap laterals",
+      "hrs_formula": "2",
+      "default_hrs": 2.0,
+      "skill_level": "irrigation_tech",
+      "crew_size": 1
+    },
+    {
+      "task_code": "INSTALL_DRIP_TUBING",
+      "description": "Install drip tubing throughout planting beds",
+      "hrs_formula": "bed_area * 0.015",
+      "default_hrs": 6.0,
+      "skill_level": "irrigation_tech",
+      "crew_size": 1
+    },
+    {
+      "task_code": "INSTALL_EMITTERS",
+      "description": "Install and position drip emitters at plants",
+      "hrs_formula": "1.5",
+      "default_hrs": 1.5,
+      "skill_level": "irrigation_tech", 
+      "crew_size": 1
+    },
+    {
+      "task_code": "SYSTEM_TEST_ADJUST",
+      "description": "Test system operation and adjust flow rates",
+      "hrs_formula": "1",
+      "default_hrs": 1.0,
+      "skill_level": "irrigation_tech",
+      "crew_size": 1
+    }
+  ],
+  "equipment": [
+    {
+      "equipment_code": "CREW_TRUCK_1TON",
+      "description": "Crew truck with tools and materials",
+      "usage_formula": "1",
+      "usage_unit": "day",
+      "daily_rate": 125.00
+    }
+  ],
+  "validation_expectations": {
+    "required_sections": ["Materials & Equipment", "Labor & Installation"],
+    "required_fields": ["plant_count", "bed_area"],
+    "math_checks": [
+      {
+        "formula": "materials_total + labor_total = subtotal",
+        "tolerance": 0.01,
+        "description": "Subtotal calculation check"
+      }
+    ],
+    "outlier_checks": [
+      {
+        "field": "total_cost",
+        "min_value": 300,
+        "max_value": 3000,
+        "warning_message": "Total cost outside typical drip retrofit range"
+      }
+    ]
+  }
+}

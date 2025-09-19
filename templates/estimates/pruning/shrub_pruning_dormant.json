@@ -1,0 +1,183 @@
+{
+  "template_id": "shrub_pruning_dormant",
+  "category": "pruning",
+  "subcategory": "dormant_season",
+  "title_format": "Dormant Season Shrub Pruning ({shrub_count} shrubs)",
+  "description": "Professional dormant season pruning of deciduous shrubs for health, structure, and flowering",
+  "assumptions": [
+    "Dormant season timing (late fall through early spring)",
+    "Standard residential shrub sizes and varieties",
+    "Normal access to all shrubs for pruning",
+    "Client provides disposal of pruned material or composting area"
+  ],
+  "parameters": {
+    "shrub_count": {
+      "type": "number",
+      "description": "Total number of shrubs to prune",
+      "default": 12,
+      "min": 1,
+      "max": 50
+    },
+    "shrub_size": {
+      "type": "select",
+      "description": "Average shrub size category",
+      "default": "medium",
+      "options": ["small", "medium", "large", "extra_large"]
+    },
+    "pruning_intensity": {
+      "type": "select",
+      "description": "Level of pruning required",
+      "default": "standard",
+      "options": ["light", "standard", "heavy", "renovation"]
+    },
+    "disposal_method": {
+      "type": "select",
+      "description": "Pruned material disposal",
+      "default": "chip_mulch",
+      "options": ["client_compost", "chip_mulch", "haul_away", "burn_pile"]
+    }
+  },
+  "materials": [
+    {
+      "code": "PRUNING_SEALER",
+      "description": "Tree wound sealer for large cuts",
+      "unit": "can",
+      "qty_formula": "shrub_count > 20 ? 1 : 0",
+      "default_qty": 0,
+      "unit_cost": 12.50,
+      "markup": 0.25,
+      "specifications": ["Prevents disease entry", "For cuts over 2 inches"]
+    },
+    {
+      "code": "BLADE_OIL_DISINFECTANT",
+      "description": "Blade cleaning and disinfectant oil",
+      "unit": "bottle",
+      "qty_formula": "1",
+      "default_qty": 1,
+      "unit_cost": 8.75,
+      "markup": 0.25,
+      "specifications": ["Tool maintenance", "Disease prevention", "Rust protection"]
+    }
+  ],
+  "labor": [
+    {
+      "task_code": "SHRUB_ASSESSMENT",
+      "description": "Assess shrub health and pruning needs",
+      "hrs_formula": "shrub_count * 0.05",
+      "default_hrs": 0.6,
+      "skill_level": "pruning",
+      "crew_size": 1,
+      "equipment_required": ["pruning_assessment_tools"]
+    },
+    {
+      "task_code": "PRUNE_SMALL_SHRUBS",
+      "description": "Prune small shrubs (under 4 feet)",
+      "hrs_formula": "shrub_size == 'small' ? shrub_count * (pruning_intensity == 'light' ? 0.25 : pruning_intensity == 'standard' ? 0.4 : pruning_intensity == 'heavy' ? 0.6 : 0.8) : 0",
+      "default_hrs": 0,
+      "skill_level": "pruning",
+      "crew_size": 1,
+      "equipment_required": ["hand_pruners", "loppers"]
+    },
+    {
+      "task_code": "PRUNE_MEDIUM_SHRUBS",
+      "description": "Prune medium shrubs (4-8 feet)",
+      "hrs_formula": "shrub_size == 'medium' ? shrub_count * (pruning_intensity == 'light' ? 0.4 : pruning_intensity == 'standard' ? 0.6 : pruning_intensity == 'heavy' ? 0.9 : 1.2) : 0",
+      "default_hrs": 7.2,
+      "skill_level": "pruning",
+      "crew_size": 1,
+      "equipment_required": ["hand_pruners", "loppers", "hand_saw"]
+    },
+    {
+      "task_code": "PRUNE_LARGE_SHRUBS",
+      "description": "Prune large shrubs (8-12 feet)",
+      "hrs_formula": "shrub_size == 'large' ? shrub_count * (pruning_intensity == 'light' ? 0.6 : pruning_intensity == 'standard' ? 0.9 : pruning_intensity == 'heavy' ? 1.3 : 1.8) : 0",
+      "default_hrs": 0,
+      "skill_level": "pruning",
+      "crew_size": 1,
+      "equipment_required": ["hand_pruners", "loppers", "hand_saw", "pole_pruner"]
+    },
+    {
+      "task_code": "PRUNE_EXTRA_LARGE_SHRUBS",
+      "description": "Prune extra large shrubs (over 12 feet)",
+      "hrs_formula": "shrub_size == 'extra_large' ? shrub_count * (pruning_intensity == 'light' ? 0.8 : pruning_intensity == 'standard' ? 1.2 : pruning_intensity == 'heavy' ? 1.8 : 2.5) : 0",
+      "default_hrs": 0,
+      "skill_level": "pruning",
+      "crew_size": 1,
+      "equipment_required": ["hand_pruners", "loppers", "hand_saw", "pole_pruner", "ladder"]
+    },
+    {
+      "task_code": "MATERIAL_CHIP_MULCH",
+      "description": "Chip pruned material for mulch",
+      "hrs_formula": "disposal_method == 'chip_mulch' ? shrub_count * 0.15 : 0",
+      "default_hrs": 1.8,
+      "skill_level": "maintenance",
+      "crew_size": 1,
+      "equipment_required": ["chipper_shredder"]
+    },
+    {
+      "task_code": "MATERIAL_HAUL_AWAY",
+      "description": "Load and haul away pruned material",
+      "hrs_formula": "disposal_method == 'haul_away' ? shrub_count * 0.1 : 0",
+      "default_hrs": 0,
+      "skill_level": "maintenance",
+      "crew_size": 1,
+      "equipment_required": ["truck", "tarp"]
+    },
+    {
+      "task_code": "CLEANUP_SITE",
+      "description": "Clean up pruning debris from site",
+      "hrs_formula": "shrub_count * 0.05",
+      "default_hrs": 0.6,
+      "skill_level": "maintenance",
+      "crew_size": 1,
+      "equipment_required": ["rake", "blower"]
+    },
+    {
+      "task_code": "TOOL_MAINTENANCE",
+      "description": "Clean and maintain pruning tools",
+      "hrs_formula": "0.5",
+      "default_hrs": 0.5,
+      "skill_level": "maintenance",
+      "crew_size": 1,
+      "equipment_required": ["tool_cleaning_supplies"]
+    }
+  ],
+  "equipment": [
+    {
+      "equipment_code": "CHIPPER_SHREDDER",
+      "description": "Chipper/shredder for material processing",
+      "usage_formula": "disposal_method == 'chip_mulch' ? 1 : 0",
+      "usage_unit": "day",
+      "daily_rate": 85.00
+    },
+    {
+      "equipment_code": "CREW_TRUCK_1TON",
+      "description": "Crew truck with pruning tools",
+      "usage_formula": "1",
+      "usage_unit": "day",
+      "daily_rate": 125.00
+    }
+  ],
+  "validation_expectations": {
+    "required_sections": ["Materials & Equipment", "Labor & Installation"],
+    "required_fields": ["shrub_count", "shrub_size"],
+    "math_checks": [
+      {
+        "formula": "materials_total + labor_total = subtotal",
+        "tolerance": 0.01,
+        "description": "Subtotal calculation check"
+      }
+    ],
+    "outlier_checks": [
+      {
+        "field": "cost_per_shrub",
+        "min_value": 15,
+        "max_value": 150,
+        "warning_message": "Cost per shrub outside typical pruning range ($15-$150)"
+      }
+    ]
+  },
+  "render_hints": {
+    "section_order": ["project_header", "materials_equipment", "labor_installation", "project_totals"]
+  }
+}

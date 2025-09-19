@@ -1,0 +1,179 @@
+{
+  "template_id": "path_lighting_economy",
+  "category": "lighting",
+  "subcategory": "path_lighting",
+  "title_format": "Path Lighting - Economy Package ({light_count} fixtures)",
+  "description": "Economy-grade path lighting system with ProTrade fixtures, transformer, and low-voltage wiring",
+  "assumptions": [
+    "Normal soil conditions for trenching",
+    "120V power source available within 50 feet",
+    "Standard residential pathway applications",
+    "No conflicts with utilities or irrigation"
+  ],
+  "parameters": {
+    "light_count": {
+      "type": "number",
+      "description": "Number of path light fixtures",
+      "default": 6,
+      "min": 2,
+      "max": 20
+    },
+    "wire_run": {
+      "type": "number", 
+      "description": "Total length of low voltage wire run",
+      "default": 125,
+      "unit": "lf",
+      "min": 25,
+      "max": 500
+    },
+    "transformer_size": {
+      "type": "select",
+      "description": "Transformer wattage capacity",
+      "default": "150W",
+      "options": ["150W", "300W", "600W"]
+    }
+  },
+  "materials": [
+    {
+      "code": "LIGHT_PROTRADE_PTH1",
+      "description": "ProTrade PTH1 Path Light, aluminum housing, black finish",
+      "unit": "each",
+      "qty_formula": "light_count",
+      "default_qty": 6,
+      "unit_cost": 85.00,
+      "markup": 0.30,
+      "supplier": "ProTrade",
+      "specifications": [
+        "Aluminum housing with black finish", 
+        "2700K LED lamp included",
+        "Weather resistant"
+      ]
+    },
+    {
+      "code": "TRANSFORMER_PROTRADE_150W",
+      "description": "ProTrade TR1 Transformer, 150W",
+      "unit": "each",
+      "qty_formula": "1",
+      "default_qty": 1,
+      "unit_cost": 235.00,
+      "markup": 0.30,
+      "specifications": ["150W capacity", "Multi-tap output", "Weather resistant enclosure"]
+    },
+    {
+      "code": "TIMER_MECHANICAL",
+      "description": "Mechanical timer for lighting control",
+      "unit": "each",
+      "qty_formula": "1", 
+      "default_qty": 1,
+      "unit_cost": 30.00,
+      "markup": 0.30
+    },
+    {
+      "code": "WIRE_LIGHTING_12AWG",
+      "description": "12 gauge low voltage lighting wire",
+      "unit": "lf",
+      "qty_formula": "wire_run",
+      "default_qty": 125,
+      "unit_cost": 0.90,
+      "markup": 0.25,
+      "specifications": ["Direct burial rated", "12 AWG copper"]
+    },
+    {
+      "code": "CONNECTOR_WIRE_GEL",
+      "description": "Gel cap wire connectors",
+      "unit": "each",
+      "qty_formula": "light_count * 2",
+      "default_qty": 12,
+      "unit_cost": 1.25,
+      "markup": 0.25
+    },
+    {
+      "code": "MOUNTING_STAKE_4X4",
+      "description": "4x4 pressure treated mounting post",
+      "unit": "each",
+      "qty_formula": "1",
+      "default_qty": 1,
+      "unit_cost": 50.00,
+      "markup": 0.25,
+      "specifications": ["Pressure treated", "Ground contact rated"]
+    },
+    {
+      "code": "HARDWARE_MOUNTING",
+      "description": "Mounting hardware and fasteners",
+      "unit": "each",
+      "qty_formula": "1",
+      "default_qty": 1,
+      "unit_cost": 25.00,
+      "markup": 0.25
+    }
+  ],
+  "labor": [
+    {
+      "task_code": "INSTALL_LIGHTS",
+      "description": "Install and position path light fixtures",
+      "hrs_formula": "light_count * 0.5",
+      "default_hrs": 3.0,
+      "skill_level": "install",
+      "crew_size": 1,
+      "equipment_required": ["level", "measuring_tape"]
+    },
+    {
+      "task_code": "BURY_WIRE_SHALLOW",
+      "description": "Shallow bury low voltage lighting wire", 
+      "hrs_formula": "wire_run * 0.02",
+      "default_hrs": 2.5,
+      "skill_level": "install",
+      "crew_size": 1,
+      "equipment_required": ["trenching_shovel", "wire_locator"]
+    },
+    {
+      "task_code": "MOUNT_TRANSFORMER",
+      "description": "Mount transformer and connect power",
+      "hrs_formula": "1.5",
+      "default_hrs": 1.5,
+      "skill_level": "install",
+      "crew_size": 1,
+      "equipment_required": ["drill", "level", "electrical_tools"]
+    },
+    {
+      "task_code": "WIRE_CONNECT",
+      "description": "Wire transformer and light connections",
+      "hrs_formula": "light_count * 0.25 + 1",
+      "default_hrs": 2.5,
+      "skill_level": "install",
+      "crew_size": 1,
+      "equipment_required": ["wire_stripper", "voltage_meter"]
+    }
+  ],
+  "equipment": [
+    {
+      "equipment_code": "CREW_TRUCK_1TON",
+      "description": "Crew truck with tools and materials",
+      "usage_formula": "1",
+      "usage_unit": "day",
+      "daily_rate": 125.00
+    }
+  ],
+  "validation_expectations": {
+    "required_sections": ["Materials & Equipment", "Labor & Installation"],
+    "required_fields": ["light_count", "wire_run"],
+    "math_checks": [
+      {
+        "formula": "materials_total + labor_total = subtotal",
+        "tolerance": 0.01,
+        "description": "Subtotal calculation check"
+      }
+    ],
+    "outlier_checks": [
+      {
+        "field": "cost_per_light",
+        "min_value": 150,
+        "max_value": 500,
+        "warning_message": "Cost per light outside typical economy range ($150-$500)"
+      }
+    ]
+  },
+  "render_hints": {
+    "section_order": ["project_header", "materials_equipment", "labor_installation", "project_totals"]
+  }
+}

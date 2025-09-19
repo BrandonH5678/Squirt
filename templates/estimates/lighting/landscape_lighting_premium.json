@@ -1,0 +1,246 @@
+{
+  "template_id": "landscape_lighting_premium",
+  "category": "lighting",
+  "subcategory": "landscape_lighting",
+  "title_format": "Landscape Lighting - Premium System ({light_count} fixtures)",
+  "description": "Premium landscape lighting system with professional-grade fixtures, smart controls, and comprehensive coverage",
+  "assumptions": [
+    "120V power source available within 100 feet",
+    "Normal soil conditions for trenching",
+    "Standard residential landscape application",
+    "Professional design and layout consultation included"
+  ],
+  "parameters": {
+    "light_count": {
+      "type": "number",
+      "description": "Total number of light fixtures",
+      "default": 12,
+      "min": 6,
+      "max": 30
+    },
+    "wire_run": {
+      "type": "number",
+      "description": "Total length of low voltage wire run",
+      "default": 200,
+      "unit": "lf",
+      "min": 50,
+      "max": 800
+    },
+    "control_system": {
+      "type": "select",
+      "description": "Lighting control system type",
+      "default": "smart_controller",
+      "options": ["timer_basic", "photocell", "smart_controller", "wifi_enabled"]
+    },
+    "fixture_mix": {
+      "type": "select",
+      "description": "Mix of fixture types",
+      "default": "mixed_premium",
+      "options": ["path_only", "accent_only", "mixed_standard", "mixed_premium"]
+    }
+  },
+  "materials": [
+    {
+      "code": "LIGHT_PATH_CAST_BRASS",
+      "description": "Cast brass path lights with LED",
+      "unit": "each",
+      "qty_formula": "light_count * 0.4",
+      "default_qty": 5,
+      "unit_cost": 185.00,
+      "markup": 0.35,
+      "specifications": ["Cast brass construction", "Integrated LED", "20-year warranty"]
+    },
+    {
+      "code": "LIGHT_ACCENT_SPOT_LED",
+      "description": "Premium LED accent spotlights",
+      "unit": "each",
+      "qty_formula": "light_count * 0.3",
+      "default_qty": 4,
+      "unit_cost": 145.00,
+      "markup": 0.35,
+      "specifications": ["Adjustable beam angle", "3000K color temperature", "Die-cast aluminum"]
+    },
+    {
+      "code": "LIGHT_WELL_IN_GROUND",
+      "description": "In-ground well lights with LED",
+      "unit": "each",
+      "qty_formula": "light_count * 0.2",
+      "default_qty": 2,
+      "unit_cost": 225.00,
+      "markup": 0.35,
+      "specifications": ["Waterproof housing", "Heavy-duty lens", "Adjustable angle"]
+    },
+    {
+      "code": "LIGHT_FLOOD_WASH_LED",
+      "description": "LED flood/wash lights for large areas",
+      "unit": "each",
+      "qty_formula": "light_count * 0.1",
+      "default_qty": 1,
+      "unit_cost": 275.00,
+      "markup": 0.35,
+      "specifications": ["Wide beam pattern", "Architectural grade", "Color temperature selectable"]
+    },
+    {
+      "code": "TRANSFORMER_PREMIUM_600W",
+      "description": "Premium 600W multi-tap transformer",
+      "unit": "each",
+      "qty_formula": "1",
+      "default_qty": 1,
+      "unit_cost": 485.00,
+      "markup": 0.35,
+      "specifications": ["600W capacity", "Multiple voltage taps", "Stainless steel enclosure"]
+    },
+    {
+      "code": "CONTROLLER_SMART_WIFI",
+      "description": "Smart WiFi lighting controller",
+      "unit": "each",
+      "qty_formula": "control_system == 'smart_controller' || control_system == 'wifi_enabled' ? 1 : 0",
+      "default_qty": 1,
+      "unit_cost": 245.00,
+      "markup": 0.35,
+      "specifications": ["WiFi enabled", "Smartphone app control", "Astronomical timer"]
+    },
+    {
+      "code": "WIRE_LIGHTING_12AWG_PRO",
+      "description": "Professional grade 12 AWG lighting cable",
+      "unit": "lf",
+      "qty_formula": "wire_run",
+      "default_qty": 200,
+      "unit_cost": 1.25,
+      "markup": 0.25,
+      "specifications": ["Direct burial rated", "UV resistant jacket", "Color coded"]
+    },
+    {
+      "code": "CONNECTOR_WATERPROOF_PRO",
+      "description": "Professional waterproof connectors",
+      "unit": "each",
+      "qty_formula": "light_count * 2",
+      "default_qty": 24,
+      "unit_cost": 2.75,
+      "markup": 0.25,
+      "specifications": ["IP68 rated", "Corrosion resistant", "Tool-free installation"]
+    },
+    {
+      "code": "CONDUIT_PVC_FLEX",
+      "description": "Flexible PVC conduit for wire protection",
+      "unit": "lf",
+      "qty_formula": "wire_run * 0.3",
+      "default_qty": 60,
+      "unit_cost": 0.95,
+      "markup": 0.25,
+      "specifications": ["Schedule 40 equivalent", "Underground rated", "Flexible installation"]
+    }
+  ],
+  "labor": [
+    {
+      "task_code": "LIGHTING_DESIGN_LAYOUT",
+      "description": "Professional lighting design and layout",
+      "hrs_formula": "3",
+      "default_hrs": 3.0,
+      "skill_level": "design",
+      "crew_size": 1,
+      "equipment_required": ["measuring_tape", "design_software", "lux_meter"]
+    },
+    {
+      "task_code": "TRENCH_LIGHTING_PRO",
+      "description": "Professional trenching for lighting installation",
+      "hrs_formula": "wire_run * 0.015",
+      "default_hrs": 3.0,
+      "skill_level": "install",
+      "crew_size": 1,
+      "equipment_required": ["trenching_shovel", "mattock", "wire_locator"]
+    },
+    {
+      "task_code": "INSTALL_TRANSFORMER_PRO",
+      "description": "Install premium transformer with electrical connection",
+      "hrs_formula": "2.5",
+      "default_hrs": 2.5,
+      "skill_level": "electrical",
+      "crew_size": 1,
+      "equipment_required": ["electrical_tools", "multimeter", "level"]
+    },
+    {
+      "code": "INSTALL_SMART_CONTROLLER",
+      "description": "Install and configure smart lighting controller",
+      "hrs_formula": "control_system == 'smart_controller' || control_system == 'wifi_enabled' ? 2 : 0",
+      "default_hrs": 2.0,
+      "skill_level": "electrical",
+      "crew_size": 1,
+      "equipment_required": ["smartphone", "electrical_tools", "wifi_tester"]
+    },
+    {
+      "task_code": "WIRE_INSTALL_PRO",
+      "description": "Install professional grade wiring system",
+      "hrs_formula": "wire_run * 0.02 + light_count * 0.5",
+      "default_hrs": 10.0,
+      "skill_level": "electrical",
+      "crew_size": 1,
+      "equipment_required": ["wire_stripper", "voltage_meter", "wire_nuts"]
+    },
+    {
+      "task_code": "FIXTURE_INSTALL_PRECISION",
+      "description": "Precision installation and alignment of fixtures",
+      "hrs_formula": "light_count * 0.75",
+      "default_hrs": 9.0,
+      "skill_level": "install",
+      "crew_size": 1,
+      "equipment_required": ["level", "measuring_tape", "alignment_tools"]
+    },
+    {
+      "task_code": "SYSTEM_COMMISSION_TEST",
+      "description": "Complete system commissioning and testing",
+      "hrs_formula": "2.5",
+      "default_hrs": 2.5,
+      "skill_level": "electrical",
+      "crew_size": 1,
+      "equipment_required": ["multimeter", "lux_meter", "smartphone"]
+    },
+    {
+      "task_code": "CLIENT_TRAINING",
+      "description": "Client training on system operation",
+      "hrs_formula": "1",
+      "default_hrs": 1.0,
+      "skill_level": "customer_service",
+      "crew_size": 1,
+      "equipment_required": ["user_manual", "smartphone_app"]
+    }
+  ],
+  "equipment": [
+    {
+      "equipment_code": "CREW_TRUCK_1TON",
+      "description": "Crew truck with professional tools",
+      "usage_formula": "2",
+      "usage_unit": "day",
+      "daily_rate": 125.00
+    },
+    {
+      "equipment_code": "TRENCHING_TOOLS_PRO",
+      "description": "Professional trenching and electrical tools",
+      "usage_formula": "2",
+      "usage_unit": "day",
+      "daily_rate": 75.00
+    }
+  ],
+  "validation_expectations": {
+    "required_sections": ["Materials & Equipment", "Labor & Installation"],
+    "required_fields": ["light_count", "wire_run"],
+    "math_checks": [
+      {
+        "formula": "materials_total + labor_total = subtotal",
+        "tolerance": 0.01,
+        "description": "Subtotal calculation check"
+      }
+    ],
+    "outlier_checks": [
+      {
+        "field": "cost_per_light",
+        "min_value": 300,
+        "max_value": 800,
+        "warning_message": "Cost per light outside typical premium range ($300-$800)"
+      }
+    ]
+  },
+  "render_hints": {
+    "section_order": ["project_header", "materials_equipment", "labor_installation", "project_totals"]
+  }
+}

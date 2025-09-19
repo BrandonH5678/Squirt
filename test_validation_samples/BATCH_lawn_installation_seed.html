@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>WaterWizard Estimate - Lawn Installation - Seeded (2500 sq ft)</title>
+    <style>
+        @page {
+            size: letter;
+            margin: 0.75in;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            font-size: 11pt;
+            line-height: 1.4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30pt;
+            border-bottom: 3pt solid #2E5984;
+            padding-bottom: 15pt;
+        }
+        .company {
+            font-size: 20pt;
+            font-weight: bold;
+            color: #2E5984;
+            margin-bottom: 5pt;
+        }
+        .tagline {
+            font-size: 12pt;
+            color: #666;
+            margin: 3pt 0;
+        }
+        .credentials {
+            font-size: 10pt;
+            color: #888;
+            font-style: italic;
+        }
+        .estimate-label {
+            font-size: 16pt;
+            font-weight: bold;
+            color: #2E5984;
+            margin: 20pt 0 15pt 0;
+            text-align: center;
+            background-color: #f8f9fa;
+            padding: 10pt;
+            border: 1pt solid #dee2e6;
+        }
+        .client-section {
+            display: table;
+            width: 100%;
+            margin: 20pt 0;
+        }
+        .client-left, .client-right {
+            display: table-cell;
+            width: 50%;
+            vertical-align: top;
+        }
+        .client-right {
+            text-align: right;
+        }
+        .field {
+            margin: 5pt 0;
+        }
+        .field-label {
+            font-weight: bold;
+            color: #2E5984;
+        }
+        .section {
+            margin: 25pt 0;
+        }
+        .section-title {
+            font-size: 14pt;
+            font-weight: bold;
+            color: #2E5984;
+            margin-bottom: 15pt;
+            padding: 8pt 0;
+            border-bottom: 2pt solid #2E5984;
+        }
+        .project-title {
+            font-size: 16pt;
+            font-weight: bold;
+            color: #1a365d;
+            margin: 20pt 0 10pt 0;
+            text-align: center;
+        }
+        .description {
+            background-color: #f8f9fa;
+            padding: 15pt;
+            border-left: 4pt solid #2E5984;
+            margin: 15pt 0;
+            font-style: italic;
+        }
+        .assumptions {
+            background-color: #fff3cd;
+            border: 1pt solid #ffeaa7;
+            padding: 12pt;
+            margin: 15pt 0;
+        }
+        .assumptions h4 {
+            margin: 0 0 10pt 0;
+            color: #856404;
+        }
+        .assumptions ul {
+            margin: 0;
+            padding-left: 20pt;
+        }
+        .assumptions li {
+            margin: 3pt 0;
+            color: #856404;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15pt 0;
+            font-size: 10pt;
+        }
+        th {
+            background-color: #2E5984;
+            color: white;
+            padding: 10pt 8pt;
+            text-align: left;
+            font-weight: bold;
+        }
+        td {
+            padding: 8pt;
+            border-bottom: 1pt solid #dee2e6;
+            vertical-align: top;
+        }
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        .currency {
+            text-align: right;
+            font-weight: bold;
+        }
+        .center {
+            text-align: center;
+        }
+        .section-total {
+            background-color: #e9ecef;
+            font-weight: bold;
+            border-top: 2pt solid #2E5984;
+        }
+        .totals {
+            margin: 30pt 0;
+            background-color: #f8f9fa;
+            border: 2pt solid #2E5984;
+            padding: 20pt;
+        }
+        .total-row {
+            display: table;
+            width: 100%;
+            margin: 8pt 0;
+        }
+        .total-label {
+            display: table-cell;
+            font-size: 12pt;
+            padding: 5pt 0;
+        }
+        .total-amount {
+            display: table-cell;
+            text-align: right;
+            font-size: 12pt;
+            font-weight: bold;
+            padding: 5pt 0;
+            width: 120pt;
+        }
+        .grand-total {
+            border-top: 2pt solid #2E5984;
+            padding-top: 10pt;
+            margin-top: 10pt;
+        }
+        .grand-total .total-label {
+            font-size: 16pt;
+            font-weight: bold;
+            color: #2E5984;
+        }
+        .grand-total .total-amount {
+            font-size: 16pt;
+            font-weight: bold;
+            color: #2E5984;
+        }
+        .footer {
+            margin-top: 40pt;
+            padding-top: 20pt;
+            border-top: 1pt solid #dee2e6;
+            font-size: 10pt;
+            color: #666;
+        }
+        .footer-section {
+            display: table-cell;
+            width: 33%;
+            vertical-align: top;
+        }
+        .specs {
+            font-size: 9pt;
+            color: #666;
+            margin-top: 3pt;
+        }
+        .equipment-note {
+            font-size: 9pt;
+            color: #666;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="company">WaterWizard Irrigation & Landscape</div>
+        <div class="tagline">Professional Landscape Services</div>
+        <div class="credentials">Licensed • Bonded • Insured • CCB #CCB #12345</div>
+    </div>
+    
+    <div class="estimate-label">ESTIMATE</div>
+    
+    <div class="client-section">
+        <div class="client-left">
+            <div class="field">
+                <span class="field-label">Client:</span> Test Client
+            </div>
+            <div class="field">
+                <span class="field-label">Property:</span> 123 Test Street, Portland, OR 97205
+            </div>
+            <div class="field">
+                <span class="field-label">Phone:</span> (503) 555-0123
+            </div>
+            <div class="field">
+                <span class="field-label">Email:</span> test@example.com
+            </div>
+        </div>
+        <div class="client-right">
+            <div class="field">
+                <span class="field-label">Date:</span> 2025-01-04
+            </div>
+            <div class="field">
+                <span class="field-label">Valid:</span> 30 days
+            </div>
+            <div class="field">
+                <span class="field-label">Contact:</span> (503) 555-0199
+            </div>
+            <div class="field">
+                <span class="field-label">Email:</span> info@waterwizard.com
+            </div>
+        </div>
+    </div>
+    
+    <div class="project-title">Lawn Installation - Seeded (2500 sq ft)</div>
+    
+    <div class="description">
+        <strong>Project Description:</strong> Complete lawn installation from seed including soil preparation, seeding, and establishment care
+    </div>
+    
+    <div class="assumptions">
+        <h4>Project Assumptions:</h4>
+        <ul>
+            <li>Site cleared and ready for preparation</li>
+            <li>Normal soil conditions requiring standard amendments</li>
+            <li>Access for equipment and materials</li>
+            <li>Fall or spring seeding timing for optimal establishment</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <div class="section-title">MATERIALS & EQUIPMENT</div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 50%;">Description</th>
+                    <th style="width: 8%;">Qty</th>
+                    <th style="width: 8%;">Unit</th>
+                    <th style="width: 12%;">Unit Cost</th>
+                    <th style="width: 12%;">Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td>
+                        Starter fertilizer for new lawns
+                        <div class="specs">• High phosphorus • Slow release • Covers 5000 sq ft</div>
+                    </td>
+                    <td class="center">1</td>
+                    <td class="center">bag</td>
+                    <td class="currency">$42.25</td>
+                    <td class="currency">$42.25</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Organic compost for soil improvement
+                        <div class="specs">• Well-aged compost • Screened • Organic matter boost</div>
+                    </td>
+                    <td class="center">20</td>
+                    <td class="center">yard</td>
+                    <td class="currency">$68.75</td>
+                    <td class="currency">$1375.00</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Agricultural lime for pH adjustment
+                        <div class="specs">• Pelleted lime • Fast acting • Covers 1000 sq ft</div>
+                    </td>
+                    <td class="center">3</td>
+                    <td class="center">bag</td>
+                    <td class="currency">$10.94</td>
+                    <td class="currency">$32.81</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Erosion control blanket for slopes
+                        <div class="specs">• Biodegradable • Slope protection • Natural fiber</div>
+                    </td>
+                    <td class="center">0</td>
+                    <td class="center">sf</td>
+                    <td class="currency">$0.81</td>
+                    <td class="currency">$0.00</td>
+                </tr>
+
+                <tr class="section-total">
+                    <td colspan="4"><strong>MATERIALS TOTAL</strong></td>
+                    <td class="currency"><strong>$1450.06</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <div class="section-title">EQUIPMENT</div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 50%;">Description</th>
+                    <th style="width: 10%;">Quantity</th>
+                    <th style="width: 10%;">Unit</th>
+                    <th style="width: 12%;">Rate</th>
+                    <th style="width: 12%;">Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td>Walk-behind rototiller for soil preparation</td>
+                    <td class="center">1</td>
+                    <td class="center">day</td>
+                    <td class="currency">$65.00</td>
+                    <td class="currency">$65.00</td>
+                </tr>
+
+                <tr>
+                    <td>Broadcast spreader for seed and fertilizer</td>
+                    <td class="center">1</td>
+                    <td class="center">day</td>
+                    <td class="currency">$35.00</td>
+                    <td class="currency">$35.00</td>
+                </tr>
+
+                <tr>
+                    <td>Crew truck for material transport</td>
+                    <td class="center">2</td>
+                    <td class="center">day</td>
+                    <td class="currency">$125.00</td>
+                    <td class="currency">$250.00</td>
+                </tr>
+
+                <tr class="section-total">
+                    <td colspan="4"><strong>EQUIPMENT TOTAL</strong></td>
+                    <td class="currency"><strong>$350.00</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <div class="section-title">LABOR & INSTALLATION</div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 50%;">Task Description</th>
+                    <th style="width: 8%;">Hours</th>
+                    <th style="width: 8%;">Crew</th>
+                    <th style="width: 12%;">Rate</th>
+                    <th style="width: 12%;">Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td>
+                        Rough grading and site preparation
+                        <div class="equipment-note">Equipment: rake, shovel, wheelbarrow</div>
+                    </td>
+                    <td class="center">5.0</td>
+                    <td class="center">2</td>
+                    <td class="currency">$65.00/hr</td>
+                    <td class="currency">$650.00</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Spread compost and lime amendments
+                        <div class="equipment-note">Equipment: rake, spreader</div>
+                    </td>
+                    <td class="center">2.5</td>
+                    <td class="center">2</td>
+                    <td class="currency">$45.00/hr</td>
+                    <td class="currency">$225.00</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Till soil to incorporate amendments
+                        <div class="equipment-note">Equipment: rototiller, rake</div>
+                    </td>
+                    <td class="center">2.0</td>
+                    <td class="center">1</td>
+                    <td class="currency">$65.00/hr</td>
+                    <td class="currency">$130.00</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Final grading and leveling for seeding
+                        <div class="equipment-note">Equipment: rake, level, drag_mat</div>
+                    </td>
+                    <td class="center">3.8</td>
+                    <td class="center">2</td>
+                    <td class="currency">$65.00/hr</td>
+                    <td class="currency">$487.50</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Apply grass seed with spreader
+                        <div class="equipment-note">Equipment: spreader, measuring_cup</div>
+                    </td>
+                    <td class="center">0.8</td>
+                    <td class="center">1</td>
+                    <td class="currency">$45.00/hr</td>
+                    <td class="currency">$33.75</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Apply starter fertilizer
+                        <div class="equipment-note">Equipment: spreader</div>
+                    </td>
+                    <td class="center">0.5</td>
+                    <td class="center">1</td>
+                    <td class="currency">$45.00/hr</td>
+                    <td class="currency">$22.50</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Light raking to incorporate seed
+                        <div class="equipment-note">Equipment: leaf_rake</div>
+                    </td>
+                    <td class="center">2.0</td>
+                    <td class="center">2</td>
+                    <td class="currency">$45.00/hr</td>
+                    <td class="currency">$180.00</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Apply protective straw mulch
+                        <div class="equipment-note">Equipment: rake, pitchfork</div>
+                    </td>
+                    <td class="center">1.5</td>
+                    <td class="center">2</td>
+                    <td class="currency">$45.00/hr</td>
+                    <td class="currency">$135.00</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Initial watering of seeded area
+                        <div class="equipment-note">Equipment: sprinkler, hose</div>
+                    </td>
+                    <td class="center">0.5</td>
+                    <td class="center">1</td>
+                    <td class="currency">$45.00/hr</td>
+                    <td class="currency">$22.50</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Install erosion control on slopes
+                        <div class="equipment-note">Equipment: staples, hammer</div>
+                    </td>
+                    <td class="center">0.0</td>
+                    <td class="center">1</td>
+                    <td class="currency">$65.00/hr</td>
+                    <td class="currency">$0.00</td>
+                </tr>
+
+                <tr class="section-total">
+                    <td colspan="4"><strong>LABOR TOTAL</strong></td>
+                    <td class="currency"><strong>$1886.25</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="totals">
+        <div class="total-row">
+            <div class="total-label">Subtotal:</div>
+            <div class="total-amount">$3686.31</div>
+        </div>
+        <div class="total-row">
+            <div class="total-label">Tax (Oregon):</div>
+            <div class="total-amount">$0.00</div>
+        </div>
+        <div class="total-row grand-total">
+            <div class="total-label">TOTAL:</div>
+            <div class="total-amount">$3686.31</div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <div style="display: table; width: 100%;">
+            <div class="footer-section">
+                <strong>Payment Terms:</strong><br>
+                Due upon completion
+            </div>
+            <div class="footer-section" style="text-align: center;">
+                <strong>Template:</strong> lawn_installation_seed<br>
+                <strong>Category:</strong> lawn
+            </div>
+            <div class="footer-section" style="text-align: right;">
+                <strong>Generated:</strong> Template-driven<br>
+                (Not hardcoded data)
+            </div>
+        </div>
+    </div>
+</body>
+</html>

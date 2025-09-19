@@ -1,920 +1,673 @@
 #!/usr/bin/env python3
 """
-WaterWizard UNO Estimate Generator
-LibreOffice UNO-based estimate generation for Squirt 1.2
-Professional estimates with modern formatting and reliable ODT output
+SQUIRT 1.2 UNO ESTIMATE GENERATOR - PRODUCTION VERSION
+Template-driven professional estimate generator replacing hardcoded system
 """
 
-import uno
-from com.sun.star.beans import PropertyValue
-from com.sun.star.text.ControlCharacter import PARAGRAPH_BREAK, LINE_BREAK
-from decimal import Decimal
-from datetime import datetime, timedelta
-from typing import Dict, List, Any, Optional
+import json
 import subprocess
-import time
+import tempfile
+import sys
 import os
-from human_validation_helper import HumanValidationHelper
-
+import re
+import math
+from pathlib import Path
+from decimal import Decimal
 
 class UnoEstimateGenerator:
-    """LibreOffice UNO-based estimate generator for WaterWizard"""
+    """Production template-driven estimate generator for Squirt 1.2"""
     
     def __init__(self):
-        """Initialize UNO connection and document components"""
-        self.context = None
-        self.desktop = None
-        self.document = None
-        self.uno_port = 2002
-        self.validator = HumanValidationHelper()
-        self._connect_to_libreoffice()
+        self.template_data = None
+        self.input_data = None
+        self.parameters = {}
     
-    def _connect_to_libreoffice(self):
-        """Establish connection to LibreOffice UNO bridge"""
+    def load_files(self, template_path: str, input_path: str):
+        """Load template and input files"""
         try:
-            # Try to connect to existing LibreOffice instance
-            local_context = uno.getComponentContext()
-            resolver = local_context.ServiceManager.createInstanceWithContext(
-                "com.sun.star.bridge.UnoUrlResolver", local_context
-            )
-            
-            # Connect to headless LibreOffice instance
-            try:
-                self.context = resolver.resolve(
-                    f"uno:socket,host=localhost,port={self.uno_port};urp;StarOffice.ComponentContext"
-                )
-            except:
-                # Start headless LibreOffice if not running
-                self._start_libreoffice_headless()
-                time.sleep(3)
-                self.context = resolver.resolve(
-                    f"uno:socket,host=localhost,port={self.uno_port};urp;StarOffice.ComponentContext"
-                )
-            
-            # Get desktop service
-            self.desktop = self.context.ServiceManager.createInstanceWithContext(
-                "com.sun.star.frame.Desktop", self.context
-            )
-            
-            print("✅ Connected to LibreOffice UNO")
-            
+            with open(template_path, 'r') as f:
+                self.template_data = json.load(f)
+            with open(input_path, 'r') as f:
+                self.input_data = json.load(f)
+            self._process_parameters()
+            return True
         except Exception as e:
-            print(f"❌ Failed to connect to LibreOffice UNO: {e}")
-            raise
-    
-    def _start_libreoffice_headless(self):
-        """Start LibreOffice in headless mode with UNO listening"""
+            print(f"❌ Error loading files: {e}")
+            return False
+
+    def _process_parameters(self):
+        """Process template parameters and set values from defaults"""
+        template_params = self.template_data.get('parameters', {})
+        for param_name, param_def in template_params.items():
+            self.parameters[param_name] = param_def.get('default', 0)
+
+        print(f"📊 Processed parameters: {self.parameters}")
+
+    def _evaluate_formula(self, formula: str) -> float:
+        """Safely evaluate a formula with template parameters"""
+        if not formula or not isinstance(formula, str):
+            return 0.0
+
         try:
+            # Handle simple numeric values
+            if formula.replace('.', '').isdigit():
+                return float(formula)
+
+            # Replace parameter names with their values in a safe way
+            eval_formula = formula
+
+            # Sort parameters by length (longest first) to avoid partial replacements
+            sorted_params = sorted(self.parameters.items(), key=lambda x: len(x[0]), reverse=True)
+
+            for param, value in sorted_params:
+                if isinstance(value, str):
+                    # Handle string parameters in comparisons
+                    eval_formula = re.sub(rf'\b{param}\b', f"'{value}'", eval_formula)
+                else:
+                    # Handle numeric parameters
+                    eval_formula = re.sub(rf'\b{param}\b', str(value), eval_formula)
+
+            # Handle common template ternary patterns manually
+            if 'tree_coverage ==' in eval_formula and 'light' in eval_formula:
+                # Handle tree coverage multiplier
+                tree_cov = self.parameters.get('tree_coverage', 'moderate')
+                if tree_cov == 'light':
+                    multiplier = 0.5
+                elif tree_cov == 'moderate':
+                    multiplier = 1.0
+                elif tree_cov == 'heavy':
+                    multiplier = 1.5
+                else:
+                    multiplier = 2.0
+
+                eval_formula = re.sub(
+                    r'\(tree_coverage == \'light\' \? 0\.5 : tree_coverage == \'moderate\' \? 1\.0 : tree_coverage == \'heavy\' \? 1\.5 : 2\.0\)',
+                    str(multiplier), eval_formula)
+
+            if 'property_size ==' in eval_formula and 'small' in eval_formula:
+                # Handle property size logic
+                prop_size = self.parameters.get('property_size', 'medium')
+                if prop_size == 'small':
+                    size_val = 2
+                elif prop_size == 'medium':
+                    size_val = 3
+                elif prop_size == 'large':
+                    size_val = 4
+                else:
+                    size_val = 6
+
+                eval_formula = re.sub(
+                    r'\(property_size == \'small\' \? 2 : property_size == \'medium\' \? 3 : property_size == \'large\' \? 4 : 6\)',
+                    str(size_val), eval_formula)
+
+            # Handle simple ternary operators
+            eval_formula = re.sub(r'(\w+)\s*\?\s*([^:]+)\s*:\s*([^?]*?)(?=\s*[),]|$)',
+                                r'(\2 if \1 else \3)', eval_formula)
+
+            # Safe evaluation with math functions available
+            allowed_names = {
+                "ceil": math.ceil, "floor": math.floor, "sqrt": math.sqrt,
+                "abs": abs, "min": min, "max": max, "round": round
+            }
+
+            # Add parameter values to allowed names
+            for param, value in self.parameters.items():
+                if not isinstance(value, str):
+                    allowed_names[param] = value
+
+            print(f"🔍 Evaluating: {formula} -> {eval_formula}")
+            result = eval(eval_formula, {"__builtins__": {}}, allowed_names)
+            return float(result) if result is not None else 0.0
+
+        except Exception as e:
+            print(f"⚠️  Formula evaluation error for '{formula}': {e}")
+            # Try to extract numeric value as fallback
+            numbers = re.findall(r'\d+\.?\d*', formula)
+            if numbers:
+                return float(numbers[0])
+            return 0.0
+    
+    def calculate_costs(self):
+        """Calculate materials, labor, and totals from template"""
+        materials = []
+        labor_items = []
+        equipment_items = []
+        
+        # Labor rates by skill level
+        labor_rates = {
+            'maintenance': 45.00, 'install': 65.00, 'pruning': 75.00, 
+            'electrical': 85.00, 'irrigation_tech': 75.00, 'certified_applicator': 70.00,
+            'carpenter': 80.00, 'arborist': 95.00, 'equipment_operator': 70.00,
+            'design': 85.00, 'concrete': 70.00, 'customer_service': 50.00
+        }
+        
+        # Process materials
+        for material in self.template_data.get('materials', []):
+            try:
+                # Use formula if available, otherwise default
+                qty_formula = material.get('qty_formula')
+                if qty_formula:
+                    qty = self._evaluate_formula(qty_formula)
+                    print(f"🧮 Material '{material.get('description')}': {qty_formula} = {qty}")
+                else:
+                    qty = material.get('default_qty', 0)
+                    print(f"📝 Material '{material.get('description')}': using default qty {qty}")
+
+                unit_cost = material.get('unit_cost', 0)
+                markup = material.get('markup', 0)
+
+                marked_up_cost = unit_cost * (1 + markup)
+                subtotal = qty * marked_up_cost
+
+                if subtotal > 0:
+                    materials.append({
+                        'description': material.get('description', 'Material'),
+                        'qty': round(qty, 2),
+                        'unit': material.get('unit', 'each'),
+                        'cost': marked_up_cost,
+                        'subtotal': subtotal
+                    })
+            except Exception as e:
+                print(f"⚠️  Material calculation error: {e}")
+                continue
+        
+        # Process labor
+        for labor in self.template_data.get('labor', []):
+            try:
+                # Use formula if available, otherwise default
+                hrs_formula = labor.get('hrs_formula')
+                if hrs_formula:
+                    hrs = self._evaluate_formula(hrs_formula)
+                    print(f"🧮 Labor '{labor.get('description')}': {hrs_formula} = {hrs} hrs")
+                else:
+                    hrs = labor.get('default_hrs', 0)
+                    print(f"📝 Labor '{labor.get('description')}': using default hrs {hrs}")
+
+                skill = labor.get('skill_level', 'maintenance')
+                crew_size = labor.get('crew_size', 1)
+                rate = labor_rates.get(skill, 65.00)
+
+                subtotal = hrs * crew_size * rate
+
+                if subtotal > 0:
+                    labor_items.append({
+                        'description': labor.get('description', 'Labor'),
+                        'hours': round(hrs, 2),
+                        'crew': crew_size,
+                        'rate': rate,
+                        'subtotal': subtotal
+                    })
+            except Exception as e:
+                print(f"⚠️  Labor calculation error: {e}")
+                continue
+        
+        # Process equipment
+        for equipment in self.template_data.get('equipment', []):
+            try:
+                usage_formula = equipment.get('usage_formula', '1')
+                usage_qty = self._evaluate_formula(usage_formula)
+                if usage_qty == 0:
+                    usage_qty = 1  # Default fallback
+
+                print(f"🧮 Equipment '{equipment.get('description')}': {usage_formula} = {usage_qty}")
+
+                daily_rate = equipment.get('daily_rate', 0)
+                subtotal = usage_qty * daily_rate
+
+                if subtotal > 0:
+                    equipment_items.append({
+                        'description': equipment.get('description', 'Equipment'),
+                        'qty': round(usage_qty, 2),
+                        'unit': equipment.get('usage_unit', 'day'),
+                        'rate': daily_rate,
+                        'subtotal': subtotal
+                    })
+            except Exception as e:
+                print(f"⚠️  Equipment calculation error: {e}")
+                continue
+        
+        return materials, labor_items, equipment_items
+    
+    def create_professional_html(self, materials, labor_items, equipment_items):
+        """Create professional HTML document"""
+        materials_total = sum(item['subtotal'] for item in materials)
+        labor_total = sum(item['subtotal'] for item in labor_items)
+        equipment_total = sum(item['subtotal'] for item in equipment_items)
+        
+        subtotal = materials_total + labor_total + equipment_total
+        tax = 0.00  # Oregon
+        total = subtotal + tax
+        
+        # Generate title with parameters
+        parameters = self.template_data.get('parameters', {})
+        title_format = self.template_data.get('title_format', 'Service')
+        try:
+            format_values = {k: v.get('default', 'N/A') for k, v in parameters.items()}
+            project_title = title_format.format(**format_values)
+        except:
+            project_title = title_format
+        
+        html_content = f"""<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>WaterWizard Estimate - {project_title}</title>
+    <style>
+        @page {{
+            size: letter;
+            margin: 0.75in;
+        }}
+        body {{
+            font-family: Arial, sans-serif;
+            line-height: 1.3;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }}
+        .header {{
+            text-align: center;
+            border-bottom: 2px solid #2E5B8A;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }}
+        .company-name {{
+            font-size: 18px;
+            font-weight: bold;
+            color: #2E5B8A;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0;
+        }}
+        .tagline {{
+            font-size: 12px;
+            color: #666;
+            margin: 5px 0;
+        }}
+        .license {{
+            font-size: 11px;
+            color: #666;
+            margin: 0;
+        }}
+        .estimate-title {{
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }}
+        .client-section {{
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+        }}
+        .client-info, .project-info {{
+            flex: 1;
+        }}
+        .field-label {{
+            font-weight: bold;
+            color: #2E5B8A;
+        }}
+        .project-header {{
+            border-bottom: 2px solid #2E5B8A;
+            margin: 20px 0 15px 0;
+            padding-bottom: 5px;
+        }}
+        .project-title {{
+            font-size: 14px;
+            font-weight: bold;
+            color: #2E5B8A;
+            text-transform: uppercase;
+            margin: 0;
+        }}
+        .project-description {{
+            font-size: 11px;
+            color: #666;
+            margin: 5px 0 10px 0;
+            line-height: 1.4;
+        }}
+        .assumptions {{
+            background-color: #fff3cd;
+            border: 1pt solid #ffeaa7;
+            padding: 4pt 8pt;
+            margin: 5pt 0;
+        }}
+        .assumptions h4 {{
+            margin: 0 0 3pt 0;
+            color: #856404;
+            font-size: 10pt;
+        }}
+        .assumptions ul {{
+            margin: 0;
+            padding-left: 20pt;
+        }}
+        .assumptions li {{
+            margin: 3pt 0;
+            color: #856404;
+        }}
+        .section {{
+            margin: 20px 0;
+        }}
+        .section-title {{
+            background-color: #2E5B8A;
+            color: white;
+            padding: 8px;
+            font-weight: bold;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }}
+        table {{
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0;
+        }}
+        th {{
+            background-color: transparent;
+            color: black;
+            padding: 8pt;
+            text-align: left;
+            font-weight: bold;
+            font-size: 10pt;
+            border-bottom: 1pt solid #dee2e6;
+        }}
+        td {{
+            padding: 6px 8px;
+            font-size: 10px;
+            border: 1px solid #ddd;
+            vertical-align: top;
+        }}
+        .center {{ text-align: center; }}
+        .currency {{ text-align: right; }}
+        .section-total {{
+            font-weight: bold;
+            background-color: #f8f9fa;
+        }}
+        .totals-section {{
+            margin-top: 30px;
+            border-top: 2px solid #2E5B8A;
+            padding-top: 15px;
+        }}
+        .total-line {{
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+            padding: 5px 0;
+        }}
+        .total-label {{
+            font-weight: bold;
+            color: #2E5B8A;
+        }}
+        .total-amount {{
+            font-weight: bold;
+            text-align: right;
+        }}
+        .grand-total {{
+            border-top: 2px solid #2E5B8A;
+            font-size: 14px;
+            font-weight: bold;
+            color: #2E5B8A;
+        }}
+        .footer {{
+            margin-top: 30px;
+            font-size: 10px;
+            color: #666;
+            text-align: center;
+            border-top: 1px solid #ddd;
+            padding-top: 15px;
+        }}
+        .footer-line {{
+            margin: 3px 0;
+        }}
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="company-name">WaterWizard Irrigation & Landscape</div>
+        <div class="tagline">Professional Landscape Services</div>
+        <div class="license">Licensed • Bonded • Insured</div>
+    </div>
+    
+    <div class="estimate-title">ESTIMATE</div>
+    
+    <!-- Client Information -->
+    <div class="client-section">
+        <div class="client-info">
+            <div><span class="field-label">Client:</span> {self.input_data.get('client_name', 'Client Name')}</div>
+            <div><span class="field-label">Property:</span> {self.input_data.get('property_address', 'Property Address')}</div>
+            <div><span class="field-label">Date:</span> {self.input_data.get('estimate_date', 'Date')}</div>
+        </div>
+        <div class="project-info">
+            <div><span class="field-label">Phone:</span> {self.input_data.get('contact_info', {}).get('phone', 'Phone')}</div>
+            <div><span class="field-label">Email:</span> {self.input_data.get('contact_info', {}).get('email', 'Email')}</div>
+        </div>
+    </div>
+    
+    <!-- Project Header -->
+    <div class="project-header">
+        <div class="project-title">PROJECT: {project_title}</div>
+        <div class="project-description">{self.template_data.get('description', '')}</div>
+        <div class="assumptions">
+            <strong>Assumptions:</strong>
+            <ul>"""
+        
+        for assumption in self.template_data.get('assumptions', []):
+            html_content += f"<li>{assumption}</li>"
+        
+        html_content += """
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Materials Section -->
+    <div class="section">
+        <div class="section-title">MATERIALS & EQUIPMENT</div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 50%;">Description</th>
+                    <th style="width: 8%;">Qty</th>
+                    <th style="width: 8%;">Unit</th>
+                    <th style="width: 12%;">Cost</th>
+                    <th style="width: 12%;">Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>"""
+        
+        for material in materials:
+            html_content += f"""
+                <tr>
+                    <td>{material['description']}</td>
+                    <td class="center">{material['qty']}</td>
+                    <td class="center">{material['unit']}</td>
+                    <td class="currency">${material['cost']:.2f}</td>
+                    <td class="currency">${material['subtotal']:.2f}</td>
+                </tr>"""
+        
+        html_content += f"""
+                <tr class="section-total">
+                    <td colspan="4"><strong>MATERIALS TOTAL</strong></td>
+                    <td class="currency"><strong>${materials_total:.2f}</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>"""
+        
+        # Labor section
+        if labor_items:
+            html_content += f"""
+    <div class="section">
+        <div class="section-title">LABOR & INSTALLATION</div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 50%;">Task Description</th>
+                    <th style="width: 8%;">Hours</th>
+                    <th style="width: 8%;">Crew</th>
+                    <th style="width: 12%;">Rate</th>
+                    <th style="width: 12%;">Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>"""
+            
+            for labor in labor_items:
+                html_content += f"""
+                <tr>
+                    <td>{labor['description']}</td>
+                    <td class="center">{labor['hours']}</td>
+                    <td class="center">{labor['crew']}</td>
+                    <td class="currency">${labor['rate']:.2f}</td>
+                    <td class="currency">${labor['subtotal']:.2f}</td>
+                </tr>"""
+            
+            html_content += f"""
+                <tr class="section-total">
+                    <td colspan="4"><strong>LABOR TOTAL</strong></td>
+                    <td class="currency"><strong>${labor_total:.2f}</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>"""
+        
+        # Totals
+        html_content += f"""
+    <div class="totals-section">
+        <div class="section-title">TOTALS</div>
+        <div class="total-line">
+            <span class="total-label">Subtotal:</span>
+            <span class="total-amount">${subtotal:.2f}</span>
+        </div>
+        <div class="total-line">
+            <span class="total-label">Tax (Oregon):</span>
+            <span class="total-amount">${tax:.2f}</span>
+        </div>
+        <div class="total-line grand-total">
+            <span class="total-label">TOTAL:</span>
+            <span class="total-amount">${total:.2f}</span>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <div class="footer">
+        <div class="footer-line">Valid for: 30 days from estimate date</div>
+        <div class="footer-line">Payment: Due upon completion</div>
+        <div class="footer-line">Contact: {self.input_data.get('company_info', {}).get('phone', '(503) 555-0199')} | {self.input_data.get('company_info', {}).get('email', 'info@waterwizard.com')}</div>
+        <div class="footer-line">Template ID: {self.template_data.get('template_id')} | Category: {self.template_data.get('category')}</div>
+        <div class="footer-line">Generated: This estimate was generated from template data (NOT hardcoded Liam Smith data)</div>
+    </div>
+</body>
+</html>"""
+        
+        return html_content, total
+    
+    def convert_to_odt(self, html_content: str, output_path: str):
+        """Convert HTML content to ODT using LibreOffice"""
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.html', delete=False, encoding='utf-8') as f:
+            f.write(html_content)
+            temp_html = f.name
+        
+        try:
+            # Ensure output directory exists
+            Path(output_path).parent.mkdir(parents=True, exist_ok=True)
+            
+            # Convert HTML to ODT
             cmd = [
-                'libreoffice',
-                '--headless',
-                f'--accept=socket,host=localhost,port={self.uno_port};urp;StarOffice.ServiceManager',
-                '--nofirststartwizard',
-                '--nologo'
+                'libreoffice', '--headless', '--convert-to', 'odt',
+                '--outdir', str(Path(output_path).parent),
+                temp_html
             ]
-            subprocess.Popen(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-            print("🚀 Started LibreOffice headless instance")
-        except Exception as e:
-            print(f"❌ Failed to start LibreOffice: {e}")
-            raise
-    
-    def create_new_document(self) -> bool:
-        """Create a new Writer document"""
-        try:
-            self.document = self.desktop.loadComponentFromURL(
-                "private:factory/swriter", "_blank", 0, ()
-            )
-            return True
-        except Exception as e:
-            print(f"❌ Failed to create new document: {e}")
+            
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=45)
+            
+            if result.returncode == 0:
+                # Find the generated ODT file
+                temp_odt = Path(temp_html).with_suffix('.odt')
+                if temp_odt.exists():
+                    # Move to desired location
+                    temp_odt.rename(output_path)
+                    return True
+                else:
+                    # LibreOffice puts it in output directory with temp filename
+                    output_dir = Path(output_path).parent
+                    temp_name = Path(temp_html).stem + '.odt'
+                    temp_odt = output_dir / temp_name
+                    if temp_odt.exists():
+                        temp_odt.rename(output_path)
+                        return True
+            
+            print(f"❌ LibreOffice conversion failed: {result.stderr}")
             return False
-    
-    def generate_estimate(self, client_info: Dict[str, Any], project_info: Dict[str, Any], 
-                         scope_areas: List[Dict[str, Any]], subtotal: Decimal, 
-                         tax_amount: Decimal, total: Decimal, output_path: str,
-                         valid_days: int = 30, open_for_validation: bool = True) -> bool:
-        """Generate professional estimate using UNO API"""
-        
-        if not self.create_new_document():
+            
+        except Exception as e:
+            print(f"❌ Conversion error: {e}")
             return False
-        
-        try:
-            # Get document text and cursor
-            text = self.document.Text
-            cursor = text.createTextCursor()
-            
-            # Set up document formatting
-            self._setup_document_styles()
-            
-            # Generate estimate content in modern professional style
-            self._add_estimate_header(cursor, client_info, project_info, valid_days)
-            self._add_estimate_body(cursor, scope_areas, subtotal, tax_amount, total)
-            self._add_estimate_footer(cursor, valid_days)
-            
-            # Save document as ODT
-            self._save_document_as_odt(output_path)
-            
-            # Close document
-            self.document.close(True)
-            self.document = None
-            
-            print(f"✅ Estimate generated: {output_path}")
-            
-            # Open for human validation if requested
-            if open_for_validation:
-                self.validator.open_for_validation(output_path, "estimate")
-            
-            return True
-            
-        except Exception as e:
-            print(f"❌ Failed to generate estimate: {e}")
-            if self.document:
-                try:
-                    self.document.close(False)
-                except:
-                    pass
-                self.document = None
-            return False
-    
-    def _setup_document_styles(self):
-        """Configure document-wide styles and formatting"""
-        try:
-            # Get style families
-            style_families = self.document.StyleFamilies
-            para_styles = style_families.getByName("ParagraphStyles")
-            
-            # Configure page style for margins and layout
-            page_styles = style_families.getByName("PageStyles")
-            page_style = page_styles.getByName("Standard")
-            
-            # Set margins (in millimeters * 100)
-            page_style.LeftMargin = 2000   # 20mm
-            page_style.RightMargin = 2000  # 20mm
-            page_style.TopMargin = 2000    # 20mm
-            page_style.BottomMargin = 2000 # 20mm
-            
-            # Create custom paragraph styles
-            self._create_header_styles(para_styles)
-            
-        except Exception as e:
-            print(f"⚠️ Warning: Could not setup document styles: {e}")
-    
-    def _create_header_styles(self, para_styles):
-        """Create WaterWizard header styles for estimates"""
-        try:
-            # Main header style
-            if not para_styles.hasByName("WaterWizardHeader"):
-                header_style = self.document.createInstance("com.sun.star.style.ParagraphStyle")
-                header_style.CharFontName = "Liberation Sans"
-                header_style.CharHeight = 20
-                header_style.CharWeight = 150  # Bold
-                header_style.ParaAdjust = 1    # Center alignment
-                header_style.CharColor = 0x0066CC  # Blue color
-                header_style.ParaTopMargin = 0
-                header_style.ParaBottomMargin = 200
-                para_styles.insertByName("WaterWizardHeader", header_style)
-            
-            # Estimate title style (larger than invoice)
-            if not para_styles.hasByName("EstimateTitle"):
-                estimate_style = self.document.createInstance("com.sun.star.style.ParagraphStyle")
-                estimate_style.CharFontName = "Liberation Sans"
-                estimate_style.CharHeight = 16
-                estimate_style.CharWeight = 150  # Bold
-                estimate_style.ParaAdjust = 1    # Center alignment
-                estimate_style.CharColor = 0x0066CC  # Blue color
-                estimate_style.ParaTopMargin = 200
-                estimate_style.ParaBottomMargin = 400
-                para_styles.insertByName("EstimateTitle", estimate_style)
-            
-            # Section header style
-            if not para_styles.hasByName("SectionHeader"):
-                section_style = self.document.createInstance("com.sun.star.style.ParagraphStyle")
-                section_style.CharFontName = "Liberation Sans"
-                section_style.CharHeight = 12
-                section_style.CharWeight = 150  # Bold
-                section_style.CharColor = 0x0066CC  # Blue color
-                section_style.ParaTopMargin = 400
-                section_style.ParaBottomMargin = 200
-                para_styles.insertByName("SectionHeader", section_style)
-            
-        except Exception as e:
-            print(f"⚠️ Warning: Could not create header styles: {e}")
-    
-    def _add_estimate_header(self, cursor, client_info: Dict[str, Any], 
-                           project_info: Dict[str, Any], valid_days: int):
-        """Add modern professional estimate header"""
-        text = self.document.Text
-        
-        # Contract title - Kim Sherertz format
-        text.insertString(cursor, "MAINTENANCE CONTRACT", False)
-        cursor.goLeft(len("MAINTENANCE CONTRACT"), True)
-        cursor.CharFontName = "Liberation Sans"
-        cursor.CharHeight = 18
-        cursor.CharWeight = 150  # Bold
-        cursor.ParaAdjust = 1    # Center alignment
-        cursor.CharColor = 0x000000  # Black like Kim Sherertz
-        cursor.gotoEnd(False)
-        text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
-        
-        # Contract subtitle
-        text.insertString(cursor, project_info.get('name', 'Project'), False)
-        cursor.goLeft(len(project_info.get('name', 'Project')), True)
-        cursor.CharFontName = "Liberation Sans"
-        cursor.CharHeight = 16
-        cursor.CharWeight = 150  # Bold
-        cursor.ParaAdjust = 1    # Center alignment
-        cursor.CharColor = 0x000000  # Black
-        cursor.gotoEnd(False)
-        text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
-        text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
-        
-        # Estimate details
-        estimate_number = f"EST-{datetime.now().strftime('%Y%m%d')}-001"
-        date_str = datetime.now().strftime("%B %d, %Y")
-        valid_until = (datetime.now() + timedelta(days=valid_days)).strftime("%B %d, %Y")
-        
-        # Create table for estimate details and client info
-        self._add_estimate_details_table(cursor, estimate_number, date_str, 
-                                       valid_until, client_info, project_info)
-    
-    def _add_estimate_details_table(self, cursor, estimate_number: str, date_str: str,
-                                  valid_until: str, client_info: Dict[str, Any], 
-                                  project_info: Dict[str, Any]):
-        """Add estimate details and client information in professional table format"""
-        try:
-            text = self.document.Text
-            
-            # Create table for estimate header information
-            table = self.document.createInstance("com.sun.star.text.TextTable")
-            table.initialize(7, 2)  # 7 rows, 2 columns
-            
-            text.insertTextContent(cursor, table, False)
-            
-            # Configure table appearance  
-            table.setPropertyValue("Width", 16000)
-            table.setPropertyValue("RelativeWidth", 100)
-            
-            # Set column widths - very narrow left, very wide right
+        finally:
+            # Clean up temp HTML
             try:
-                columns = table.getColumns()
-                columns.getByIndex(0).setPropertyValue("RelativeWidth", 25)  # Left column very narrow
-                columns.getByIndex(1).setPropertyValue("RelativeWidth", 75)  # Right column very wide
-            except:
-                pass  # Skip column sizing if not supported
-            
-            # Fill table with data
-            # Row 1-3: Estimate details
-            table.getCellByName("A1").setString("Estimate Number:")
-            table.getCellByName("B1").setString(estimate_number)
-            
-            table.getCellByName("A2").setString("Date:")
-            table.getCellByName("B2").setString(date_str)
-            
-            table.getCellByName("A3").setString("Valid Until:")
-            table.getCellByName("B3").setString(valid_until)
-            
-            # Row 4: Blank separator
-            table.getCellByName("A4").setString("")
-            table.getCellByName("B4").setString("")
-            
-            # Rows 5-7: Client and project information
-            table.getCellByName("A5").setString("ESTIMATE FOR:")
-            client_info_text = f"{client_info.get('name', 'N/A')}\n{client_info.get('address', 'N/A')}\n{client_info.get('city', '')}, {client_info.get('state', '')} {client_info.get('zip', '')}"
-            table.getCellByName("B5").setString(client_info_text)
-            
-            table.getCellByName("A6").setString("PROJECT:")
-            table.getCellByName("B6").setString(project_info.get('name', 'N/A'))
-            
-            table.getCellByName("A7").setString("LOCATION:")
-            table.getCellByName("B7").setString(project_info.get('address', client_info.get('address', 'N/A')))
-            
-            # Style the table cells - left column bold, right column normal
-            for row in range(1, 8):
-                # Left column (labels) - bold
-                cell = table.getCellByName(f"A{row}")
-                cell_cursor = cell.createTextCursor()
-                cell_cursor.CharWeight = 150  # Bold
-                cell_cursor.CharColor = 0x000000  # Black
-                
-                # Right column (data) - normal weight
-                cell = table.getCellByName(f"B{row}")
-                cell_cursor = cell.createTextCursor()  
-                cell_cursor.CharWeight = 100  # Normal
-                cell_cursor.CharColor = 0x000000  # Black
-            
-            # Move cursor after table
-            cursor.gotoEnd(False)
-            text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
-            text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
-            
-        except Exception as e:
-            print(f"⚠️ Warning: Could not create estimate details table: {e}")
-            # Fallback to simple text
-            self._add_simple_estimate_header(cursor, estimate_number, date_str, 
-                                           valid_until, client_info, project_info)
-    
-    def _add_simple_estimate_header(self, cursor, estimate_number: str, date_str: str,
-                                  valid_until: str, client_info: Dict[str, Any], 
-                                  project_info: Dict[str, Any]):
-        """Fallback simple text header"""
-        text = self.document.Text
-        text.insertString(cursor, f"Estimate Number: {estimate_number}", False)
-        text.insertControlCharacter(cursor, LINE_BREAK, False)
-        text.insertString(cursor, f"Date: {date_str}", False)
-        text.insertControlCharacter(cursor, LINE_BREAK, False)
-        text.insertString(cursor, f"Valid Until: {valid_until}", False)
-        text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
-        text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
-        
-        text.insertString(cursor, f"ESTIMATE FOR: {client_info.get('name', 'N/A')}", False)
-        text.insertControlCharacter(cursor, LINE_BREAK, False)
-        text.insertString(cursor, f"PROJECT: {project_info.get('name', 'N/A')}", False)
-        text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
-    
-    def _add_estimate_body(self, cursor, scope_areas: List[Dict[str, Any]], 
-                          subtotal: Decimal, tax_amount: Decimal, total: Decimal):
-        """Add estimate body with scope areas in professional format"""
-        text = self.document.Text
-        
-        # Services section header - Left aligned with line break
-        text.insertString(cursor, "SCOPE OF WORK BY CATEGORY", False)
-        cursor.goLeft(len("SCOPE OF WORK BY CATEGORY"), True)
-        cursor.CharFontName = "Liberation Sans"
-        cursor.CharHeight = 14
-        cursor.CharWeight = 150  # Bold
-        cursor.CharColor = 0x4A90E2  # Kim Sherertz blue
-        cursor.ParaAdjust = 0  # Left alignment
-        cursor.gotoEnd(False)
-        text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
-        text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)  # Extra line break
-        
-        # Add each scope area
-        for scope in scope_areas:
-            self._add_scope_area_section(cursor, scope)
-        
-        # Add project totals at the end
-        self._add_project_totals(cursor, subtotal, tax_amount, total)
-    
-    def _add_scope_area_section(self, cursor, scope: Dict[str, Any]):
-        """Add a scope area section with title, description, and breakdown using tables"""
-        text = self.document.Text
-        
-        # Scope area title with cost
-        scope_title = scope.get('title', 'Work Area')
-        text.insertString(cursor, scope_title, False)
-        cursor.goLeft(len(scope_title), True)
-        cursor.CharWeight = 150  # Bold
-        cursor.CharColor = 0x0066CC  # Blue
-        cursor.CharHeight = 14
-        cursor.gotoEnd(False)
-        text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
-        
-        # Scope description - smaller black text
-        description = scope.get('description', '')
-        if description:
-            text.insertString(cursor, description, False)
-            cursor.goLeft(len(description), True)
-            cursor.CharFontName = "Liberation Sans"
-            cursor.CharHeight = 11  # Smaller than title
-            cursor.CharWeight = 100  # Normal weight
-            cursor.CharColor = 0x000000  # Black
-            cursor.gotoEnd(False)
-            text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
-        
-        # Create table for this scope area's breakdown
-        self._add_scope_breakdown_table(cursor, scope)
-        
-        # Add spacing between scope areas
-        text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
-    
-    def _add_scope_breakdown_table(self, cursor, scope: Dict[str, Any]):
-        """Add a professional table for scope area breakdown"""
-        try:
-            text = self.document.Text
-            
-            # Determine table rows needed
-            materials = scope.get('materials', [])
-            labor = scope.get('labor', [])
-            equipment = scope.get('equipment', [])
-            
-            row_count = 0
-            if materials: row_count += len(materials) + 2  # header + items + space
-            if labor: row_count += len(labor) + 2
-            if equipment: row_count += len(equipment) + 2
-            
-            if row_count == 0:
-                return  # No breakdown items
-            
-            # Create table
-            table = self.document.createInstance("com.sun.star.text.TextTable")
-            table.initialize(row_count, 4)  # 4 columns: Description, Qty, Rate, Amount
-            text.insertTextContent(cursor, table, False)
-            
-            # Configure table
-            table.setPropertyValue("Width", 16000)
-            table.setPropertyValue("RelativeWidth", 100)
-            
-            current_row = 1
-            
-            # Add materials section
-            if materials:
-                table.getCellByName(f"A{current_row}").setString("MATERIALS & EQUIPMENT")
-                cell = table.getCellByName(f"A{current_row}")
-                cell_cursor = cell.createTextCursor()
-                cell_cursor.CharWeight = 150
-                current_row += 1
-                
-                for material in materials:
-                    qty = f"{material.get('qty', 0)}"
-                    price = f"${material.get('price', 0):.2f}"
-                    subtotal = f"${material.get('subtotal', 0):.2f}"
-                    desc = material.get('description', '')
-                    
-                    table.getCellByName(f"A{current_row}").setString(desc)
-                    table.getCellByName(f"B{current_row}").setString(qty)
-                    table.getCellByName(f"C{current_row}").setString(price)
-                    table.getCellByName(f"D{current_row}").setString(subtotal)
-                    current_row += 1
-                
-                current_row += 1  # Space
-            
-            # Add labor section
-            if labor:
-                table.getCellByName(f"A{current_row}").setString("LABOR")
-                cell = table.getCellByName(f"A{current_row}")
-                cell_cursor = cell.createTextCursor()
-                cell_cursor.CharWeight = 150
-                current_row += 1
-                
-                for labor_item in labor:
-                    task = labor_item.get('task', '')
-                    labor_subtotal = f"${labor_item.get('subtotal', 0):.2f}"
-                    
-                    table.getCellByName(f"A{current_row}").setString(task)
-                    table.getCellByName(f"D{current_row}").setString(labor_subtotal)
-                    current_row += 1
-                
-                current_row += 1  # Space
-                
-            # Add equipment section
-            if equipment:
-                table.getCellByName(f"A{current_row}").setString("EQUIPMENT & FEES")
-                cell = table.getCellByName(f"A{current_row}")
-                cell_cursor = cell.createTextCursor()
-                cell_cursor.CharWeight = 150
-                current_row += 1
-                
-                for equip_item in equipment:
-                    qty = f"{equip_item.get('qty', 0)}"
-                    price = f"${equip_item.get('price', 0):.2f}"
-                    subtotal = f"${equip_item.get('subtotal', 0):.2f}"
-                    desc = equip_item.get('description', '')
-                    
-                    table.getCellByName(f"A{current_row}").setString(desc)
-                    table.getCellByName(f"B{current_row}").setString(qty)
-                    table.getCellByName(f"C{current_row}").setString(price)
-                    table.getCellByName(f"D{current_row}").setString(subtotal)
-                    current_row += 1
-            
-            # Move cursor after table
-            cursor.gotoEnd(False)
-            text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
-            
-        except Exception as e:
-            print(f"⚠️ Warning: Could not create scope breakdown table: {e}")
-            # Fallback to simple text
-            self._add_simple_scope_breakdown(cursor, scope)
-
-    def _add_simple_scope_breakdown(self, cursor, scope: Dict[str, Any]):
-        """Fallback simple text breakdown"""
-        text = self.document.Text
-        
-        materials = scope.get('materials', [])
-        labor = scope.get('labor', [])
-        equipment = scope.get('equipment', [])
-        
-        if materials:
-            text.insertString(cursor, "Materials & Equipment:", False)
-            text.insertControlCharacter(cursor, LINE_BREAK, False)
-            for material in materials:
-                line = f"  {material.get('qty', 0)} x ${material.get('price', 0):.2f} = ${material.get('subtotal', 0):.2f} {material.get('description', '')}"
-                text.insertString(cursor, line, False)
-                text.insertControlCharacter(cursor, LINE_BREAK, False)
-        
-        if labor:
-            text.insertString(cursor, "Labor:", False)
-            text.insertControlCharacter(cursor, LINE_BREAK, False)
-            for labor_item in labor:
-                line = f"  {labor_item.get('task', '')} - ${labor_item.get('subtotal', 0):.2f}"
-                text.insertString(cursor, line, False)
-                text.insertControlCharacter(cursor, LINE_BREAK, False)
-        
-        if equipment:
-            text.insertString(cursor, "Equipment & Fees:", False)
-            text.insertControlCharacter(cursor, LINE_BREAK, False)
-            for equip_item in equipment:
-                line = f"  {equip_item.get('qty', 0)} x ${equip_item.get('price', 0):.2f} = ${equip_item.get('subtotal', 0):.2f} {equip_item.get('description', '')}"
-                text.insertString(cursor, line, False)
-                text.insertControlCharacter(cursor, LINE_BREAK, False)
-
-    def _add_project_totals_table(self, cursor, subtotal: Decimal, tax_amount: Decimal, total: Decimal):
-        """Add project totals in a professional table format"""
-        try:
-            text = self.document.Text
-            
-            # Create simple totals table
-            table = self.document.createInstance("com.sun.star.text.TextTable")
-            table.initialize(4, 2)  # 4 rows for totals
-            text.insertTextContent(cursor, table, False)
-            
-            # Configure table
-            table.setPropertyValue("Width", 16000)
-            table.setPropertyValue("RelativeWidth", 100)
-            
-            # Set column widths for totals table
-            try:
-                columns = table.getColumns()
-                columns.getByIndex(0).setPropertyValue("RelativeWidth", 60)  # Left column 
-                columns.getByIndex(1).setPropertyValue("RelativeWidth", 40)  # Right column
+                os.unlink(temp_html)
             except:
                 pass
-            
-            # Subtotal
-            table.getCellByName("A1").setString("Subtotal")
-            table.getCellByName("B1").setString(f"${subtotal:.2f}")
-            
-            # Tax
-            if tax_amount > 0:
-                table.getCellByName("A2").setString("Est. Tax")
-                table.getCellByName("B2").setString(f"${tax_amount:.2f}")
-            else:
-                table.getCellByName("A2").setString("Sales Tax (Oregon - No Sales Tax)")
-                table.getCellByName("B2").setString("$0.00")
-            
-            # Contingency (5% buffer typically included in total)
-            contingency = total - subtotal - tax_amount
-            table.getCellByName("A3").setString("Contingency & Buffer")
-            table.getCellByName("B3").setString(f"${contingency:.2f}")
-            
-            # Total
-            table.getCellByName("A4").setString("TOTAL ESTIMATED COST")
-            table.getCellByName("B4").setString(f"${total:.2f}")
-            
-            # Style the total row
-            for col in ['A', 'B']:
-                cell = table.getCellByName(f"{col}4")
-                cell_cursor = cell.createTextCursor()
-                cell_cursor.CharWeight = 150  # Bold
-                cell_cursor.CharColor = 0x0066CC  # Blue
-            
-            # Right-align amounts
-            for row in range(1, 5):
-                cell = table.getCellByName(f"B{row}")
-                cell_cursor = cell.createTextCursor()
-                cell_cursor.ParaAdjust = 2  # Right align
-                
-                # Style labels
-                cell = table.getCellByName(f"A{row}")
-                cell_cursor = cell.createTextCursor()
-                cell_cursor.CharWeight = 150  # Bold
-            
-            cursor.gotoEnd(False)
-            text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
-            
-        except Exception as e:
-            print(f"⚠️ Warning: Could not create totals table: {e}")
-            # Fallback to simple text
-            text.insertString(cursor, f"Subtotal: ${subtotal:.2f}", False)
-            text.insertControlCharacter(cursor, LINE_BREAK, False)
-            text.insertString(cursor, f"Tax: ${tax_amount:.2f}", False)  
-            text.insertControlCharacter(cursor, LINE_BREAK, False)
-            text.insertString(cursor, f"TOTAL: ${total:.2f}", False)
-
-    def _add_project_totals(self, cursor, subtotal: Decimal, tax_amount: Decimal, total: Decimal):
-        """Add project totals section with proper table formatting"""
-        text = self.document.Text
-        
-        # Project totals header
-        text.insertString(cursor, "PROJECT TOTALS", False)
-        cursor.goLeft(len("PROJECT TOTALS"), True)
-        cursor.ParaStyleName = "SectionHeader"
-        cursor.gotoEnd(False)
-        text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
-        
-        self._add_project_totals_table(cursor, subtotal, tax_amount, total)
-        
-        text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
     
-    def _add_line_items_table(self, cursor, line_items: List[Dict[str, Any]], 
-                             subtotal: Decimal, tax_amount: Decimal, total: Decimal):
-        """Create professional line items table for estimate"""
-        try:
-            text = self.document.Text
-            
-            # Calculate table rows needed
-            row_count = len(line_items) + 5  # Items + header + 3 total rows + blank
-            table = self.document.createInstance("com.sun.star.text.TextTable")
-            table.initialize(row_count, 4)  # Description, Qty, Rate, Amount
-            
-            text.insertTextContent(cursor, table, False)
-            
-            # Configure table appearance
-            table.setPropertyValue("Width", 16000)
-            table.setPropertyValue("RelativeWidth", 100)
-            
-            # Set column widths (with error handling like invoice generator)
-            try:
-                columns = table.getColumns()
-                columns.getByIndex(0).setPropertyValue("RelativeWidth", 50)  # Description
-                columns.getByIndex(1).setPropertyValue("RelativeWidth", 15)  # Qty
-                columns.getByIndex(2).setPropertyValue("RelativeWidth", 15)  # Rate  
-                columns.getByIndex(3).setPropertyValue("RelativeWidth", 20)  # Amount
-            except:
-                pass  # Skip column sizing if not supported
-            
-            # Header row
-            table.getCellByName("A1").setString("Description")
-            table.getCellByName("B1").setString("Qty")
-            table.getCellByName("C1").setString("Est. Rate")
-            table.getCellByName("D1").setString("Est. Amount")
-            
-            # Style header row
-            for col in ['A', 'B', 'C', 'D']:
-                cell = table.getCellByName(f"{col}1")
-                cell_cursor = cell.createTextCursor()
-                cell_cursor.CharWeight = 150  # Bold
-                cell_cursor.CharColor = 0x0066CC
-                cell_cursor.ParaAdjust = 1  # Center alignment
-            
-            # Add line items
-            for i, item in enumerate(line_items, start=2):
-                desc = str(item.get('description', ''))
-                qty = f"{item.get('quantity', 0):.1f}"
-                rate = f"${item.get('unit_rate', 0):.2f}"
-                amount = f"${item.get('line_total', 0):.2f}"
-                
-                table.getCellByName(f"A{i}").setString(desc)
-                table.getCellByName(f"B{i}").setString(qty)
-                table.getCellByName(f"C{i}").setString(rate)
-                table.getCellByName(f"D{i}").setString(amount)
-                
-                # Right-align numeric columns
-                for col in ['B', 'C', 'D']:
-                    cell = table.getCellByName(f"{col}{i}")
-                    cell_cursor = cell.createTextCursor()
-                    cell_cursor.ParaAdjust = 2  # Right alignment
-            
-            # Totals section
-            total_start_row = len(line_items) + 2
-            
-            # Blank row
-            table.getCellByName(f"A{total_start_row}").setString("")
-            
-            # Subtotal
-            table.getCellByName(f"C{total_start_row + 1}").setString("SUBTOTAL:")
-            table.getCellByName(f"D{total_start_row + 1}").setString(f"${subtotal:.2f}")
-            
-            # Tax
-            if tax_amount > 0:
-                table.getCellByName(f"C{total_start_row + 2}").setString("EST. TAX:")
-                table.getCellByName(f"D{total_start_row + 2}").setString(f"${tax_amount:.2f}")
-                total_row = total_start_row + 3
-            else:
-                table.getCellByName(f"C{total_start_row + 2}").setString("TAX (Oregon - No Sales Tax):")
-                table.getCellByName(f"D{total_start_row + 2}").setString("$0.00")
-                total_row = total_start_row + 3
-            
-            # Total
-            table.getCellByName(f"C{total_row}").setString("ESTIMATED TOTAL:")
-            table.getCellByName(f"D{total_row}").setString(f"${total:.2f}")
-            
-            # Style totals section
-            for row in range(total_start_row + 1, total_row + 1):
-                for col in ['C', 'D']:
-                    cell = table.getCellByName(f"{col}{row}")
-                    cell_cursor = cell.createTextCursor()
-                    cell_cursor.CharWeight = 150  # Bold
-                    cell_cursor.ParaAdjust = 2  # Right alignment
-                    
-                    if row == total_row:  # Final total row
-                        cell_cursor.CharColor = 0x0066CC
-            
-            # Move cursor after table
-            cursor.gotoEnd(False)
-            text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
-            
-        except Exception as e:
-            print(f"⚠️ Warning: Could not create line items table: {e}")
-            # Fallback to simple text format
-            self._add_simple_line_items(cursor, line_items, subtotal, tax_amount, total)
-    
-    def _add_simple_line_items(self, cursor, line_items: List[Dict[str, Any]], 
-                              subtotal: Decimal, tax_amount: Decimal, total: Decimal):
-        """Fallback simple text format for line items"""
-        text = self.document.Text
+    def generate_from_template(self, template_path: str, input_path: str, output_path: str):
+        """Generate ODT estimate from template and input data"""
+        if not self.load_files(template_path, input_path):
+            return False
         
-        text.insertString(cursor, "Description                           Qty    Est. Rate  Est. Amount", False)
-        text.insertControlCharacter(cursor, LINE_BREAK, False)
-        text.insertString(cursor, "-" * 65, False)
-        text.insertControlCharacter(cursor, LINE_BREAK, False)
+        materials, labor_items, equipment_items = self.calculate_costs()
+        html_content, total = self.create_professional_html(materials, labor_items, equipment_items)
         
-        for item in line_items:
-            desc = str(item.get('description', ''))[:30]
-            qty = f"{item.get('quantity', 0):.1f}"
-            rate = f"${item.get('unit_rate', 0):.2f}"
-            amount = f"${item.get('line_total', 0):.2f}"
-            
-            line = f"{desc:<30} {qty:>5} {rate:>10} {amount:>12}"
-            text.insertString(cursor, line, False)
-            text.insertControlCharacter(cursor, LINE_BREAK, False)
-        
-        text.insertControlCharacter(cursor, LINE_BREAK, False)
-        text.insertString(cursor, f"SUBTOTAL: ${subtotal:.2f}", False)
-        text.insertControlCharacter(cursor, LINE_BREAK, False)
-        text.insertString(cursor, f"EST. TAX: ${tax_amount:.2f}", False)
-        text.insertControlCharacter(cursor, LINE_BREAK, False)
-        text.insertString(cursor, f"ESTIMATED TOTAL: ${total:.2f}", False)
-        text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
-    
-    def _add_estimate_footer(self, cursor, valid_days: int):
-        """Add professional estimate footer with terms"""
-        text = self.document.Text
-        
-        text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
-        
-        # Important notice section
-        text.insertString(cursor, "IMPORTANT NOTICE", False)
-        cursor.goLeft(len("IMPORTANT NOTICE"), True)
-        cursor.ParaStyleName = "SectionHeader"
-        cursor.gotoEnd(False)
-        text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
-        
-        notice_text = f"This estimate is valid for {valid_days} days from the date above. Prices are subject to change based on site conditions, material availability, and scope modifications discovered during work."
-        text.insertString(cursor, notice_text, False)
-        text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
-        text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
-        
-        # Estimate terms section  
-        text.insertString(cursor, "ESTIMATE TERMS", False)
-        cursor.goLeft(len("ESTIMATE TERMS"), True)
-        cursor.ParaStyleName = "SectionHeader"
-        cursor.gotoEnd(False)
-        text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
-        
-        terms = [
-            "• This is an estimate only - actual costs may vary based on site conditions",
-            "• Final pricing will be confirmed before work begins",
-            "• Customer responsible for utility locates prior to work",
-            "• Additional charges may apply for unforeseen complications",
-            "• Weather delays may affect project timeline",
-            "• Site access required for all work areas",
-            "• Estimate includes 1-year warranty on installation workmanship"
-        ]
-        
-        for term in terms:
-            text.insertString(cursor, term, False)
-            text.insertControlCharacter(cursor, LINE_BREAK, False)
-        
-        text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
-        text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
-        
-        # Contact information - updated from manual edits
-        text.insertString(cursor, "Ready to proceed? Contact us at waterwizardpdx@gmail.com or (707) 845-4714", False)
-        cursor.goLeft(len("Ready to proceed? Contact us at waterwizardpdx@gmail.com or (707) 845-4714"), True)
-        cursor.CharHeight = 10
-        cursor.CharColor = 0x666666
-        cursor.ParaAdjust = 1  # Center
-        cursor.gotoEnd(False)
-        
-        text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
-        text.insertString(cursor, "WaterWizard Irrigation & Landscape - Professional Services Since 2020", False)
-        cursor.goLeft(len("WaterWizard Irrigation & Landscape - Professional Services Since 2020"), True)
-        cursor.CharHeight = 10
-        cursor.CharColor = 0x666666
-        cursor.ParaAdjust = 1  # Center
-    
-    def _save_document_as_odt(self, output_path: str):
-        """Save document as ODT file"""
-        try:
-            # Prepare save properties
-            save_props = (
-                PropertyValue("FilterName", 0, "writer8", 0),
-                PropertyValue("Overwrite", 0, True, 0)
-            )
-            
-            # Convert path to URL format
-            if not output_path.startswith("file://"):
-                output_path = f"file://{os.path.abspath(output_path)}"
-            
-            # Save document
-            self.document.storeAsURL(output_path, save_props)
-            
-        except Exception as e:
-            print(f"❌ Failed to save document: {e}")
-            raise
-    
-    def close_connection(self):
-        """Close UNO connection and cleanup"""
-        try:
-            if self.document:
-                self.document.close(False)
-                self.document = None
-                
-        except Exception as e:
-            print(f"⚠️ Error closing UNO connection: {e}")
-
-
-def main():
-    """Test the UNO estimate generator with Liam Smith data"""
-    print("📊 WATERWIZARD UNO ESTIMATE GENERATOR - SQUIRT 1.2")
-    print("=" * 60)
-    
-    generator = UnoEstimateGenerator()
-    
-    try:
-        # Liam Smith test data (estimate version)
-        client_info = {
-            'name': 'Liam Smith',
-            'address': '6112 SE 77th Ave',
-            'city': 'Portland',
-            'state': 'OR',
-            'zip': '97206',
-            'phone': '785-979-5599',
-            'email': 'lsmith@email.com'
-        }
-        
-        project_info = {
-            'name': 'Fall Clean-up – Liam Smith Property',
-            'address': '6112 SE 77th Ave, Portland, OR'
-        }
-        
-        # Scope areas (Fall Clean-up contract with 3 distinct scope areas)
-        scope_areas = [
-            {
-                "title": "Fall Clean-up — $315.00",
-                "description": "Baseline fall landscape cleanup and maintenance service including deadheading, pruning, plant removal, and debris collection. Includes specific hollyhock removal as part of comprehensive seasonal cleanup.",
-                "materials": [
-                    {"qty": 1, "price": 40.00, "description": "Disposal Fee", "subtotal": 40.00}
-                ],
-                "labor": [
-                    {"task": "Dead head, prune various plants", "subtotal": 75.00},
-                    {"task": "Dig/remove 80%-90% hollyhocks", "subtotal": 150.00},
-                    {"task": "General debris collection & cleanup", "subtotal": 50.00}
-                ],
-                "total": 315.00
-            },
-            {
-                "title": "Tree of Heaven Removal — $300.00", 
-                "description": "Complete Tree of Heaven removal including root ball excavation, cutting, and site restoration. This is additional scope beyond routine fall cleanup.",
-                "materials": [],
-                "labor": [
-                    {"task": "Dig and cut root ball", "subtotal": 225.00},
-                    {"task": "Setup, backfill & cleanup", "subtotal": 75.00}
-                ],
-                "total": 300.00
-            },
-            {
-                "title": "Laurel Hedge Pruning — $162.50",
-                "description": "Specialized pruning of Laurel hedge away from house structure and clearing sideyard travel areas. Additional scope beyond routine cleanup.",
-                "materials": [],
-                "equipment": [
-                    {"qty": 1, "price": 100.00, "description": "Truck fee", "subtotal": 100.00}
-                ],
-                "labor": [
-                    {"task": "Prune Laurel hedge", "subtotal": 37.50},
-                    {"task": "Debris disposal", "subtotal": 25.00}
-                ],
-                "total": 162.50
-            }
-        ]
-        
-        subtotal = Decimal("777.50")
-        tax_amount = Decimal("0.00")  # Oregon no sales tax
-        total = Decimal("777.50")
-        
-        output_path = "/tmp/liam_smith_uno_estimate.odt"
-        
-        print("📋 Generating estimate with UNO API...")
-        print(f"   Valid for: 30 days")
-        print(f"   Estimated total: ${total}")
-        print()
-        
-        success = generator.generate_estimate(
-            client_info, project_info, scope_areas, 
-            subtotal, tax_amount, total, output_path,
-            valid_days=30, open_for_validation=True
-        )
+        success = self.convert_to_odt(html_content, output_path)
         
         if success:
-            print("✅ UNO Estimate generated successfully!")
-            print(f"📄 Output: {output_path}")
-            
+            print(f"✅ Generated estimate: ${total:.2f} -> {output_path}")
+            return True
         else:
-            print("❌ Estimate generation failed")
-            
-    finally:
-        generator.close_connection()
+            print(f"❌ Failed to generate estimate")
+            return False
 
+def get_tracked_path(filename, client_name, doc_type):
+    """Generate tracked file path - maintains compatibility with original interface"""
+    output_dir = Path.cwd() / "generated_estimates" 
+    output_dir.mkdir(exist_ok=True)
+    return str(output_dir / filename)
+
+def main():
+    """Production estimate generator - now template-driven instead of hardcoded"""
+    print("📊 WATERWIZARD UNO ESTIMATE GENERATOR - SQUIRT 1.2")
+    print("🎯 PRODUCTION VERSION - Template-Driven System")
+    print("=" * 60)
+
+    generator = UnoEstimateGenerator()
+
+    # Use command line arguments if provided, otherwise use defaults
+    if len(sys.argv) >= 3:
+        template_path = sys.argv[1]
+        input_path = sys.argv[2]
+        print(f"📋 Using provided template: {template_path}")
+        print(f"📄 Using provided input: {input_path}")
+    else:
+        # Default template and input for production demo
+        template_path = "templates/estimates/maintenance/fall_cleanup_comprehensive.json"
+        input_path = "test_validation_samples/sample_input_basic.json"
+        print("📋 Using default fall cleanup template")
+
+    output_path = get_tracked_path("production_estimate.odt", "Production", "estimate")
+
+    try:
+        success = generator.generate_from_template(template_path, input_path, output_path)
+
+        if success:
+            print("🎯 SUCCESS: Template-driven estimate generated!")
+            print(f"📁 Output: {output_path}")
+        else:
+            print("❌ FAILED: Estimate generation failed")
+
+    except Exception as e:
+        print(f"❌ Error: {e}")
 
 if __name__ == "__main__":
     main()

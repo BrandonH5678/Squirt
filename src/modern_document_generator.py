@@ -18,6 +18,7 @@ import json
 from template_processor import TemplateProcessor
 from tax_rules import TaxRulesEngine
 from fixed_odt_generator import FixedODTGenerator, open_document_for_human_review
+from modern_html_document_generator import ModernHtmlDocumentGenerator
 
 class ModernDocumentGenerator:
     """
@@ -30,8 +31,9 @@ class ModernDocumentGenerator:
         self.template_dir = Path(__file__).parent / "document_templates"
         self.template_dir.mkdir(exist_ok=True)
         
-        # Initialize the fixed ODT generator
+        # Initialize both legacy and modern generators
         self.odt_generator = FixedODTGenerator()
+        self.html_generator = ModernHtmlDocumentGenerator()
         
         # Create base templates if they don't exist
         self._ensure_base_templates()
@@ -497,6 +499,34 @@ class ModernDocumentGenerator:
             odt_file.writestr('content.xml', content_xml)
             odt_file.writestr('styles.xml', styles_xml)
             odt_file.writestr('meta.xml', meta_xml)
+
+    def generate_professional_contract_html(self, client_info: dict, project_info: dict,
+                                           templates_with_params: list, output_path: str) -> bool:
+        """Generate a professional contract using modern HTML>ODT pipeline"""
+        print(f"🔧 Using modern HTML>ODT pipeline for contract generation...")
+        
+        try:
+            success = self.html_generator.generate_contract(
+                client_info, project_info, templates_with_params, output_path
+            )
+            
+            if success:
+                print(f"✅ Modern HTML contract generated: {output_path}")
+                return True
+            else:
+                print(f"❌ Modern HTML contract generation failed")
+                return False
+                
+        except Exception as e:
+            print(f"❌ HTML contract generation error: {e}")
+            # Fall back to legacy method
+            print(f"🔄 Falling back to legacy ODT generation...")
+            try:
+                self.generate_professional_contract(client_info, project_info, templates_with_params, output_path)
+                return True
+            except Exception as legacy_e:
+                print(f"❌ Legacy fallback also failed: {legacy_e}")
+                return False
 
     def generate_professional_contract(self, client_info: dict, project_info: dict, 
                                      templates_with_params: list, output_path: str) -> str:

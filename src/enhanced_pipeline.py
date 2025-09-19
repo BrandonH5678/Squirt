@@ -475,11 +475,12 @@ class EnhancedPipeline:
                                 client_info, project_info, templates_with_params, odt_path
                             )
                             
-                            # Convert to PDF
-                            pdf_path = self.modern_generator.convert_to_pdf(odt_path)
+                            # Skip automatic PDF conversion - use GUI screenshots for validation instead
+                            # PDF can be generated manually if needed for client delivery
+                            # pdf_path = self.modern_generator.convert_to_pdf(odt_path)
                             
                             # IMPORTANT: Copy to client folder for easy human access
-                            client_files = [odt_path, pdf_path]
+                            client_files = [odt_path]
                             client_folder = self.file_organizer.organize_client_documents(
                                 client_name, project_name, client_files, copy_files=True
                             )

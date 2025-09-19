@@ -1,0 +1,213 @@
+{
+  "template_id": "retaining_wall_block",
+  "category": "hardscape",
+  "subcategory": "retaining_walls",
+  "title_format": "Retaining Wall - Segmental Block ({wall_length} lf, {wall_height} ft high)",
+  "description": "Segmental retaining block wall construction with proper base preparation, drainage, and backfill",
+  "assumptions": [
+    "Wall height under 4 feet (no engineering required)",
+    "Normal soil conditions for excavation",
+    "Access for equipment and materials",
+    "Standard residential application"
+  ],
+  "parameters": {
+    "wall_length": {
+      "type": "number",
+      "description": "Length of retaining wall in linear feet",
+      "default": 40,
+      "unit": "lf",
+      "min": 8,
+      "max": 200
+    },
+    "wall_height": {
+      "type": "number",
+      "description": "Height of retaining wall in feet",
+      "default": 3,
+      "unit": "ft",
+      "min": 1,
+      "max": 4
+    },
+    "block_type": {
+      "type": "select",
+      "description": "Type of retaining wall block",
+      "default": "allan_block",
+      "options": ["allan_block", "versa_lok", "keystone", "belgard"]
+    },
+    "drainage_required": {
+      "type": "select",
+      "description": "Drainage system behind wall",
+      "default": "standard",
+      "options": ["minimal", "standard", "enhanced"]
+    }
+  },
+  "materials": [
+    {
+      "code": "BLOCK_RETAINING_ALLAN",
+      "description": "Allan Block retaining wall units",
+      "unit": "each",
+      "qty_formula": "wall_length * wall_height * 3.2",
+      "default_qty": 384,
+      "unit_cost": 4.25,
+      "markup": 0.30,
+      "specifications": ["Concrete segmental block", "Interlocking design", "Natural gray color"]
+    },
+    {
+      "code": "GRAVEL_BASE_ROCK",
+      "description": "3/4 inch base rock for foundation",
+      "unit": "yard",
+      "qty_formula": "wall_length * 1.5 * 0.5 / 27",
+      "default_qty": 1.11,
+      "unit_cost": 42.00,
+      "markup": 0.25,
+      "specifications": ["Crushed base rock", "3/4 inch minus", "Compactable"]
+    },
+    {
+      "code": "GRAVEL_DRAIN_ROCK",
+      "description": "Drain rock, 3/4 inch minus",
+      "unit": "yard", 
+      "qty_formula": "wall_length * wall_height * 2 / 27",
+      "default_qty": 8.89,
+      "unit_cost": 45.00,
+      "markup": 0.25,
+      "specifications": ["Washed drain rock", "Behind wall drainage"]
+    },
+    {
+      "code": "FABRIC_FILTER_HEAVY",
+      "description": "Heavy duty filter fabric",
+      "unit": "sf",
+      "qty_formula": "wall_length * wall_height * 1.5",
+      "default_qty": 180,
+      "unit_cost": 0.85,
+      "markup": 0.25,
+      "specifications": ["Non-woven geotextile", "8 oz minimum weight"]
+    },
+    {
+      "code": "PIPE_PERF_4IN_SOLID",
+      "description": "Perforated drain pipe, 4 inch",
+      "unit": "lf",
+      "qty_formula": "wall_length",
+      "default_qty": 40,
+      "unit_cost": 3.25,
+      "markup": 0.25
+    },
+    {
+      "code": "BACKFILL_STRUCTURAL",
+      "description": "Structural backfill material",
+      "unit": "yard",
+      "qty_formula": "wall_length * wall_height * 1.5 / 27",
+      "default_qty": 6.67,
+      "unit_cost": 38.00,
+      "markup": 0.25,
+      "specifications": ["Angular crushed rock", "Excellent drainage", "Structural grade"]
+    }
+  ],
+  "labor": [
+    {
+      "task_code": "EXCAVATE_FOUNDATION",
+      "description": "Excavate foundation trench for retaining wall",
+      "hrs_formula": "wall_length * wall_height * 0.15",
+      "default_hrs": 18.0,
+      "skill_level": "install",
+      "crew_size": 2,
+      "equipment_required": ["excavator_mini", "hand_tools"]
+    },
+    {
+      "task_code": "PREPARE_BASE",
+      "description": "Install and compact base rock foundation",
+      "hrs_formula": "wall_length * 0.2",
+      "default_hrs": 8.0,
+      "skill_level": "install",
+      "crew_size": 2,
+      "equipment_required": ["compactor_plate", "level", "screed"]
+    },
+    {
+      "task_code": "LAY_FIRST_COURSE",
+      "description": "Set and level first course of blocks",
+      "hrs_formula": "wall_length * 0.25",
+      "default_hrs": 10.0,
+      "skill_level": "install",
+      "crew_size": 2,
+      "equipment_required": ["level", "rubber_mallet", "string_line"]
+    },
+    {
+      "task_code": "BUILD_WALL_COURSES",
+      "description": "Install subsequent block courses",
+      "hrs_formula": "wall_length * (wall_height - 1) * 0.2",
+      "default_hrs": 16.0,
+      "skill_level": "install",
+      "crew_size": 2,
+      "equipment_required": ["level", "rubber_mallet"]
+    },
+    {
+      "task_code": "INSTALL_DRAINAGE",
+      "description": "Install drainage pipe and backfill with rock",
+      "hrs_formula": "wall_length * 0.15",
+      "default_hrs": 6.0,
+      "skill_level": "install",
+      "crew_size": 1,
+      "equipment_required": ["trenching_shovel"]
+    },
+    {
+      "task_code": "BACKFILL_STRUCTURAL",
+      "description": "Place and compact structural backfill",
+      "hrs_formula": "wall_length * wall_height * 0.12",
+      "default_hrs": 14.4,
+      "skill_level": "install",
+      "crew_size": 2,
+      "equipment_required": ["compactor_plate", "rake"]
+    },
+    {
+      "task_code": "FINAL_GRADE",
+      "description": "Final grading and cleanup",
+      "hrs_formula": "wall_length * 0.08",
+      "default_hrs": 3.2,
+      "skill_level": "maintenance",
+      "crew_size": 1
+    }
+  ],
+  "equipment": [
+    {
+      "equipment_code": "EXCAVATOR_MINI",
+      "description": "Mini excavator for foundation work",
+      "usage_formula": "2",
+      "usage_unit": "day",
+      "daily_rate": 350.00
+    },
+    {
+      "equipment_code": "COMPACTOR_PLATE",
+      "description": "Plate compactor for base preparation",
+      "usage_formula": "2",
+      "usage_unit": "day", 
+      "daily_rate": 85.00
+    },
+    {
+      "equipment_code": "CREW_TRUCK_1TON",
+      "description": "Crew truck with tools",
+      "usage_formula": "3",
+      "usage_unit": "day",
+      "daily_rate": 125.00
+    }
+  ],
+  "validation_expectations": {
+    "required_sections": ["Materials & Equipment", "Labor & Installation"],
+    "required_fields": ["wall_length", "wall_height"],
+    "math_checks": [
+      {
+        "formula": "materials_total + labor_total = subtotal",
+        "tolerance": 0.01,
+        "description": "Subtotal calculation check"
+      }
+    ],
+    "outlier_checks": [
+      {
+        "field": "cost_per_lf",
+        "min_value": 75,
+        "max_value": 300,
+        "warning_message": "Cost per linear foot outside typical range ($75-$300)"
+      }
+    ]
+  },
+  "render_hints": {
+    "section_order": ["project_header", "materials_equipment", "labor_installation", "project_totals"]
+  }
+}

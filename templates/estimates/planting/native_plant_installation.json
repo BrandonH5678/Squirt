@@ -1,0 +1,217 @@
+{
+  "template_id": "native_plant_installation",
+  "category": "planting",
+  "subcategory": "native_plants",
+  "title_format": "Native Plant Installation ({plant_count} plants, {bed_area} sq ft)",
+  "description": "Installation of PNW native plants including soil preparation, planting, and establishment care",
+  "assumptions": [
+    "Site suitable for native plant establishment",
+    "Normal soil conditions with amendment",
+    "Standard residential planting application",
+    "Plants sourced from local native plant suppliers"
+  ],
+  "parameters": {
+    "plant_count": {
+      "type": "number",
+      "description": "Total number of native plants",
+      "default": 20,
+      "min": 5,
+      "max": 100
+    },
+    "bed_area": {
+      "type": "number",
+      "description": "Total planting bed area",
+      "default": 400,
+      "unit": "sq ft",
+      "min": 50,
+      "max": 2000
+    },
+    "plant_mix": {
+      "type": "select",
+      "description": "Native plant mix type",
+      "default": "mixed_woodland",
+      "options": ["mixed_woodland", "shade_understory", "sunny_meadow", "riparian_buffer"]
+    },
+    "soil_prep": {
+      "type": "select",
+      "description": "Level of soil preparation needed",
+      "default": "standard",
+      "options": ["minimal", "standard", "extensive"]
+    }
+  },
+  "materials": [
+    {
+      "code": "PLANTS_NATIVE_1GAL",
+      "description": "Native plants, 1 gallon containers",
+      "unit": "each",
+      "qty_formula": "plant_count * 0.6",
+      "default_qty": 12,
+      "unit_cost": 18.50,
+      "markup": 0.35,
+      "specifications": ["Locally sourced", "Container grown", "PNW native species"]
+    },
+    {
+      "code": "PLANTS_NATIVE_2GAL",
+      "description": "Native plants, 2 gallon containers",
+      "unit": "each", 
+      "qty_formula": "plant_count * 0.3",
+      "default_qty": 6,
+      "unit_cost": 32.00,
+      "markup": 0.35,
+      "specifications": ["Locally sourced", "Larger specimens", "PNW native species"]
+    },
+    {
+      "code": "PLANTS_NATIVE_5GAL",
+      "description": "Native shrubs, 5 gallon containers",
+      "unit": "each",
+      "qty_formula": "plant_count * 0.1",
+      "default_qty": 2,
+      "unit_cost": 65.00,
+      "markup": 0.35,
+      "specifications": ["Native shrubs", "Specimen size", "Established root system"]
+    },
+    {
+      "code": "SOIL_AMENDMENT_COMPOST",
+      "description": "Organic compost for soil amendment",
+      "unit": "yard",
+      "qty_formula": "bed_area * 0.01",
+      "default_qty": 4,
+      "unit_cost": 55.00,
+      "markup": 0.25,
+      "specifications": ["Organic certified", "Well-aged compost", "Local sourced"]
+    },
+    {
+      "code": "MULCH_NATIVE_CEDAR",
+      "description": "Cedar mulch appropriate for native plants",
+      "unit": "yard",
+      "qty_formula": "bed_area / 100",
+      "default_qty": 4,
+      "unit_cost": 52.00,
+      "markup": 0.30,
+      "specifications": ["Western red cedar", "Medium chips", "Native-friendly"]
+    },
+    {
+      "code": "FERTILIZER_ORGANIC_NATIVE",
+      "description": "Organic fertilizer suitable for native plants",
+      "unit": "bag",
+      "qty_formula": "ceil(bed_area / 1000)",
+      "default_qty": 1,
+      "unit_cost": 24.75,
+      "markup": 0.30,
+      "specifications": ["Low nitrogen", "Mycorrhizal innoculant", "Native plant formula"]
+    },
+    {
+      "code": "EROSION_CONTROL_JUTE",
+      "description": "Jute erosion control netting",
+      "unit": "sf",
+      "qty_formula": "bed_area * 0.3",
+      "default_qty": 120,
+      "unit_cost": 0.45,
+      "markup": 0.25,
+      "specifications": ["Biodegradable jute", "Slope protection", "Natural fiber"]
+    }
+  ],
+  "labor": [
+    {
+      "task_code": "SITE_PREP_NATIVE",
+      "description": "Site preparation for native plant installation",
+      "hrs_formula": "bed_area * 0.008",
+      "default_hrs": 3.2,
+      "skill_level": "install",
+      "crew_size": 2,
+      "equipment_required": ["hand_tools", "rake", "wheelbarrow"]
+    },
+    {
+      "task_code": "SOIL_AMENDMENT_TILL",
+      "description": "Incorporate compost and amendments",
+      "hrs_formula": "bed_area * 0.004",
+      "default_hrs": 1.6,
+      "skill_level": "install",
+      "crew_size": 2,
+      "equipment_required": ["rototiller", "rake", "shovel"]
+    },
+    {
+      "task_code": "LAYOUT_NATIVE_DESIGN",
+      "description": "Layout plants according to native design principles",
+      "hrs_formula": "plant_count * 0.15",
+      "default_hrs": 3.0,
+      "skill_level": "design",
+      "crew_size": 1,
+      "equipment_required": ["measuring_tape", "marking_paint", "design_plans"]
+    },
+    {
+      "task_code": "PLANT_INSTALLATION",
+      "description": "Dig holes and install native plants",
+      "hrs_formula": "plant_count * 0.4",
+      "default_hrs": 8.0,
+      "skill_level": "install",
+      "crew_size": 2,
+      "equipment_required": ["shovels", "planting_bar", "measuring_tape"]
+    },
+    {
+      "task_code": "MULCH_APPLICATION",
+      "description": "Apply appropriate mulch around plantings",
+      "hrs_formula": "bed_area * 0.003",
+      "default_hrs": 1.2,
+      "skill_level": "maintenance",
+      "crew_size": 2,
+      "equipment_required": ["rakes", "wheelbarrow"]
+    },
+    {
+      "task_code": "INITIAL_WATERING",
+      "description": "Initial deep watering of all plantings",
+      "hrs_formula": "plant_count * 0.08",
+      "default_hrs": 1.6,
+      "skill_level": "maintenance",
+      "crew_size": 1,
+      "equipment_required": ["hose", "watering_wand"]
+    },
+    {
+      "task_code": "EROSION_CONTROL_INSTALL",
+      "description": "Install erosion control measures if needed",
+      "hrs_formula": "bed_area * 0.002",
+      "default_hrs": 0.8,
+      "skill_level": "install",
+      "crew_size": 1,
+      "equipment_required": ["staples", "hammer"]
+    }
+  ],
+  "equipment": [
+    {
+      "equipment_code": "CREW_TRUCK_1TON",
+      "description": "Crew truck for plant and material transport",
+      "usage_formula": "2",
+      "usage_unit": "day",
+      "daily_rate": 125.00
+    },
+    {
+      "equipment_code": "ROTOTILLER_WALK_BEHIND",
+      "description": "Walk-behind rototiller for soil preparation",
+      "usage_formula": "0.5",
+      "usage_unit": "day",
+      "daily_rate": 65.00
+    }
+  ],
+  "validation_expectations": {
+    "required_sections": ["Materials & Equipment", "Labor & Installation"],
+    "required_fields": ["plant_count", "bed_area"],
+    "math_checks": [
+      {
+        "formula": "materials_total + labor_total = subtotal",
+        "tolerance": 0.01,
+        "description": "Subtotal calculation check"
+      }
+    ],
+    "outlier_checks": [
+      {
+        "field": "cost_per_plant",
+        "min_value": 25,
+        "max_value": 125,
+        "warning_message": "Cost per plant outside typical native plant range ($25-$125)"
+      }
+    ]
+  },
+  "render_hints": {
+    "section_order": ["project_header", "materials_equipment", "labor_installation", "project_totals"]
+  }
+}

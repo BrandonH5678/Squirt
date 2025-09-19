@@ -1,0 +1,410 @@
+[
+  {
+    "template": "lawn_fertilization_program",
+    "status": "passed",
+    "message": "All checks passed",
+    "checks": {
+      "currency_format": true,
+      "company_info": {
+        "company_name": true,
+        "license_number": false,
+        "phone_number": true,
+        "email": true
+      },
+      "required_sections": {
+        "missing": [],
+        "passed": true
+      },
+      "content_length": {
+        "length": 1772,
+        "adequate": true
+      },
+      "template_content": true
+    },
+    "content_preview": "MAINTENANCE CONTRACT Fall Clean-up \u2013 Liam Smith Property Estimate Number: EST-20250904-001 Date: September 04, 2025 Valid Until: October 04, 2025 ESTIMATE FOR: Liam Smith PROJECT: Fall Clean-up \u2013 Liam..."
+  },
+  {
+    "template": "french_drain_linear",
+    "status": "passed",
+    "message": "All checks passed",
+    "checks": {
+      "currency_format": true,
+      "company_info": {
+        "company_name": true,
+        "license_number": false,
+        "phone_number": true,
+        "email": true
+      },
+      "required_sections": {
+        "missing": [],
+        "passed": true
+      },
+      "content_length": {
+        "length": 1772,
+        "adequate": true
+      },
+      "template_content": false
+    },
+    "content_preview": "MAINTENANCE CONTRACT Fall Clean-up \u2013 Liam Smith Property Estimate Number: EST-20250904-001 Date: September 04, 2025 Valid Until: October 04, 2025 ESTIMATE FOR: Liam Smith PROJECT: Fall Clean-up \u2013 Liam..."
+  },
+  {
+    "template": "shrub_pruning_dormant",
+    "status": "passed",
+    "message": "All checks passed",
+    "checks": {
+      "currency_format": true,
+      "company_info": {
+        "company_name": true,
+        "license_number": false,
+        "phone_number": true,
+        "email": true
+      },
+      "required_sections": {
+        "missing": [],
+        "passed": true
+      },
+      "content_length": {
+        "length": 1772,
+        "adequate": true
+      },
+      "template_content": true
+    },
+    "content_preview": "MAINTENANCE CONTRACT Fall Clean-up \u2013 Liam Smith Property Estimate Number: EST-20250904-001 Date: September 04, 2025 Valid Until: October 04, 2025 ESTIMATE FOR: Liam Smith PROJECT: Fall Clean-up \u2013 Liam..."
+  },
+  {
+    "template": "drip_retrofit_existing",
+    "status": "passed",
+    "message": "All checks passed",
+    "checks": {
+      "currency_format": true,
+      "company_info": {
+        "company_name": true,
+        "license_number": false,
+        "phone_number": true,
+        "email": true
+      },
+      "required_sections": {
+        "missing": [],
+        "passed": true
+      },
+      "content_length": {
+        "length": 1772,
+        "adequate": true
+      },
+      "template_content": false
+    },
+    "content_preview": "MAINTENANCE CONTRACT Fall Clean-up \u2013 Liam Smith Property Estimate Number: EST-20250904-001 Date: September 04, 2025 Valid Until: October 04, 2025 ESTIMATE FOR: Liam Smith PROJECT: Fall Clean-up \u2013 Liam..."
+  },
+  {
+    "template": "lawn_installation_seed",
+    "status": "passed",
+    "message": "All checks passed",
+    "checks": {
+      "currency_format": true,
+      "company_info": {
+        "company_name": true,
+        "license_number": false,
+        "phone_number": true,
+        "email": true
+      },
+      "required_sections": {
+        "missing": [],
+        "passed": true
+      },
+      "content_length": {
+        "length": 1772,
+        "adequate": true
+      },
+      "template_content": true
+    },
+    "content_preview": "MAINTENANCE CONTRACT Fall Clean-up \u2013 Liam Smith Property Estimate Number: EST-20250904-001 Date: September 04, 2025 Valid Until: October 04, 2025 ESTIMATE FOR: Liam Smith PROJECT: Fall Clean-up \u2013 Liam..."
+  },
+  {
+    "template": "composite_deck_install",
+    "status": "passed",
+    "message": "All checks passed",
+    "checks": {
+      "currency_format": true,
+      "company_info": {
+        "company_name": true,
+        "license_number": false,
+        "phone_number": true,
+        "email": true
+      },
+      "required_sections": {
+        "missing": [],
+        "passed": true
+      },
+      "content_length": {
+        "length": 1772,
+        "adequate": true
+      },
+      "template_content": true
+    },
+    "content_preview": "MAINTENANCE CONTRACT Fall Clean-up \u2013 Liam Smith Property Estimate Number: EST-20250904-001 Date: September 04, 2025 Valid Until: October 04, 2025 ESTIMATE FOR: Liam Smith PROJECT: Fall Clean-up \u2013 Liam..."
+  },
+  {
+    "template": "native_plant_installation",
+    "status": "passed",
+    "message": "All checks passed",
+    "checks": {
+      "currency_format": true,
+      "company_info": {
+        "company_name": true,
+        "license_number": false,
+        "phone_number": true,
+        "email": true
+      },
+      "required_sections": {
+        "missing": [],
+        "passed": true
+      },
+      "content_length": {
+        "length": 1772,
+        "adequate": true
+      },
+      "template_content": false
+    },
+    "content_preview": "MAINTENANCE CONTRACT Fall Clean-up \u2013 Liam Smith Property Estimate Number: EST-20250904-001 Date: September 04, 2025 Valid Until: October 04, 2025 ESTIMATE FOR: Liam Smith PROJECT: Fall Clean-up \u2013 Liam..."
+  },
+  {
+    "template": "landscape_lighting_premium",
+    "status": "passed",
+    "message": "All checks passed",
+    "checks": {
+      "currency_format": true,
+      "company_info": {
+        "company_name": true,
+        "license_number": false,
+        "phone_number": true,
+        "email": true
+      },
+      "required_sections": {
+        "missing": [],
+        "passed": true
+      },
+      "content_length": {
+        "length": 1772,
+        "adequate": true
+      },
+      "template_content": true
+    },
+    "content_preview": "MAINTENANCE CONTRACT Fall Clean-up \u2013 Liam Smith Property Estimate Number: EST-20250904-001 Date: September 04, 2025 Valid Until: October 04, 2025 ESTIMATE FOR: Liam Smith PROJECT: Fall Clean-up \u2013 Liam..."
+  },
+  {
+    "template": "path_lighting_economy",
+    "status": "passed",
+    "message": "All checks passed",
+    "checks": {
+      "currency_format": true,
+      "company_info": {
+        "company_name": true,
+        "license_number": false,
+        "phone_number": true,
+        "email": true
+      },
+      "required_sections": {
+        "missing": [],
+        "passed": true
+      },
+      "content_length": {
+        "length": 1772,
+        "adequate": true
+      },
+      "template_content": false
+    },
+    "content_preview": "MAINTENANCE CONTRACT Fall Clean-up \u2013 Liam Smith Property Estimate Number: EST-20250904-001 Date: September 04, 2025 Valid Until: October 04, 2025 ESTIMATE FOR: Liam Smith PROJECT: Fall Clean-up \u2013 Liam..."
+  },
+  {
+    "template": "sprinkler_zone_turf",
+    "status": "passed",
+    "message": "All checks passed",
+    "checks": {
+      "currency_format": true,
+      "company_info": {
+        "company_name": true,
+        "license_number": false,
+        "phone_number": true,
+        "email": true
+      },
+      "required_sections": {
+        "missing": [],
+        "passed": true
+      },
+      "content_length": {
+        "length": 1772,
+        "adequate": true
+      },
+      "template_content": true
+    },
+    "content_preview": "MAINTENANCE CONTRACT Fall Clean-up \u2013 Liam Smith Property Estimate Number: EST-20250904-001 Date: September 04, 2025 Valid Until: October 04, 2025 ESTIMATE FOR: Liam Smith PROJECT: Fall Clean-up \u2013 Liam..."
+  },
+  {
+    "template": "sprinkler_zone_rocky",
+    "status": "passed",
+    "message": "All checks passed",
+    "checks": {
+      "currency_format": true,
+      "company_info": {
+        "company_name": true,
+        "license_number": false,
+        "phone_number": true,
+        "email": true
+      },
+      "required_sections": {
+        "missing": [],
+        "passed": true
+      },
+      "content_length": {
+        "length": 1772,
+        "adequate": true
+      },
+      "template_content": true
+    },
+    "content_preview": "MAINTENANCE CONTRACT Fall Clean-up \u2013 Liam Smith Property Estimate Number: EST-20250904-001 Date: September 04, 2025 Valid Until: October 04, 2025 ESTIMATE FOR: Liam Smith PROJECT: Fall Clean-up \u2013 Liam..."
+  },
+  {
+    "template": "drip_zone_shrubs",
+    "status": "passed",
+    "message": "All checks passed",
+    "checks": {
+      "currency_format": true,
+      "company_info": {
+        "company_name": true,
+        "license_number": false,
+        "phone_number": true,
+        "email": true
+      },
+      "required_sections": {
+        "missing": [],
+        "passed": true
+      },
+      "content_length": {
+        "length": 1772,
+        "adequate": true
+      },
+      "template_content": true
+    },
+    "content_preview": "MAINTENANCE CONTRACT Fall Clean-up \u2013 Liam Smith Property Estimate Number: EST-20250904-001 Date: September 04, 2025 Valid Until: October 04, 2025 ESTIMATE FOR: Liam Smith PROJECT: Fall Clean-up \u2013 Liam..."
+  },
+  {
+    "template": "fall_cleanup_comprehensive",
+    "status": "passed",
+    "message": "All checks passed",
+    "checks": {
+      "currency_format": true,
+      "company_info": {
+        "company_name": true,
+        "license_number": false,
+        "phone_number": true,
+        "email": true
+      },
+      "required_sections": {
+        "missing": [],
+        "passed": true
+      },
+      "content_length": {
+        "length": 1772,
+        "adequate": true
+      },
+      "template_content": true
+    },
+    "content_preview": "MAINTENANCE CONTRACT Fall Clean-up \u2013 Liam Smith Property Estimate Number: EST-20250904-001 Date: September 04, 2025 Valid Until: October 04, 2025 ESTIMATE FOR: Liam Smith PROJECT: Fall Clean-up \u2013 Liam..."
+  },
+  {
+    "template": "retaining_wall_block",
+    "status": "passed",
+    "message": "All checks passed",
+    "checks": {
+      "currency_format": true,
+      "company_info": {
+        "company_name": true,
+        "license_number": false,
+        "phone_number": true,
+        "email": true
+      },
+      "required_sections": {
+        "missing": [],
+        "passed": true
+      },
+      "content_length": {
+        "length": 1772,
+        "adequate": true
+      },
+      "template_content": false
+    },
+    "content_preview": "MAINTENANCE CONTRACT Fall Clean-up \u2013 Liam Smith Property Estimate Number: EST-20250904-001 Date: September 04, 2025 Valid Until: October 04, 2025 ESTIMATE FOR: Liam Smith PROJECT: Fall Clean-up \u2013 Liam..."
+  },
+  {
+    "template": "sprinkler_valve_replacement",
+    "status": "passed",
+    "message": "All checks passed",
+    "checks": {
+      "currency_format": true,
+      "company_info": {
+        "company_name": true,
+        "license_number": false,
+        "phone_number": true,
+        "email": true
+      },
+      "required_sections": {
+        "missing": [],
+        "passed": true
+      },
+      "content_length": {
+        "length": 1772,
+        "adequate": true
+      },
+      "template_content": true
+    },
+    "content_preview": "MAINTENANCE CONTRACT Fall Clean-up \u2013 Liam Smith Property Estimate Number: EST-20250904-001 Date: September 04, 2025 Valid Until: October 04, 2025 ESTIMATE FOR: Liam Smith PROJECT: Fall Clean-up \u2013 Liam..."
+  },
+  {
+    "template": "tree_removal_residential",
+    "status": "passed",
+    "message": "All checks passed",
+    "checks": {
+      "currency_format": true,
+      "company_info": {
+        "company_name": true,
+        "license_number": false,
+        "phone_number": true,
+        "email": true
+      },
+      "required_sections": {
+        "missing": [],
+        "passed": true
+      },
+      "content_length": {
+        "length": 1772,
+        "adequate": true
+      },
+      "template_content": true
+    },
+    "content_preview": "MAINTENANCE CONTRACT Fall Clean-up \u2013 Liam Smith Property Estimate Number: EST-20250904-001 Date: September 04, 2025 Valid Until: October 04, 2025 ESTIMATE FOR: Liam Smith PROJECT: Fall Clean-up \u2013 Liam..."
+  },
+  {
+    "template": "mulch_bed_refresh",
+    "status": "passed",
+    "message": "All checks passed",
+    "checks": {
+      "currency_format": true,
+      "company_info": {
+        "company_name": true,
+        "license_number": false,
+        "phone_number": true,
+        "email": true
+      },
+      "required_sections": {
+        "missing": [],
+        "passed": true
+      },
+      "content_length": {
+        "length": 1772,
+        "adequate": true
+      },
+      "template_content": true
+    },
+    "content_preview": "MAINTENANCE CONTRACT Fall Clean-up \u2013 Liam Smith Property Estimate Number: EST-20250904-001 Date: September 04, 2025 Valid Until: October 04, 2025 ESTIMATE FOR: Liam Smith PROJECT: Fall Clean-up \u2013 Liam..."
+  }
+]

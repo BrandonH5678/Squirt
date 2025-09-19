@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>WaterWizard Estimate - French Drain Installation (50 linear feet)</title>
+    <style>
+        @page {
+            size: letter;
+            margin: 0.75in;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            font-size: 11pt;
+            line-height: 1.4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30pt;
+            border-bottom: 3pt solid #2E5984;
+            padding-bottom: 15pt;
+        }
+        .company {
+            font-size: 20pt;
+            font-weight: bold;
+            color: #2E5984;
+            margin-bottom: 5pt;
+        }
+        .tagline {
+            font-size: 12pt;
+            color: #666;
+            margin: 3pt 0;
+        }
+        .credentials {
+            font-size: 10pt;
+            color: #888;
+            font-style: italic;
+        }
+        .estimate-label {
+            font-size: 16pt;
+            font-weight: bold;
+            color: #2E5984;
+            margin: 20pt 0 15pt 0;
+            text-align: center;
+            background-color: #f8f9fa;
+            padding: 10pt;
+            border: 1pt solid #dee2e6;
+        }
+        .client-section {
+            display: table;
+            width: 100%;
+            margin: 20pt 0;
+        }
+        .client-left, .client-right {
+            display: table-cell;
+            width: 50%;
+            vertical-align: top;
+        }
+        .client-right {
+            text-align: right;
+        }
+        .field {
+            margin: 5pt 0;
+        }
+        .field-label {
+            font-weight: bold;
+            color: #2E5984;
+        }
+        .section {
+            margin: 25pt 0;
+        }
+        .section-title {
+            font-size: 14pt;
+            font-weight: bold;
+            color: #2E5984;
+            margin-bottom: 15pt;
+            padding: 8pt 0;
+            border-bottom: 2pt solid #2E5984;
+        }
+        .project-title {
+            font-size: 16pt;
+            font-weight: bold;
+            color: #1a365d;
+            margin: 20pt 0 10pt 0;
+            text-align: center;
+        }
+        .description {
+            background-color: #f8f9fa;
+            padding: 15pt;
+            border-left: 4pt solid #2E5984;
+            margin: 15pt 0;
+            font-style: italic;
+        }
+        .assumptions {
+            background-color: #fff3cd;
+            border: 1pt solid #ffeaa7;
+            padding: 12pt;
+            margin: 15pt 0;
+        }
+        .assumptions h4 {
+            margin: 0 0 10pt 0;
+            color: #856404;
+        }
+        .assumptions ul {
+            margin: 0;
+            padding-left: 20pt;
+        }
+        .assumptions li {
+            margin: 3pt 0;
+            color: #856404;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15pt 0;
+            font-size: 10pt;
+        }
+        th {
+            background-color: #2E5984;
+            color: white;
+            padding: 10pt 8pt;
+            text-align: left;
+            font-weight: bold;
+        }
+        td {
+            padding: 8pt;
+            border-bottom: 1pt solid #dee2e6;
+            vertical-align: top;
+        }
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        .currency {
+            text-align: right;
+            font-weight: bold;
+        }
+        .center {
+            text-align: center;
+        }
+        .section-total {
+            background-color: #e9ecef;
+            font-weight: bold;
+            border-top: 2pt solid #2E5984;
+        }
+        .totals {
+            margin: 30pt 0;
+            background-color: #f8f9fa;
+            border: 2pt solid #2E5984;
+            padding: 20pt;
+        }
+        .total-row {
+            display: table;
+            width: 100%;
+            margin: 8pt 0;
+        }
+        .total-label {
+            display: table-cell;
+            font-size: 12pt;
+            padding: 5pt 0;
+        }
+        .total-amount {
+            display: table-cell;
+            text-align: right;
+            font-size: 12pt;
+            font-weight: bold;
+            padding: 5pt 0;
+            width: 120pt;
+        }
+        .grand-total {
+            border-top: 2pt solid #2E5984;
+            padding-top: 10pt;
+            margin-top: 10pt;
+        }
+        .grand-total .total-label {
+            font-size: 16pt;
+            font-weight: bold;
+            color: #2E5984;
+        }
+        .grand-total .total-amount {
+            font-size: 16pt;
+            font-weight: bold;
+            color: #2E5984;
+        }
+        .footer {
+            margin-top: 40pt;
+            padding-top: 20pt;
+            border-top: 1pt solid #dee2e6;
+            font-size: 10pt;
+            color: #666;
+        }
+        .footer-section {
+            display: table-cell;
+            width: 33%;
+            vertical-align: top;
+        }
+        .specs {
+            font-size: 9pt;
+            color: #666;
+            margin-top: 3pt;
+        }
+        .equipment-note {
+            font-size: 9pt;
+            color: #666;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="company">WaterWizard Irrigation & Landscape</div>
+        <div class="tagline">Professional Landscape Services</div>
+        <div class="credentials">Licensed • Bonded • Insured • CCB #CCB #12345</div>
+    </div>
+    
+    <div class="estimate-label">ESTIMATE</div>
+    
+    <div class="client-section">
+        <div class="client-left">
+            <div class="field">
+                <span class="field-label">Client:</span> Test Client
+            </div>
+            <div class="field">
+                <span class="field-label">Property:</span> 123 Test Street, Portland, OR 97205
+            </div>
+            <div class="field">
+                <span class="field-label">Phone:</span> (503) 555-0123
+            </div>
+            <div class="field">
+                <span class="field-label">Email:</span> test@example.com
+            </div>
+        </div>
+        <div class="client-right">
+            <div class="field">
+                <span class="field-label">Date:</span> 2025-01-04
+            </div>
+            <div class="field">
+                <span class="field-label">Valid:</span> 30 days
+            </div>
+            <div class="field">
+                <span class="field-label">Contact:</span> (503) 555-0199
+            </div>
+            <div class="field">
+                <span class="field-label">Email:</span> info@waterwizard.com
+            </div>
+        </div>
+    </div>
+    
+    <div class="project-title">French Drain Installation (50 linear feet)</div>
+    
+    <div class="description">
+        <strong>Project Description:</strong> French drain system installation with perforated pipe, gravel surround, and surface restoration
+    </div>
+    
+    <div class="assumptions">
+        <h4>Project Assumptions:</h4>
+        <ul>
+            <li>Normal soil conditions for trenching</li>
+            <li>Adequate fall for proper drainage</li>
+            <li>Access for equipment and materials</li>
+            <li>No conflicts with utilities or structures</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <div class="section-title">MATERIALS & EQUIPMENT</div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 50%;">Description</th>
+                    <th style="width: 8%;">Qty</th>
+                    <th style="width: 8%;">Unit</th>
+                    <th style="width: 12%;">Unit Cost</th>
+                    <th style="width: 12%;">Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td>
+                        Perforated drain pipe, 4 inch diameter
+                        <div class="specs">• Perforated HDPE or PVC • Wrapped in filter fabric • Schedule 35 minimum</div>
+                    </td>
+                    <td class="center">50</td>
+                    <td class="center">lf</td>
+                    <td class="currency">$4.06</td>
+                    <td class="currency">$203.12</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Filter fabric, non-woven geotextile
+                        <div class="specs">• Non-woven geotextile • 4 oz minimum</div>
+                    </td>
+                    <td class="center">200</td>
+                    <td class="center">sf</td>
+                    <td class="currency">$0.81</td>
+                    <td class="currency">$162.50</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Drain pipe coupling
+                    </td>
+                    <td class="center">3</td>
+                    <td class="center">each</td>
+                    <td class="currency">$5.62</td>
+                    <td class="currency">$16.88</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Drain outlet with pop-up emitter
+                    </td>
+                    <td class="center">1</td>
+                    <td class="center">each</td>
+                    <td class="currency">$45.50</td>
+                    <td class="currency">$45.50</td>
+                </tr>
+
+                <tr class="section-total">
+                    <td colspan="4"><strong>MATERIALS TOTAL</strong></td>
+                    <td class="currency"><strong>$428.00</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <div class="section-title">EQUIPMENT</div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 50%;">Description</th>
+                    <th style="width: 10%;">Quantity</th>
+                    <th style="width: 10%;">Unit</th>
+                    <th style="width: 12%;">Rate</th>
+                    <th style="width: 12%;">Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td>Crew truck with tools and materials</td>
+                    <td class="center">2</td>
+                    <td class="center">day</td>
+                    <td class="currency">$125.00</td>
+                    <td class="currency">$250.00</td>
+                </tr>
+
+                <tr class="section-total">
+                    <td colspan="4"><strong>EQUIPMENT TOTAL</strong></td>
+                    <td class="currency"><strong>$250.00</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <div class="section-title">LABOR & INSTALLATION</div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 50%;">Task Description</th>
+                    <th style="width: 8%;">Hours</th>
+                    <th style="width: 8%;">Crew</th>
+                    <th style="width: 12%;">Rate</th>
+                    <th style="width: 12%;">Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <td>
+                        Excavate trench for french drain
+                        <div class="equipment-note">Equipment: trenching_shovel, pick, level</div>
+                    </td>
+                    <td class="center">7.5</td>
+                    <td class="center">1</td>
+                    <td class="currency">$65.00/hr</td>
+                    <td class="currency">$487.50</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Install filter fabric and base rock
+                    </td>
+                    <td class="center">4.0</td>
+                    <td class="center">1</td>
+                    <td class="currency">$65.00/hr</td>
+                    <td class="currency">$260.00</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Install perforated pipe with proper grade
+                        <div class="equipment-note">Equipment: transit_level, grade_rod</div>
+                    </td>
+                    <td class="center">2.5</td>
+                    <td class="center">1</td>
+                    <td class="currency">$65.00/hr</td>
+                    <td class="currency">$162.50</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Complete backfill with rock and soil
+                    </td>
+                    <td class="center">5.0</td>
+                    <td class="center">1</td>
+                    <td class="currency">$45.00/hr</td>
+                    <td class="currency">$225.00</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        Restore surface with seed and mulch
+                    </td>
+                    <td class="center">2.0</td>
+                    <td class="center">1</td>
+                    <td class="currency">$45.00/hr</td>
+                    <td class="currency">$90.00</td>
+                </tr>
+
+                <tr class="section-total">
+                    <td colspan="4"><strong>LABOR TOTAL</strong></td>
+                    <td class="currency"><strong>$1225.00</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="totals">
+        <div class="total-row">
+            <div class="total-label">Subtotal:</div>
+            <div class="total-amount">$1903.00</div>
+        </div>
+        <div class="total-row">
+            <div class="total-label">Tax (Oregon):</div>
+            <div class="total-amount">$0.00</div>
+        </div>
+        <div class="total-row grand-total">
+            <div class="total-label">TOTAL:</div>
+            <div class="total-amount">$1903.00</div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <div style="display: table; width: 100%;">
+            <div class="footer-section">
+                <strong>Payment Terms:</strong><br>
+                Due upon completion
+            </div>
+            <div class="footer-section" style="text-align: center;">
+                <strong>Template:</strong> french_drain_linear<br>
+                <strong>Category:</strong> drainage
+            </div>
+            <div class="footer-section" style="text-align: right;">
+                <strong>Generated:</strong> Template-driven<br>
+                (Not hardcoded data)
+            </div>
+        </div>
+    </div>
+</body>
+</html>

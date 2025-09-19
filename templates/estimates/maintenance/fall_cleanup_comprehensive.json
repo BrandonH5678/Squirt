@@ -1,0 +1,191 @@
+{
+  "template_id": "fall_cleanup_comprehensive",
+  "category": "maintenance", 
+  "subcategory": "seasonal_cleanup",
+  "title_format": "Fall Cleanup - Comprehensive Service ({property_size} property)",
+  "description": "Complete fall cleanup service including leaf removal, pruning, gutter cleaning, and winterization prep",
+  "assumptions": [
+    "Typical PNW deciduous tree coverage",
+    "Standard residential property access",
+    "Normal accumulation of fall debris",
+    "Client provides yard waste removal or composting area"
+  ],
+  "parameters": {
+    "property_size": {
+      "type": "select",
+      "description": "Overall property size category",
+      "default": "medium",
+      "options": ["small", "medium", "large", "extra_large"]
+    },
+    "tree_coverage": {
+      "type": "select",
+      "description": "Amount of deciduous tree coverage",
+      "default": "moderate",
+      "options": ["light", "moderate", "heavy", "extreme"]
+    },
+    "lawn_area": {
+      "type": "number",
+      "description": "Approximate lawn area in square feet",
+      "default": 3000,
+      "unit": "sq ft",
+      "min": 500,
+      "max": 15000
+    },
+    "bed_area": {
+      "type": "number",
+      "description": "Planting bed area in square feet", 
+      "default": 800,
+      "unit": "sq ft",
+      "min": 100,
+      "max": 5000
+    },
+    "gutter_cleaning": {
+      "type": "boolean",
+      "description": "Include gutter cleaning service",
+      "default": true
+    }
+  },
+  "materials": [
+    {
+      "code": "BAGS_YARD_WASTE_30GAL",
+      "description": "30 gallon yard waste bags",
+      "unit": "each",
+      "qty_formula": "lawn_area / 500 + bed_area / 200",
+      "default_qty": 10,
+      "unit_cost": 0.75,
+      "markup": 0.25
+    },
+    {
+      "code": "MULCH_BARK_FIR",
+      "description": "Fir bark mulch for bed refresh",
+      "unit": "yard",
+      "qty_formula": "bed_area / 100",
+      "default_qty": 8,
+      "unit_cost": 45.00,
+      "markup": 0.30,
+      "specifications": ["Medium bark chips", "Local PNW sourced"]
+    },
+    {
+      "code": "FERTILIZER_WINTER_BLEND",
+      "description": "Winter fertilizer for lawn winterization",
+      "unit": "bag",
+      "qty_formula": "ceil(lawn_area / 5000)",
+      "default_qty": 1,
+      "unit_cost": 28.50,
+      "markup": 0.30,
+      "specifications": ["Slow release", "Winter formulation", "Covers 5000 sq ft"]
+    }
+  ],
+  "labor": [
+    {
+      "task_code": "LEAF_REMOVAL_LAWN",
+      "description": "Remove leaves from lawn areas with blower and rake",
+      "hrs_formula": "lawn_area * 0.0008 * (tree_coverage == 'light' ? 0.5 : tree_coverage == 'moderate' ? 1.0 : tree_coverage == 'heavy' ? 1.5 : 2.0)",
+      "default_hrs": 2.4,
+      "skill_level": "maintenance",
+      "crew_size": 2,
+      "equipment_required": ["leaf_blower", "rakes", "tarps"]
+    },
+    {
+      "task_code": "CLEAR_BEDS_DEBRIS",
+      "description": "Clear planting beds of leaves and debris",
+      "hrs_formula": "bed_area * 0.003",
+      "default_hrs": 2.4,
+      "skill_level": "maintenance",
+      "crew_size": 2,
+      "equipment_required": ["hand_tools", "pruning_shears"]
+    },
+    {
+      "task_code": "PRUNING_DORMANT",
+      "description": "Dormant season pruning of deciduous shrubs",
+      "hrs_formula": "bed_area * 0.002",
+      "default_hrs": 1.6,
+      "skill_level": "pruning",
+      "crew_size": 1,
+      "equipment_required": ["pruning_shears", "loppers", "hand_saw"]
+    },
+    {
+      "task_code": "MULCH_REFRESH",
+      "description": "Refresh mulch in planting beds",
+      "hrs_formula": "bed_area * 0.001",
+      "default_hrs": 0.8,
+      "skill_level": "maintenance",
+      "crew_size": 2,
+      "equipment_required": ["rakes", "shovels"]
+    },
+    {
+      "task_code": "GUTTER_CLEANING",
+      "description": "Clean gutters and downspouts",
+      "hrs_formula": "gutter_cleaning ? (property_size == 'small' ? 2 : property_size == 'medium' ? 3 : property_size == 'large' ? 4 : 6) : 0",
+      "default_hrs": 3.0,
+      "skill_level": "maintenance", 
+      "crew_size": 1,
+      "equipment_required": ["ladder", "gutter_scoop", "garden_hose"]
+    },
+    {
+      "task_code": "WINTERIZE_IRRIGATION",
+      "description": "Basic irrigation system winterization check",
+      "hrs_formula": "1.5",
+      "default_hrs": 1.5,
+      "skill_level": "irrigation_tech",
+      "crew_size": 1,
+      "equipment_required": ["irrigation_tools"]
+    },
+    {
+      "task_code": "LAWN_FERTILIZER_APP",
+      "description": "Apply winter fertilizer to lawn",
+      "hrs_formula": "lawn_area * 0.0003",
+      "default_hrs": 0.9,
+      "skill_level": "maintenance",
+      "crew_size": 1,
+      "equipment_required": ["spreader", "measuring_cup"]
+    },
+    {
+      "task_code": "CLEANUP_HAUL_DEBRIS",
+      "description": "Load and haul debris to disposal area",
+      "hrs_formula": "lawn_area * 0.0004 + bed_area * 0.0008",
+      "default_hrs": 2.5,
+      "skill_level": "maintenance",
+      "crew_size": 2,
+      "equipment_required": ["truck", "tarps"]
+    }
+  ],
+  "equipment": [
+    {
+      "equipment_code": "CREW_TRUCK_1TON",
+      "description": "Crew truck for tools and debris hauling",
+      "usage_formula": "1",
+      "usage_unit": "day",
+      "daily_rate": 125.00
+    },
+    {
+      "equipment_code": "LEAF_BLOWER_BACKPACK",
+      "description": "Commercial backpack leaf blower",
+      "usage_formula": "1", 
+      "usage_unit": "day",
+      "daily_rate": 45.00
+    }
+  ],
+  "validation_expectations": {
+    "required_sections": ["Materials & Equipment", "Labor & Installation"],
+    "required_fields": ["property_size", "lawn_area", "bed_area"],
+    "math_checks": [
+      {
+        "formula": "materials_total + labor_total = subtotal",
+        "tolerance": 0.01,
+        "description": "Subtotal calculation check"
+      }
+    ],
+    "outlier_checks": [
+      {
+        "field": "total_cost",
+        "min_value": 200,
+        "max_value": 1500,
+        "warning_message": "Total cost outside typical fall cleanup range"
+      }
+    ]
+  },
+  "render_hints": {
+    "section_order": ["project_header", "materials_equipment", "labor_installation", "project_totals"]
+  }
+}

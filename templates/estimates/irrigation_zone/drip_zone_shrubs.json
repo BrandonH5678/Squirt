@@ -1,0 +1,199 @@
+{
+  "template_id": "drip_zone_shrubs",
+  "category": "irrigation_zone",
+  "subcategory": "drip_installation",
+  "title_format": "Drip Zone - Shrub Area ({plant_count} plants, {zone_size} sq ft)",
+  "description": "New drip irrigation zone installation for shrub and plant bed areas with pressure regulation and filtration",
+  "assumptions": [
+    "Normal soil conditions for trenching",
+    "Plants suitable for drip irrigation",
+    "Existing valve or new valve installation point available",
+    "Standard residential plant spacing"
+  ],
+  "parameters": {
+    "plant_count": {
+      "type": "number",
+      "description": "Number of shrubs/plants to irrigate",
+      "default": 15,
+      "min": 3,
+      "max": 50
+    },
+    "zone_size": {
+      "type": "number",
+      "description": "Total square footage of planting area",
+      "default": 300,
+      "unit": "sq ft",
+      "min": 50,
+      "max": 1500
+    },
+    "plant_type": {
+      "type": "select",
+      "description": "Primary plant type for water requirements",
+      "default": "mixed_shrubs",
+      "options": ["mixed_shrubs", "rhododendrons", "native_plants", "perennials"]
+    }
+  },
+  "materials": [
+    {
+      "code": "TUBING_DRIP_POLY_HALF",
+      "description": "Drip tubing, 1/2 inch polyethylene mainline",
+      "unit": "lf",
+      "qty_formula": "125",
+      "default_qty": 125,
+      "unit_cost": 0.35,
+      "markup": 0.25,
+      "specifications": ["UV resistant", "Pressure rated to 25 PSI"]
+    },
+    {
+      "code": "TUBING_DRIP_QUARTER",
+      "description": "1/4 inch distribution tubing",
+      "unit": "lf", 
+      "qty_formula": "plant_count * 3",
+      "default_qty": 45,
+      "unit_cost": 0.18,
+      "markup": 0.25
+    },
+    {
+      "code": "EMITTER_DRIP_2GPH_PC",
+      "description": "Pressure compensating drip emitters, 2 GPH",
+      "unit": "each",
+      "qty_formula": "plant_count * 2",
+      "default_qty": 30,
+      "unit_cost": 1.25,
+      "markup": 0.30,
+      "specifications": ["Self-flushing", "Pressure compensating", "Clog resistant"]
+    },
+    {
+      "code": "FITTING_BARB_TEE_HALF",
+      "description": "Barbed tee fittings, 1/2 inch",
+      "unit": "each",
+      "qty_formula": "plant_count * 0.6",
+      "default_qty": 9,
+      "unit_cost": 0.85,
+      "markup": 0.25
+    },
+    {
+      "code": "FITTING_BARB_TEE_QUARTER",
+      "description": "Barbed tee fittings, 1/4 inch",
+      "unit": "each",
+      "qty_formula": "9",
+      "default_qty": 9,
+      "unit_cost": 0.45,
+      "markup": 0.25
+    },
+    {
+      "code": "PRESSURE_REG_25PSI",
+      "description": "Pressure regulator, 25 PSI",
+      "unit": "each",
+      "qty_formula": "1",
+      "default_qty": 1,
+      "unit_cost": 28.50,
+      "markup": 0.30,
+      "specifications": ["Flow range 5-30 GPM"]
+    },
+    {
+      "code": "FILTER_SCREEN_100MESH",
+      "description": "Screen filter, 100 mesh",
+      "unit": "each",
+      "qty_formula": "1",
+      "default_qty": 1,
+      "unit_cost": 15.75,
+      "markup": 0.30
+    },
+    {
+      "code": "PVC_PIPE_1INCH_SCH40",
+      "description": "1 inch schedule 40 PVC pipe",
+      "unit": "lf",
+      "qty_formula": "2",
+      "default_qty": 2,
+      "unit_cost": 1.25,
+      "markup": 0.25,
+      "specifications": ["Schedule 40", "Pressure rated"]
+    },
+    {
+      "code": "ADAPTER_1INCH_TO_HALF_FEMALE",
+      "description": "1 inch to 1/2 inch schedule 40 female adapter",
+      "unit": "each",
+      "qty_formula": "1",
+      "default_qty": 1,
+      "unit_cost": 2.75,
+      "markup": 0.25,
+      "specifications": ["Female threaded", "Schedule 40 rated"]
+    },
+    {
+      "code": "VALVE_RAIN_BIRD_100DVA",
+      "description": "Rain Bird 100-DVA valve, 3/4 inch",
+      "unit": "each",
+      "qty_formula": "1",
+      "default_qty": 1,
+      "unit_cost": 75.00,
+      "markup": 0.30
+    }
+  ],
+  "labor": [
+    {
+      "task_code": "INSTALL_DRIP_MAINLINE",
+      "description": "Install 1/2 inch mainline tubing",
+      "hrs_formula": "3",
+      "default_hrs": 3.0,
+      "skill_level": "install",
+      "crew_size": 1
+    },
+    {
+      "task_code": "INSTALL_EMITTER_LINES",
+      "description": "Install 1/4 inch lines and emitters at plants",
+      "hrs_formula": "1.5",
+      "default_hrs": 1.5,
+      "skill_level": "install",
+      "crew_size": 1
+    },
+    {
+      "task_code": "SYSTEM_TEST_DRIP",
+      "description": "Test system and adjust flow rates",
+      "hrs_formula": "1.5",
+      "default_hrs": 1.5,
+      "skill_level": "install",
+      "crew_size": 1,
+      "equipment_required": ["pressure_gauge"]
+    },
+    {
+      "task_code": "MULCH_COVERAGE",
+      "description": "Apply mulch over drip lines for protection",
+      "hrs_formula": "1",
+      "default_hrs": 1.0,
+      "skill_level": "maintenance",
+      "crew_size": 1
+    }
+  ],
+  "equipment": [
+    {
+      "equipment_code": "CREW_TRUCK_1TON",
+      "description": "Crew truck with tools and materials",
+      "usage_formula": "1",
+      "usage_unit": "day",
+      "daily_rate": 125.00
+    }
+  ],
+  "validation_expectations": {
+    "required_sections": ["Materials & Equipment", "Labor & Installation"],
+    "required_fields": ["plant_count", "zone_size"],
+    "math_checks": [
+      {
+        "formula": "materials_total + labor_total = subtotal",
+        "tolerance": 0.01,
+        "description": "Subtotal calculation check"
+      }
+    ],
+    "outlier_checks": [
+      {
+        "field": "cost_per_plant",
+        "min_value": 15,
+        "max_value": 75,
+        "warning_message": "Cost per plant outside typical drip range ($15-$75)"
+      }
+    ]
+  },
+  "render_hints": {
+    "section_order": ["project_header", "materials_equipment", "labor_installation", "project_totals"]
+  }
+}

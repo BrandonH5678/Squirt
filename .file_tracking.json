@@ -1,0 +1,52 @@
+{
+  "tracked_files": {
+    "f4b49146": {
+      "path": "/home/johnny5/Squirt/temp_files/waterwizard_batch_export.csv",
+      "client_name": null,
+      "document_type": "needs_review",
+      "created": "2025-09-04T16:16:25.385992",
+      "last_modified": null
+    },
+    "3363f965": {
+      "path": "/home/johnny5/Squirt/temp_files/waterwizard-context.md",
+      "client_name": null,
+      "document_type": "needs_review",
+      "created": "2025-09-04T16:16:25.386353",
+      "last_modified": null
+    },
+    "747c5593": {
+      "path": "/home/johnny5/Squirt/temp_files/liam_smith_uno_estimate.txt",
+      "client_name": null,
+      "document_type": "needs_review",
+      "created": "2025-09-04T16:16:25.412427",
+      "last_modified": null
+    },
+    "83c040b9": {
+      "path": "/home/johnny5/Squirt/temp_files/liam_smith_uno_estimate.odt",
+      "client_name": null,
+      "document_type": "needs_review",
+      "created": "2025-09-04T16:16:25.413347",
+      "last_modified": null
+    },
+    "2afc2f6a": {
+      "path": "/home/johnny5/Squirt/temp_files/liam_smith_uno_estimate.pdf",
+      "client_name": null,
+      "document_type": "needs_review",
+      "created": "2025-09-04T16:16:25.415630",
+      "last_modified": null
+    },
+    "15b589db": {
+      "path": "/home/johnny5/Squirt/Client Files/John Doe/test_estimate.odt",
+      "client_name": "John Doe",
+      "document_type": "estimate",
+      "created": "2025-09-04T16:17:00.692705",
+      "last_modified": null
+    }
+  },
+  "client_mappings": {
+    "John Doe": [
+      "15b589db"
+    ]
+  },
+  "last_scan": "2025-09-04T16:16:25.416217"
+}

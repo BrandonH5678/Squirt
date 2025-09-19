@@ -14,6 +14,7 @@ from typing import Dict, List, Any, Optional
 import subprocess
 import time
 import os
+from file_tracking_system import get_tracked_path
 
 
 class FallCleanupTemplate:
@@ -579,7 +580,7 @@ def main():
             }
         ]
         
-        output_path = "/tmp/fall_cleanup_template_sample.odt"
+        output_path = get_tracked_path("fall_cleanup_template_sample.odt", None, "template")
         
         success = generator.generate_fall_cleanup_contract(
             client_info, cleanup_scope, additional_scopes, output_path

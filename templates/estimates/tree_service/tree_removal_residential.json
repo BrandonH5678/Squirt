@@ -1,0 +1,212 @@
+{
+  "template_id": "tree_removal_residential",
+  "category": "tree_service",
+  "subcategory": "removal",
+  "title_format": "Tree Removal - Residential ({tree_count} trees)",
+  "description": "Professional tree removal service including cutting, cleanup, and stump grinding option",
+  "assumptions": [
+    "Trees accessible by ground-based equipment",
+    "Normal residential property access",
+    "No utility line conflicts",
+    "Standard cleanup and disposal included"
+  ],
+  "parameters": {
+    "tree_count": {
+      "type": "number",
+      "description": "Number of trees to remove",
+      "default": 2,
+      "min": 1,
+      "max": 10
+    },
+    "tree_size": {
+      "type": "select",
+      "description": "Average tree size category",
+      "default": "medium",
+      "options": ["small", "medium", "large", "extra_large"]
+    },
+    "access_difficulty": {
+      "type": "select",
+      "description": "Access difficulty for equipment",
+      "default": "normal",
+      "options": ["easy", "normal", "difficult", "crane_required"]
+    },
+    "stump_grinding": {
+      "type": "boolean",
+      "description": "Include stump grinding service",
+      "default": true
+    },
+    "cleanup_level": {
+      "type": "select",
+      "description": "Level of cleanup service",
+      "default": "complete",
+      "options": ["basic", "complete", "premium"]
+    }
+  },
+  "materials": [
+    {
+      "code": "FUEL_CHAINSAW_MIX",
+      "description": "Two-cycle fuel mix for chainsaws",
+      "unit": "gallon",
+      "qty_formula": "tree_count * (tree_size == 'small' ? 0.5 : tree_size == 'medium' ? 1 : tree_size == 'large' ? 2 : 3)",
+      "default_qty": 2,
+      "unit_cost": 8.50,
+      "markup": 0.25,
+      "specifications": ["Pre-mixed fuel", "Professional grade", "Low emission"]
+    },
+    {
+      "code": "CHAIN_OIL_BAR",
+      "description": "Bar and chain oil for chainsaws",
+      "unit": "quart",
+      "qty_formula": "tree_count * 0.5",
+      "default_qty": 1,
+      "unit_cost": 12.75,
+      "markup": 0.25,
+      "specifications": ["High-tack formula", "Environmental friendly", "All weather"]
+    },
+    {
+      "code": "ROPE_RIGGING_ARBORIST",
+      "description": "Professional arborist rigging rope",
+      "unit": "lf",
+      "qty_formula": "tree_count * (tree_size == 'large' || tree_size == 'extra_large' ? 100 : 0)",
+      "default_qty": 0,
+      "unit_cost": 2.25,
+      "markup": 0.25,
+      "specifications": ["11mm climbing rope", "High strength", "Low stretch"]
+    }
+  ],
+  "labor": [
+    {
+      "task_code": "TREE_ASSESSMENT_PLAN",
+      "description": "Assess trees and plan removal strategy",
+      "hrs_formula": "tree_count * 0.25",
+      "default_hrs": 0.5,
+      "skill_level": "arborist",
+      "crew_size": 1,
+      "equipment_required": ["measuring_tape", "assessment_tools", "safety_gear"]
+    },
+    {
+      "task_code": "TREE_REMOVAL_SMALL",
+      "description": "Remove small trees (under 20 feet)",
+      "hrs_formula": "tree_size == 'small' ? tree_count * (access_difficulty == 'easy' ? 1.5 : access_difficulty == 'normal' ? 2 : access_difficulty == 'difficult' ? 3 : 4) : 0",
+      "default_hrs": 0,
+      "skill_level": "arborist",
+      "crew_size": 2,
+      "equipment_required": ["chainsaw", "hand_saw", "safety_gear", "rigging_equipment"]
+    },
+    {
+      "task_code": "TREE_REMOVAL_MEDIUM",
+      "description": "Remove medium trees (20-40 feet)",
+      "hrs_formula": "tree_size == 'medium' ? tree_count * (access_difficulty == 'easy' ? 3 : access_difficulty == 'normal' ? 4 : access_difficulty == 'difficult' ? 6 : 8) : 0",
+      "default_hrs": 8.0,
+      "skill_level": "arborist",
+      "crew_size": 3,
+      "equipment_required": ["chainsaw", "pole_saw", "climbing_gear", "rigging_equipment"]
+    },
+    {
+      "task_code": "TREE_REMOVAL_LARGE",
+      "description": "Remove large trees (40-60 feet)",
+      "hrs_formula": "tree_size == 'large' ? tree_count * (access_difficulty == 'easy' ? 6 : access_difficulty == 'normal' ? 8 : access_difficulty == 'difficult' ? 12 : 16) : 0",
+      "default_hrs": 0,
+      "skill_level": "arborist",
+      "crew_size": 3,
+      "equipment_required": ["chainsaw", "climbing_gear", "rigging_equipment", "bucket_truck"]
+    },
+    {
+      "task_code": "TREE_REMOVAL_EXTRA_LARGE",
+      "description": "Remove extra large trees (over 60 feet)",
+      "hrs_formula": "tree_size == 'extra_large' ? tree_count * (access_difficulty == 'crane_required' ? 12 : 20) : 0",
+      "default_hrs": 0,
+      "skill_level": "arborist",
+      "crew_size": 4,
+      "equipment_required": ["chainsaw", "climbing_gear", "crane", "rigging_equipment"]
+    },
+    {
+      "task_code": "STUMP_GRINDING",
+      "description": "Grind stumps to 6 inches below grade",
+      "hrs_formula": "stump_grinding ? tree_count * (tree_size == 'small' ? 0.5 : tree_size == 'medium' ? 0.75 : tree_size == 'large' ? 1.25 : 2) : 0",
+      "default_hrs": 1.5,
+      "skill_level": "equipment_operator",
+      "crew_size": 1,
+      "equipment_required": ["stump_grinder", "safety_gear"]
+    },
+    {
+      "task_code": "CLEANUP_BASIC",
+      "description": "Basic cleanup and debris removal",
+      "hrs_formula": "cleanup_level == 'basic' ? tree_count * (tree_size == 'small' ? 1 : tree_size == 'medium' ? 2 : tree_size == 'large' ? 3 : 4) : 0",
+      "default_hrs": 0,
+      "skill_level": "maintenance",
+      "crew_size": 2,
+      "equipment_required": ["rakes", "chainsaws", "truck"]
+    },
+    {
+      "task_code": "CLEANUP_COMPLETE",
+      "description": "Complete cleanup and site restoration",
+      "hrs_formula": "cleanup_level == 'complete' ? tree_count * (tree_size == 'small' ? 1.5 : tree_size == 'medium' ? 2.5 : tree_size == 'large' ? 4 : 5) : 0",
+      "default_hrs": 5.0,
+      "skill_level": "maintenance",
+      "crew_size": 2,
+      "equipment_required": ["rakes", "blower", "chipper", "truck"]
+    },
+    {
+      "task_code": "CLEANUP_PREMIUM",
+      "description": "Premium cleanup with fine debris removal",
+      "hrs_formula": "cleanup_level == 'premium' ? tree_count * (tree_size == 'small' ? 2 : tree_size == 'medium' ? 3 : tree_size == 'large' ? 5 : 6) : 0",
+      "default_hrs": 0,
+      "skill_level": "maintenance",
+      "crew_size": 3,
+      "equipment_required": ["rakes", "blower", "chipper", "vacuum", "truck"]
+    }
+  ],
+  "equipment": [
+    {
+      "equipment_code": "CHIPPER_TRUCK",
+      "description": "Truck-mounted wood chipper",
+      "usage_formula": "1",
+      "usage_unit": "day",
+      "daily_rate": 275.00
+    },
+    {
+      "equipment_code": "STUMP_GRINDER_TRACK",
+      "description": "Track-mounted stump grinder",
+      "usage_formula": "stump_grinding ? 0.5 : 0",
+      "usage_unit": "day",
+      "daily_rate": 325.00
+    },
+    {
+      "equipment_code": "BUCKET_TRUCK_55FT",
+      "description": "55-foot bucket truck for access",
+      "usage_formula": "tree_size == 'large' || tree_size == 'extra_large' ? 1 : 0",
+      "usage_unit": "day",
+      "daily_rate": 385.00
+    },
+    {
+      "equipment_code": "CRANE_75TON",
+      "description": "75-ton crane for difficult removals",
+      "usage_formula": "access_difficulty == 'crane_required' ? 1 : 0",
+      "usage_unit": "day",
+      "daily_rate": 1250.00
+    }
+  ],
+  "validation_expectations": {
+    "required_sections": ["Materials & Equipment", "Labor & Installation"],
+    "required_fields": ["tree_count", "tree_size"],
+    "math_checks": [
+      {
+        "formula": "materials_total + labor_total = subtotal",
+        "tolerance": 0.01,
+        "description": "Subtotal calculation check"
+      }
+    ],
+    "outlier_checks": [
+      {
+        "field": "cost_per_tree",
+        "min_value": 300,
+        "max_value": 3000,
+        "warning_message": "Cost per tree outside typical removal range ($300-$3000)"
+      }
+    ]
+  },
+  "render_hints": {
+    "section_order": ["project_header", "materials_equipment", "labor_installation", "project_totals"]
+  }
+}
