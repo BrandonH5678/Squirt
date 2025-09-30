@@ -156,16 +156,16 @@ class VisionValidator:
                 
                 if screenshot_path:
                     # Encode screenshot for vision API
-                screenshot_base64 = self._encode_image_to_base64(screenshot_path)
+                    screenshot_base64 = self._encode_image_to_base64(screenshot_path)
                 
-                if screenshot_base64:
-                    return {
-                        'success': True,
-                        'screenshot_path': screenshot_path,
-                        'screenshot_base64': screenshot_base64,
-                        'timestamp': datetime.now().isoformat(),
-                        'document_path': odt_path
-                    }
+                    if screenshot_base64:
+                        return {
+                            'success': True,
+                            'screenshot_path': screenshot_path,
+                            'screenshot_base64': screenshot_base64,
+                            'timestamp': datetime.now().isoformat(),
+                            'document_path': odt_path
+                        }
             
             # Fallback: Return document opened indicator
             return self._fallback_manual_validation(odt_path)
@@ -327,7 +327,7 @@ class VisionValidator:
             return {
                 'success': True,
                 'method': 'manual_validation',
-                'pdf_path': str(pdf_path),
+                'odt_path': str(odt_path),
                 'message': 'Document opened for manual validation',
                 'timestamp': datetime.now().isoformat(),
                 'next_steps': [

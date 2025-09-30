@@ -36,10 +36,16 @@ class UnoEstimateGenerator:
             return False
 
     def _process_parameters(self):
-        """Process template parameters and set values from defaults"""
+        """Process template parameters and set values from input or defaults"""
         template_params = self.template_data.get('parameters', {})
+        input_params = self.input_data.get('parameters', {})
+
         for param_name, param_def in template_params.items():
-            self.parameters[param_name] = param_def.get('default', 0)
+            # Use input value if available, otherwise use default
+            if param_name in input_params:
+                self.parameters[param_name] = input_params[param_name]
+            else:
+                self.parameters[param_name] = param_def.get('default', 0)
 
         print(f"📊 Processed parameters: {self.parameters}")
 
@@ -135,10 +141,11 @@ class UnoEstimateGenerator:
         
         # Labor rates by skill level
         labor_rates = {
-            'maintenance': 45.00, 'install': 65.00, 'pruning': 75.00, 
+            'maintenance': 45.00, 'install': 65.00, 'pruning': 75.00,
             'electrical': 85.00, 'irrigation_tech': 75.00, 'certified_applicator': 70.00,
             'carpenter': 80.00, 'arborist': 95.00, 'equipment_operator': 70.00,
-            'design': 85.00, 'concrete': 70.00, 'customer_service': 50.00
+            'design': 85.00, 'concrete': 70.00, 'customer_service': 50.00,
+            'excavation': 72.00
         }
         
         # Process materials

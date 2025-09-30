@@ -1,0 +1,44 @@
+# Squirt - WaterWizard Document Automation System
+# Core dependencies for voice processing and document generation
+
+# Voice Processing (Standalone)
+faster-whisper>=1.2.0
+openai-whisper>=20250625
+torch>=2.0.0
+torchaudio>=2.0.0
+
+# Audio Processing
+pydub>=0.25.1
+numpy>=1.21.0
+
+# Document Generation (LibreOffice UNO)
+# Note: LibreOffice must be installed separately on the system
+
+# PDF and Image Processing
+Pillow>=9.0.0
+pdf2image>=1.16.0
+PyPDF2>=3.0.0
+
+# Data Processing
+pandas>=1.5.0
+openpyxl>=3.0.10
+
+# CLI and Utilities
+click>=8.0.0
+colorama>=0.4.4
+tqdm>=4.64.0
+
+# Development Dependencies (Optional)
+pytest>=7.0.0
+pytest-cov>=4.0.0
+black>=22.0.0
+flake8>=5.0.0
+
+# System Monitoring (for thermal safety)
+psutil>=5.9.0
+
+# Database (for voice queue management)
+# Note: sqlite3 is included with Python standard library
+
+# Vision Processing (Claude API integration)
+# Note: Requires API key configuration for vision validation

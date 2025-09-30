@@ -1,0 +1,278 @@
+{
+  "template_id": "area_excavation_foundation",
+  "category": "excavation",
+  "subcategory": "foundation_preparation",
+  "title_format": "Area Excavation & Foundation Prep ({excavation_area} sq ft, {excavation_depth} inches deep)",
+  "description": "Area excavation for foundation preparation including demo, topsoil removal, excavation to competent soil, base preparation and compaction",
+  "assumptions": [
+    "Normal soil conditions for excavation",
+    "Topsoil depth 6-12 inches requiring removal",
+    "Access for equipment and materials",
+    "No underground utilities conflicts",
+    "Standard residential/commercial application"
+  ],
+  "parameters": {
+    "excavation_area": {
+      "type": "number",
+      "description": "Total area to be excavated in square feet",
+      "default": 200,
+      "unit": "sf",
+      "min": 50,
+      "max": 2000
+    },
+    "excavation_depth": {
+      "type": "number",
+      "description": "Total excavation depth from grade in inches",
+      "default": 18,
+      "unit": "inches",
+      "min": 6,
+      "max": 48
+    },
+    "topsoil_depth": {
+      "type": "number",
+      "description": "Depth of topsoil to be stripped in inches",
+      "default": 8,
+      "unit": "inches",
+      "min": 4,
+      "max": 18
+    },
+    "project_type": {
+      "type": "select",
+      "description": "Type of construction project",
+      "default": "deck_patio",
+      "options": ["deck_patio", "shed_foundation", "retaining_wall", "water_feature", "ramp_stairs", "general_foundation"]
+    },
+    "base_material": {
+      "type": "select",
+      "description": "Base material for foundation",
+      "default": "crushed_gravel",
+      "options": ["crushed_gravel", "concrete_sand", "road_base", "none"]
+    },
+    "demo_required": {
+      "type": "select",
+      "description": "Demolition and removal required",
+      "default": "minimal",
+      "options": ["none", "minimal", "moderate", "extensive"]
+    },
+    "access_difficulty": {
+      "type": "select",
+      "description": "Site access for equipment",
+      "default": "normal",
+      "options": ["easy", "normal", "difficult", "hand_dig_only"]
+    }
+  },
+  "materials": [
+    {
+      "code": "BASE_CRUSHED_GRAVEL",
+      "description": "Crushed gravel base, 3/4 inch minus",
+      "unit": "yard",
+      "qty_formula": "excavation_area * (4 / 12) / 27",
+      "default_qty": 2.47,
+      "unit_cost": 42.00,
+      "markup": 0.25,
+      "specifications": [
+        "Angular crushed stone",
+        "3/4 inch minus gradation",
+        "Suitable for compaction"
+      ],
+      "condition": "base_material == 'crushed_gravel'"
+    },
+    {
+      "code": "BASE_CONCRETE_SAND",
+      "description": "Concrete sand for bedding",
+      "unit": "yard",
+      "qty_formula": "excavation_area * (2 / 12) / 27",
+      "default_qty": 1.23,
+      "unit_cost": 38.00,
+      "markup": 0.25,
+      "specifications": ["Washed concrete sand", "Uniform gradation"],
+      "condition": "base_material == 'concrete_sand'"
+    },
+    {
+      "code": "BASE_ROAD_BASE",
+      "description": "Road base aggregate, compactable",
+      "unit": "yard",
+      "qty_formula": "excavation_area * (4 / 12) / 27",
+      "default_qty": 2.47,
+      "unit_cost": 45.00,
+      "markup": 0.25,
+      "specifications": ["Dense graded aggregate", "Road base specification"],
+      "condition": "base_material == 'road_base'"
+    },
+    {
+      "code": "FABRIC_LANDSCAPE",
+      "description": "Landscape fabric, woven geotextile",
+      "unit": "sf",
+      "qty_formula": "excavation_area * 1.1",
+      "default_qty": 220,
+      "unit_cost": 0.45,
+      "markup": 0.25,
+      "specifications": ["Woven polypropylene", "Soil separation"],
+      "condition": "base_material != 'none'"
+    },
+    {
+      "code": "DISPOSAL_SOIL",
+      "description": "Soil disposal and hauling",
+      "unit": "yard",
+      "qty_formula": "excavation_area * excavation_depth / 12 / 27 * 1.25",
+      "default_qty": 3.47,
+      "unit_cost": 25.00,
+      "markup": 0.15,
+      "specifications": ["Includes hauling and disposal fees", "25% swell factor applied"],
+      "condition": "demo_required == 'extensive'"
+    }
+  ],
+  "labor": [
+    {
+      "task_code": "DEMO_SITE_PREP",
+      "description": "Site demolition and preparation",
+      "hrs_formula": "excavation_area * 0.015 * 1.0",
+      "default_hrs": 3.0,
+      "skill_level": "maintenance",
+      "crew_size": 2,
+      "equipment_required": ["hand_tools", "wheelbarrow"],
+      "condition": "demo_required != 'none'"
+    },
+    {
+      "task_code": "STRIP_TOPSOIL",
+      "description": "Strip and stockpile topsoil layer",
+      "hrs_formula": "excavation_area * 0.008 * 1.0",
+      "default_hrs": 1.6,
+      "skill_level": "maintenance",
+      "crew_size": 1,
+      "equipment_required": ["spade", "rake", "wheelbarrow"]
+    },
+    {
+      "task_code": "EXCAVATE_TO_GRADE",
+      "description": "Excavate area to specified depth and grade",
+      "hrs_formula": "excavation_area * excavation_depth / 12 / 27 * 2.5",
+      "default_hrs": 9.38,
+      "skill_level": "excavation",
+      "crew_size": 2,
+      "equipment_required": ["hand_tools", "level"],
+      "notes": "Time varies significantly with soil conditions and access"
+    },
+    {
+      "task_code": "FINE_GRADE_SUBGRADE",
+      "description": "Fine grade subgrade to proper elevation",
+      "hrs_formula": "excavation_area * 0.01",
+      "default_hrs": 2.0,
+      "skill_level": "install",
+      "crew_size": 1,
+      "equipment_required": ["hand_tools", "transit_level", "grade_rod"]
+    },
+    {
+      "task_code": "INSTALL_FABRIC",
+      "description": "Install landscape fabric over subgrade",
+      "hrs_formula": "excavation_area * 0.003",
+      "default_hrs": 0.6,
+      "skill_level": "maintenance",
+      "crew_size": 1,
+      "equipment_required": ["utility_knife", "landscape_pins"],
+      "condition": "base_material != 'none'"
+    },
+    {
+      "task_code": "PLACE_BASE_MATERIAL",
+      "description": "Place and spread base material",
+      "hrs_formula": "excavation_area * 0.008",
+      "default_hrs": 1.6,
+      "skill_level": "install",
+      "crew_size": 2,
+      "equipment_required": ["rake", "screed_board"],
+      "condition": "base_material != 'none'"
+    },
+    {
+      "task_code": "COMPACT_BASE",
+      "description": "Compact base material to 95% density",
+      "hrs_formula": "excavation_area * 0.006",
+      "default_hrs": 1.2,
+      "skill_level": "install",
+      "crew_size": 1,
+      "equipment_required": ["compactor_plate", "water_sprayer"],
+      "condition": "base_material != 'none'"
+    },
+    {
+      "task_code": "FINAL_GRADE_CHECK",
+      "description": "Final grade verification and cleanup",
+      "hrs_formula": "excavation_area * 0.004",
+      "default_hrs": 0.8,
+      "skill_level": "install",
+      "crew_size": 1,
+      "equipment_required": ["transit_level", "grade_rod"]
+    }
+  ],
+  "equipment": [
+    {
+      "equipment_code": "EXCAVATOR_MINI",
+      "description": "Mini excavator for bulk excavation",
+      "usage_formula": "0",
+      "usage_unit": "day",
+      "daily_rate": 350.00,
+      "condition": "excavation_area > 100"
+    },
+    {
+      "equipment_code": "COMPACTOR_PLATE",
+      "description": "Plate compactor for base material",
+      "usage_formula": "0",
+      "usage_unit": "day",
+      "daily_rate": 85.00,
+      "condition": "base_material != 'none' && excavation_area > 50"
+    },
+    {
+      "equipment_code": "CREW_TRUCK_1TON",
+      "description": "Crew truck with tools and equipment",
+      "usage_formula": "0.5",
+      "usage_unit": "day",
+      "daily_rate": 125.00
+    },
+    {
+      "equipment_code": "DUMP_TRUCK_SMALL",
+      "description": "Small dump truck for soil removal",
+      "usage_formula": "0",
+      "usage_unit": "day",
+      "daily_rate": 275.00,
+      "condition": "excavation_area > 100"
+    }
+  ],
+  "validation_expectations": {
+    "required_sections": ["Materials & Equipment", "Labor & Installation"],
+    "required_fields": ["excavation_area", "excavation_depth"],
+    "math_checks": [
+      {
+        "formula": "materials_total + labor_total + equipment_total = subtotal",
+        "tolerance": 0.01,
+        "description": "Subtotal calculation check"
+      }
+    ],
+    "outlier_checks": [
+      {
+        "field": "cost_per_sf",
+        "min_value": 3,
+        "max_value": 25,
+        "warning_message": "Cost per square foot outside typical range ($3-$25)"
+      },
+      {
+        "field": "excavation_depth",
+        "min_value": 6,
+        "max_value": 48,
+        "warning_message": "Excavation depth outside normal range (6-48 inches)"
+      }
+    ],
+    "safety_notes": [
+      "Excavations 5+ feet deep require protective systems",
+      "Call 811 for utility location before excavating",
+      "Competent person required on site for deep excavations",
+      "Daily safety inspections required"
+    ]
+  },
+  "render_hints": {
+    "section_order": ["project_header", "materials_equipment", "labor_installation", "project_totals"],
+    "cost_breakdown": ["material_costs", "labor_costs", "equipment_costs", "disposal_costs"],
+    "notes": [
+      "Excavation to competent soil below topsoil layer",
+      "Base preparation includes proper compaction",
+      "Pricing assumes normal soil conditions",
+      "Additional costs may apply for rock or utility conflicts"
+    ]
+  }
+}

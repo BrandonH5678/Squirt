@@ -1,0 +1,88 @@
+{
+  "template_id": "small_hand_excavation",
+  "category": "excavation",
+  "subcategory": "hand_excavation",
+  "title_format": "Hand Excavation ({excavation_area} sq ft, {excavation_depth} inches deep)",
+  "description": "Small area hand excavation for precise foundation work",
+  "assumptions": [
+    "Hand excavation only - no machinery required",
+    "Normal soil conditions",
+    "Soil disposal on-site",
+    "No base materials included"
+  ],
+  "parameters": {
+    "excavation_area": {
+      "type": "number",
+      "description": "Total area to be excavated in square feet",
+      "default": 25,
+      "unit": "sf",
+      "min": 1,
+      "max": 100
+    },
+    "excavation_depth": {
+      "type": "number",
+      "description": "Excavation depth from grade in inches",
+      "default": 8,
+      "unit": "inches",
+      "min": 2,
+      "max": 24
+    }
+  },
+  "materials": [],
+  "labor": [
+    {
+      "task_code": "HAND_EXCAVATE",
+      "description": "Hand excavation to specified depth and grade",
+      "hrs_formula": "excavation_area * excavation_depth / 12 / 27 * 2.5",
+      "default_hrs": 1.54,
+      "skill_level": "excavation",
+      "crew_size": 1,
+      "equipment_required": ["hand_tools", "wheelbarrow", "level"]
+    },
+    {
+      "task_code": "FINAL_GRADE_CLEANUP",
+      "description": "Final grade verification and site cleanup",
+      "hrs_formula": "excavation_area * 0.004",
+      "default_hrs": 0.1,
+      "skill_level": "maintenance",
+      "crew_size": 1,
+      "equipment_required": ["hand_tools"]
+    }
+  ],
+  "equipment": [
+    {
+      "equipment_code": "CREW_TRUCK_1TON",
+      "description": "Crew truck with tools",
+      "usage_formula": "0.5",
+      "usage_unit": "day",
+      "daily_rate": 125.00
+    }
+  ],
+  "validation_expectations": {
+    "required_sections": ["Labor & Installation", "Equipment"],
+    "required_fields": ["excavation_area", "excavation_depth"],
+    "math_checks": [
+      {
+        "formula": "labor_total + equipment_total = subtotal",
+        "tolerance": 0.01,
+        "description": "Subtotal calculation check"
+      }
+    ],
+    "outlier_checks": [
+      {
+        "field": "cost_per_sf",
+        "min_value": 2,
+        "max_value": 15,
+        "warning_message": "Cost per square foot outside typical range ($2-$15)"
+      }
+    ]
+  },
+  "render_hints": {
+    "section_order": ["project_header", "labor_installation", "equipment", "project_totals"],
+    "notes": [
+      "Hand excavation using 2.5 person-hours per cubic yard",
+      "Soil disposal on-site - no hauling required",
+      "No base materials or machinery included"
+    ]
+  }
+}

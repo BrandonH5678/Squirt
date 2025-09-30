@@ -1,0 +1,25 @@
+{
+  "client": {
+    "name": "Mike Johnson",
+    "address": "456 Oak Street",
+    "city": "Salem",
+    "state": "OR",
+    "zip": "97301",
+    "phone": "(503) 555-7890",
+    "email": "mike.johnson@email.com"
+  },
+  "project": {
+    "name": "Deck Foundation Excavation",
+    "address": "456 Oak Street, Salem, OR 97301",
+    "description": "Area excavation and foundation preparation for new composite deck installation"
+  },
+  "parameters": {
+    "excavation_area": 320,
+    "excavation_depth": 24,
+    "topsoil_depth": 8,
+    "project_type": "deck_patio",
+    "base_material": "crushed_gravel",
+    "demo_required": "minimal",
+    "access_difficulty": "normal"
+  }
+}

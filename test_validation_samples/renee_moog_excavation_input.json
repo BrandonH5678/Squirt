@@ -1,0 +1,25 @@
+{
+  "client": {
+    "name": "Renee Moog",
+    "address": "4149 SE Johnson Creek Blvd",
+    "city": "Milwaukie",
+    "state": "OR",
+    "zip": "97222",
+    "phone": "",
+    "email": ""
+  },
+  "project": {
+    "name": "Rain Catchment System - Foundation Excavation",
+    "address": "4149 SE Johnson Creek Blvd, Milwaukie, OR 97222",
+    "description": "Excavation for IBC tote stand foundation (5' x 5' x 8\" deep)"
+  },
+  "parameters": {
+    "excavation_area": 25,
+    "excavation_depth": 8,
+    "topsoil_depth": 6,
+    "project_type": "general_foundation",
+    "base_material": "none",
+    "demo_required": "none",
+    "access_difficulty": "normal"
+  }
+}

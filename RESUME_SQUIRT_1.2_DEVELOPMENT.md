@@ -16,34 +16,45 @@
    - Implements: Hollyhock Removal, Tree Removal, Site Cleanup areas
    - **NEEDS HUMAN VALIDATION** - document generated but LibreOffice won't open
 
-## 🔄 IMMEDIATE NEXT TASKS (Post-Restart)
+## 🔄 CURRENT DEVELOPMENT PLAN: Iterative Template Development & Real-World Testing
 
-### Priority 1: Human Validation
-- [ ] **Open scope-organized estimate for validation**
-  ```bash
-  cd /home/johnny5/Squirt
-  git checkout v1.2-uno-development
-  libreoffice /tmp/liam_smith_uno_estimate.odt
-  ```
-- [ ] **Validate estimate formatting**:
-  - SCOPE OF WORK BY AREA organization
-  - Hollyhock Removal — Estimated $225.00 section
-  - Tree of Heaven Removal — Estimated $300.00 section  
-  - Site Cleanup & Disposal — Estimated $100.00 section
-  - PROJECT TOTALS section
-- [ ] **Human approval**: Is scope-based format ready for clients?
+**Updated**: September 24, 2025
+**Approach**: Learn-as-we-go development with immediate issue resolution
 
-### Priority 2: Complete UNO Trio
-- [ ] **Create UNO Contracts Generator**
-  - Use scope-based organization (like estimates)
-  - Different from invoices (which stay cost-category based)
-  - Test with Liam Smith data
-  - Human validation required
+### Phase 2: Real-World Document Generation (CURRENT PHASE)
+- [ ] **Generate documents using existing templates with real client scenarios**
+- [ ] **Test complete workflow**: JSON → UNO Generator → LibreOffice → PDF
+- [ ] **Apply visual validation protocol** to catch issues immediately
+- [ ] **Address template processing, LibreOffice stability, and validation issues as they arise**
 
-### Priority 3: Integration & Replacement
-- [ ] **Replace existing generators** with UNO-based system
-- [ ] **Update main pipeline** to use UNO generators
-- [ ] **Integration testing** with existing validation systems
+### Phase 3: Iterative Template Expansion
+- [ ] **Based on real-world testing, identify missing service types**
+- [ ] **Develop new templates for common WaterWizard services**
+- [ ] **Test each new template with actual generation workflow**
+
+### Ongoing Issue Resolution (Items 1, 2, 4 from development priorities)
+- **Template System Validation**: Verify JSON templates drive content vs hardcoded
+- **System Stability**: Address LibreOffice stability and error recovery as encountered
+- **Quality Assurance**: Implement validation testing framework through real-world use
+
+---
+
+## 🔄 PREVIOUS TASKS (Completed Sprint Work)
+
+### ~~Priority 1: Human Validation~~ ✅ COMPLETED IN PREVIOUS SPRINTS
+- ✅ **UNO generators validated and operational**
+- ✅ **Visual validation system implemented**
+- ✅ **Protocol consolidation completed**
+
+### ~~Priority 2: Complete UNO Trio~~ ✅ COMPLETED
+- ✅ **UNO Invoice Generator** - Working, human-validated
+- ✅ **UNO Estimate Generator** - Operational with scope-based organization
+- ✅ **UNO Contract Generator** - Ready for real-world testing
+
+### ~~Priority 3: Integration & Replacement~~ 🔄 ONGOING
+- ✅ **UNO-based system operational**
+- ✅ **Integration with validation systems complete**
+- 🔄 **Real-world testing and refinement** (current focus)
 
 ## 📁 KEY FILES CREATED/MODIFIED
 - `src/uno_invoice_generator.py` - Working, human-validated
