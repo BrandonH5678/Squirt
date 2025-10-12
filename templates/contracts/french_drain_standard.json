@@ -1,0 +1,174 @@
+{
+  "template_id": "french_drain_contract",
+  "template_version": "1.0",
+  "category": "drainage",
+  "subcategory": "french_drain",
+  "template_type": "contract",
+  "title": "French Drain Installation Contract",
+  "description": "Standard contract template for French drain installation projects with excavation, perforated drainage pipe, gravel surround, and surface restoration",
+
+  "required_parameters": [
+    "client_name",
+    "property_address",
+    "drain_length_ew",
+    "drain_length_ns",
+    "trench_dimensions"
+  ],
+
+  "default_values": {
+    "company_info": {
+      "name": "WaterWizard Landscaping",
+      "phone": "(555) 123-4567",
+      "email": "info@waterwizard.com"
+    },
+    "contract_date": "{{today}}",
+    "validity_days": 30,
+    "payment_terms": {
+      "deposit_percent": 50,
+      "balance_due": "upon completion"
+    },
+    "tax_rate": 0.087
+  },
+
+  "scope_template": {
+    "project_description": "French drain installation with excavation, perforated drainage pipe, drain rock surround, and drainage junction connection. Contractor excavates {{trench_dimensions}} trench running approximately {{drain_length_ew}}' from east to west on northern boundary of backyard, and {{drain_length_ns}}' from north to south. Contractor perforates concrete housing of drainage junction, installs French drain with {{rock_size}} drain rock and {{pipe_size}} ADS, draining into existing drainage junction. Contractor disposes of excavation tailings.",
+
+    "scope_items": [
+      "Excavate {{trench_dimensions}} drainage trench (~{{drain_length_ew}}' E-W, {{drain_length_ns}}' N-S)",
+      "Perforate concrete drainage housing at junction point",
+      "Install French drain with perforated {{pipe_size}} ADS pipe",
+      "Surround drain with {{rock_size}} drain rock and weed barrier fabric",
+      "Connect to existing drainage junction with proper fall",
+      "Dispose of excavation tailings offsite"
+    ]
+  },
+
+  "standard_materials": [
+    {
+      "description": "{{rock_size}} drain rock",
+      "unit": "yard",
+      "unit_cost": 55.00,
+      "qty_formula": "ceil(total_drain_length / 40)"
+    },
+    {
+      "description": "{{pipe_size}} ADS Corrugated, perforated drain pipe",
+      "unit": "lf",
+      "unit_cost": 2.00,
+      "qty_formula": "total_drain_length"
+    },
+    {
+      "description": "{{pipe_size}} ADS Tee",
+      "unit": "each",
+      "unit_cost": 15.00,
+      "qty_formula": "1"
+    },
+    {
+      "description": "Weed Barrier, Hanes silver, spun",
+      "unit": "sf",
+      "unit_cost": 0.75,
+      "qty_formula": "total_drain_length"
+    },
+    {
+      "description": "Staples",
+      "unit": "each",
+      "unit_cost": 0.15,
+      "qty_formula": "total_drain_length"
+    }
+  ],
+
+  "standard_equipment": [
+    {
+      "description": "Truck Fee",
+      "cost": 120.00
+    }
+  ],
+
+  "standard_labor": [
+    {
+      "task": "Excavate drainage trench",
+      "rate": 72,
+      "hrs_formula": "total_drain_length * 0.1"
+    },
+    {
+      "task": "Dispose excavation tailings",
+      "rate": 72,
+      "hrs_formula": "max(2.5, total_drain_length * 0.05)"
+    },
+    {
+      "task": "Haul drain rock",
+      "rate": 72,
+      "hrs_formula": "1.0"
+    },
+    {
+      "task": "Place drain rock",
+      "rate": 72,
+      "hrs_formula": "total_drain_length * 0.04"
+    },
+    {
+      "task": "Lay, staple fabric, assemble ADS",
+      "rate": 85,
+      "hrs_formula": "total_drain_length * 0.015"
+    },
+    {
+      "task": "Drill through concrete drainage housing",
+      "rate": 85,
+      "hrs_formula": "1.0"
+    }
+  ],
+
+  "optional_items": {
+    "steel_edging": {
+      "description": "Border Concepts flex steel edging",
+      "enabled_by_default": false,
+      "materials": [
+        {
+          "description": "Border Concepts flex steel, black, 13 gauge, 10'",
+          "unit": "each",
+          "unit_cost": 26.00,
+          "qty_formula": "ceil(edging_length / 10)"
+        },
+        {
+          "description": "Steel stakes, black",
+          "unit": "each",
+          "unit_cost": 3.00,
+          "qty_formula": "edging_length * 0.36"
+        }
+      ],
+      "labor": [
+        {
+          "task": "Install steel edging",
+          "rate": 85,
+          "hrs_formula": "edging_length * 0.05"
+        }
+      ]
+    }
+  },
+
+  "standard_terms": [
+    "Work schedule subject to weather conditions",
+    "Customer responsible for marking underground utilities (call 811 before work begins)",
+    "Changes to scope of work require written authorization and may affect pricing",
+    "Contractor not responsible for damage to unmarked utilities or existing irrigation lines",
+    "Customer grants access to property during project duration"
+  ],
+
+  "calculation_formulas": {
+    "total_drain_length": "drain_length_ew + drain_length_ns",
+    "materials_subtotal": "sum(all_materials.subtotal)",
+    "equipment_subtotal": "sum(all_equipment.cost)",
+    "labor_subtotal": "sum(all_labor.subtotal)",
+    "subtotal": "materials_subtotal + equipment_subtotal + labor_subtotal + optional_items_subtotal",
+    "tax_amount": "subtotal * tax_rate",
+    "total": "subtotal + tax_amount"
+  },
+
+  "usage_notes": [
+    "This template is designed for standard French drain installations",
+    "Adjust pipe size (3\" or 4\") based on drainage volume requirements",
+    "Rock size typically 1.5\" for residential applications",
+    "Labor rates: $72/hr for excavation/general, $85/hr for technical work",
+    "Optional edging can be included for aesthetic finish",
+    "Trench dimensions typically 9\"x9\" for residential, adjust for commercial",
+    "Consider soil conditions when estimating excavation time"
+  ]
+}

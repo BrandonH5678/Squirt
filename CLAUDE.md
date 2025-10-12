@@ -1,10 +1,35 @@
 # Squirt - Claude Code Integration Guide
 
+## 🚨 MANDATORY FIRST STEP - READ THIS BEFORE ALL TASKS
+
+**ZERO TOLERANCE POLICY: Mathematical errors are UNACCEPTABLE in production documents.**
+
+### ALWAYS START WITH THESE VALIDATION STEPS:
+
+**PHASE 0: Source Document Verification (MANDATORY BEFORE ALL DOCUMENT GENERATION):**
+1. **Locate source spreadsheet/document** - Find ODS, CSV, PDF, or JSON source
+2. **Read source values line-by-line** - Extract EXACT quantities, rates, prices
+3. **Verify ALL calculations manually** - Never trust formulas without verification
+4. **Compare totals independently** - Recalculate subtotals and tax independently
+5. **Flag ANY discrepancies immediately** - Stop and ask user before proceeding
+
+**CRITICAL MATH VALIDATION RULES:**
+- ✅ **ALWAYS** convert ODS/Excel to CSV and read exact values
+- ✅ **ALWAYS** verify quantities match source (not template defaults)
+- ✅ **ALWAYS** recalculate all arithmetic independently
+- ✅ **ALWAYS** validate subtotals sum correctly
+- ✅ **ALWAYS** verify tax calculations (rate × subtotal)
+- ✅ **ALWAYS** check final total = subtotal + tax
+- ❌ **NEVER** assume template quantities are correct
+- ❌ **NEVER** skip Equipment section if present in source
+- ❌ **NEVER** modify source values without explicit approval
+- ❌ **NEVER** round differently than source document
+
 ## System Overview
-Squirt is WaterWizard's production AI document automation system that transforms voice memos into professional contracts and invoices in under 5 minutes with zero mathematical errors.
+Squirt is WaterWizard's production AI document automation system that transforms voice memos into professional contracts and invoices in under 5 minutes with **ZERO mathematical errors**.
 
 ## Core Mission
-**Primary Purpose:** Automate WaterWizard business document creation through voice input, maintaining 100% accuracy and professional quality while operating safely on aging hardware with thermal constraints.
+**Primary Purpose:** Automate WaterWizard business document creation through voice input, maintaining **100% mathematical accuracy** and professional quality while operating safely on aging hardware with thermal constraints.
 
 ## Current System Status
 - **Status:** Production Operational ✅
@@ -85,7 +110,15 @@ assert selector.validate_selection(selection), 'Model exceeds constraints'
 - ❌ Voice processing blocking LibreOffice during business hours
 - ❌ Thermal load exceeding safety thresholds
 - ❌ Processing taking >5 minutes for typical voice memos
-- ❌ Mathematical errors in document generation
+- ❌ **MATHEMATICAL ERRORS IN DOCUMENT GENERATION (CRITICAL - ZERO TOLERANCE)**
+
+**MATHEMATICAL ACCURACY VIOLATIONS (ZERO TOLERANCE):**
+- ❌ Using template defaults without verifying source document quantities
+- ❌ Skipping sections that exist in source (e.g., Equipment, Truck Fee)
+- ❌ Incorrect hours/quantities (e.g., 4.0 hrs when source says 4.5 hrs)
+- ❌ Wrong subtotals, tax calculations, or final totals
+- ❌ Generating documents without reading source ODS/CSV line-by-line
+- ❌ Failing to independently verify ALL arithmetic
 
 ### CORRECT IMPLEMENTATION PATTERN
 

@@ -1,0 +1,35 @@
+{
+  "client_name": "Daniel & Elin Whitely",
+  "property_address": "9005 Mt Lassen Ave, Vancouver, WA 98664",
+  "contract_date": "2025-10-07",
+  "template_id": "french_drain_contract",
+  "template_category": "drainage",
+
+  "project_parameters": {
+    "drain_length_ew": 20,
+    "drain_length_ns": 23,
+    "total_drain_length": 43,
+    "trench_dimensions": "9\"x9\"",
+    "rock_size": "1.5\"",
+    "pipe_size": "3\"",
+    "edging_length": 60,
+    "edging_selected": true
+  },
+
+  "company_info": {
+    "name": "WaterWizard Landscaping",
+    "phone": "(503) 555-1234",
+    "email": "info@waterwizard.com",
+    "address": "Vancouver, WA"
+  },
+
+  "payment_terms": {
+    "deposit_percent": 50,
+    "balance_due": "upon completion",
+    "validity_days": 30
+  },
+
+  "tax_rate": 0.087,
+
+  "notes": "Contract includes steel edging option as selected by customer. Edging is integrated into main project totals."
+}

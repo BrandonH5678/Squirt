@@ -13,7 +13,12 @@
       "Read(//home/johnny5/**)",
       "Bash(libreoffice:*)",
       "Bash(soffice:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(xdg-open:*)",
+      "Bash(wmctrl:*)",
+      "Read(//tmp/**)",
+      "Bash(pkill:*)",
+      "Bash(kill:*)"
     ],
     "deny": [],
     "ask": []

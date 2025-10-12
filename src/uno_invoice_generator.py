@@ -90,30 +90,36 @@ class UnoInvoiceGenerator:
             print(f"❌ Failed to create new document: {e}")
             return False
     
-    def generate_invoice(self, client_info: Dict[str, Any], project_info: Dict[str, Any], 
-                        line_items: List[Dict[str, Any]], subtotal: Decimal, 
-                        tax_amount: Decimal, total: Decimal, output_path: str) -> bool:
+    def generate_invoice(self, client_info: Dict[str, Any], project_info: Dict[str, Any],
+                        line_items: List[Dict[str, Any]], subtotal: Decimal,
+                        tax_amount: Decimal, total: Decimal, output_path: str,
+                        deposit_amount: Optional[Decimal] = None) -> bool:
         """Generate professional invoice using UNO API"""
-        
+
         if not self.create_new_document():
             return False
-        
+
         try:
             # Get document text and cursor
             text = self.document.Text
             cursor = text.createTextCursor()
-            
+
             # Set up document formatting
             self._setup_document_styles()
-            
+
             # Generate invoice content in modern professional style
             self._add_invoice_header(cursor, client_info, project_info)
-            self._add_invoice_body(cursor, line_items, subtotal, tax_amount, total)
+            self._add_invoice_body(cursor, line_items, subtotal, tax_amount, total, deposit_amount)
             self._add_invoice_footer(cursor)
-            
+
             # Save document as ODT
             self._save_document_as_odt(output_path)
-            
+
+            # Also save as PDF
+            pdf_path = output_path.replace('.odt', '.pdf')
+            self._save_document_as_pdf(pdf_path)
+            print(f"✅ PDF generated: {pdf_path}")
+
             # Close document
             self.document.close(True)
             self.document = None
@@ -304,29 +310,33 @@ class UnoInvoiceGenerator:
             text.insertString(cursor, f"Date: {date_str}", False)
             text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
     
-    def _add_invoice_body(self, cursor, line_items: List[Dict[str, Any]], 
-                         subtotal: Decimal, tax_amount: Decimal, total: Decimal):
+    def _add_invoice_body(self, cursor, line_items: List[Dict[str, Any]],
+                         subtotal: Decimal, tax_amount: Decimal, total: Decimal,
+                         deposit_amount: Optional[Decimal] = None):
         """Add invoice body with line items in professional table"""
         text = self.document.Text
-        
+
         # Services section header
         text.insertString(cursor, "SERVICES PROVIDED", False)
         cursor.goLeft(len("SERVICES PROVIDED"), True)
         cursor.ParaStyleName = "SectionHeader"
         cursor.gotoEnd(False)
         text.insertControlCharacter(cursor, PARAGRAPH_BREAK, False)
-        
+
         # Create line items table
-        self._add_line_items_table(cursor, line_items, subtotal, tax_amount, total)
+        self._add_line_items_table(cursor, line_items, subtotal, tax_amount, total, deposit_amount)
     
-    def _add_line_items_table(self, cursor, line_items: List[Dict[str, Any]], 
-                             subtotal: Decimal, tax_amount: Decimal, total: Decimal):
+    def _add_line_items_table(self, cursor, line_items: List[Dict[str, Any]],
+                             subtotal: Decimal, tax_amount: Decimal, total: Decimal,
+                             deposit_amount: Optional[Decimal] = None):
         """Create professional line items table"""
         try:
             text = self.document.Text
-            
+
             # Calculate table rows needed
-            row_count = len(line_items) + 5  # Items + header + 3 total rows + blank
+            # Items + header + blank + subtotal + tax + total + deposit + balance
+            base_rows = len(line_items) + 5  # Items + header + blank + subtotal + tax + total
+            row_count = base_rows + (2 if deposit_amount else 0)  # Add 2 rows for deposit + balance if needed
             table = self.document.createInstance("com.sun.star.text.TextTable")
             table.initialize(row_count, 4)  # Description, Qty, Rate, Amount
             
@@ -387,37 +397,52 @@ class UnoInvoiceGenerator:
             
             # Totals section
             total_start_row = len(line_items) + 2
-            
+
             # Blank row
             table.getCellByName(f"A{total_start_row}").setString("")
-            
+
             # Subtotal
             table.getCellByName(f"C{total_start_row + 1}").setString("SUBTOTAL:")
             table.getCellByName(f"D{total_start_row + 1}").setString(f"${subtotal:.2f}")
-            
+
             # Tax
+            current_row = total_start_row + 2
             if tax_amount > 0:
-                table.getCellByName(f"C{total_start_row + 2}").setString("TAX:")
-                table.getCellByName(f"D{total_start_row + 2}").setString(f"${tax_amount:.2f}")
-                total_row = total_start_row + 3
+                table.getCellByName(f"C{current_row}").setString("TAX:")
+                table.getCellByName(f"D{current_row}").setString(f"${tax_amount:.2f}")
             else:
-                table.getCellByName(f"C{total_start_row + 2}").setString("TAX (Oregon - No Sales Tax):")
-                table.getCellByName(f"D{total_start_row + 2}").setString("$0.00")
-                total_row = total_start_row + 3
-            
-            # Total
-            table.getCellByName(f"C{total_row}").setString("TOTAL:")
-            table.getCellByName(f"D{total_row}").setString(f"${total:.2f}")
-            
+                table.getCellByName(f"C{current_row}").setString("TAX (Oregon - No Sales Tax):")
+                table.getCellByName(f"D{current_row}").setString("$0.00")
+
+            # Subtotal + Tax
+            current_row += 1
+            total_before_deposit = subtotal + tax_amount
+            table.getCellByName(f"C{current_row}").setString("TOTAL:")
+            table.getCellByName(f"D{current_row}").setString(f"${total_before_deposit:.2f}")
+
+            # Deposit (if applicable)
+            if deposit_amount:
+                current_row += 1
+                table.getCellByName(f"C{current_row}").setString("DEPOSIT PAID:")
+                table.getCellByName(f"D{current_row}").setString(f"-${deposit_amount:.2f}")
+
+                # Balance Due
+                current_row += 1
+                table.getCellByName(f"C{current_row}").setString("BALANCE DUE:")
+                table.getCellByName(f"D{current_row}").setString(f"${total:.2f}")
+                final_row = current_row
+            else:
+                final_row = current_row
+
             # Style totals section
-            for row in range(total_start_row + 1, total_row + 1):
+            for row in range(total_start_row + 1, final_row + 1):
                 for col in ['C', 'D']:
                     cell = table.getCellByName(f"{col}{row}")
                     cell_cursor = cell.createTextCursor()
                     cell_cursor.CharWeight = 150  # Bold
                     cell_cursor.ParaAdjust = 2  # Right alignment
-                    
-                    if row == total_row:  # Final total row
+
+                    if row == final_row:  # Final total/balance row
                         cell_cursor.CharColor = 0x0066CC
                         try:
                             cell.setPropertyValue("TopBorder", 1)
@@ -495,16 +520,36 @@ class UnoInvoiceGenerator:
                 PropertyValue("FilterName", 0, "writer8", 0),
                 PropertyValue("Overwrite", 0, True, 0)
             )
-            
+
             # Convert path to URL format
             if not output_path.startswith("file://"):
                 output_path = f"file://{os.path.abspath(output_path)}"
-            
+
             # Save document
             self.document.storeAsURL(output_path, save_props)
-            
+
         except Exception as e:
             print(f"❌ Failed to save document: {e}")
+            raise
+
+    def _save_document_as_pdf(self, output_path: str):
+        """Save document as PDF file"""
+        try:
+            # Prepare PDF save properties
+            save_props = (
+                PropertyValue("FilterName", 0, "writer_pdf_Export", 0),
+                PropertyValue("Overwrite", 0, True, 0)
+            )
+
+            # Convert path to URL format
+            if not output_path.startswith("file://"):
+                output_path = f"file://{os.path.abspath(output_path)}"
+
+            # Save document as PDF
+            self.document.storeToURL(output_path, save_props)
+
+        except Exception as e:
+            print(f"❌ Failed to save PDF: {e}")
             raise
     
     def close_connection(self):

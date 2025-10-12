@@ -7,6 +7,35 @@
 
 ## 🚨 CRITICAL SYSTEM ALERTS
 
+### 🛑 ZERO TOLERANCE POLICY: MATHEMATICAL ACCURACY
+
+**BEFORE GENERATING ANY DOCUMENT - MANDATORY VALIDATION:**
+1. **Locate source document** (ODS, CSV, PDF with tables)
+2. **Convert ODS to CSV** if needed: `libreoffice --headless --convert-to csv file.ods --outdir /tmp`
+3. **Read CSV line-by-line** - Extract EXACT values
+4. **Verify ALL quantities** - Compare source vs template defaults
+5. **Recalculate ALL arithmetic** - Independent verification required
+6. **Validate totals** - Materials + Equipment + Labor + Options = Subtotal
+7. **Verify tax** - Subtotal × tax_rate = tax_amount
+8. **Confirm final total** - Subtotal + tax = Total
+
+**CRITICAL VALIDATION CHECKLIST:**
+- [ ] Source document located and read
+- [ ] All quantities match source exactly
+- [ ] All rates match source exactly
+- [ ] All sections from source included (Materials, Equipment, Labor, Options)
+- [ ] Subtotals calculated and verified independently
+- [ ] Tax calculation verified (rate × subtotal)
+- [ ] Final total verified (subtotal + tax)
+- [ ] Deposit calculation verified (if applicable)
+
+**❌ COMMON ERRORS TO AVOID:**
+- Assuming template quantities are correct
+- Skipping Equipment section when it exists in source
+- Using wrong hours (e.g., 4.0 instead of 4.5)
+- Missing optional items that customer selected
+- Incorrect subtotals or tax calculations
+
 ### Current System Status: VOICE PROCESSING INTEGRATION OPERATIONAL ✅
 - **UNO Generator:** Successfully processes JSON templates with formula evaluation
 - **Template Library:** JSON files are now properly processed by generator
@@ -17,9 +46,11 @@
 - **Content Extraction:** Advanced NLP parsing with 85%+ accuracy for client info extraction
 - **Business Hours Coordination:** Voice processing yields to LibreOffice during 6am-7pm Mon-Fri
 - **Thermal Safety:** Automatic monitoring and protection for 2012 Mac Mini hardware
-- **Last Updated:** 2025-11-27 - VOICE PROCESSING INTEGRATION COMPLETED
+- **⚠️ MATHEMATICAL ACCURACY:** ZERO TOLERANCE - 100% accuracy required for all calculations
+- **Last Updated:** 2025-10-07 - MATHEMATICAL VALIDATION PROTOCOLS ENFORCED
 
 **✅ Voice memo → professional document workflow operational - 95% time reduction achieved**
+**✅ Zero mathematical errors enforced through mandatory validation protocols**
 
 ---
 
@@ -175,10 +206,21 @@ gnome-screenshot -f /home/johnny5/Squirt/validation_screenshots/dialog_$(date +%
 ### Quality Standards
 - **Voice Transcription:** 85%+ (fast mode), 95%+ (accurate mode)
 - **Content Extraction:** 80%+ client names, 90%+ amounts, 95%+ service categorization
-- **Mathematical Accuracy:** 100% - zero calculation errors
+- **Mathematical Accuracy:** 100% - ZERO calculation errors (ZERO TOLERANCE POLICY)
+- **Source Document Fidelity:** 100% - ALL values must match source exactly
 - **Template Usage:** 100% - templates must drive content
 - **Professional Formatting:** 95%+ visual quality score
 - **Tax Compliance:** 100% - state rules correctly applied
+
+### Mathematical Accuracy Protocol (MANDATORY)
+**Before ANY document generation:**
+1. Convert source ODS to CSV: `libreoffice --headless --convert-to csv source.ods --outdir /tmp`
+2. Read CSV line-by-line to extract exact values
+3. Create verification table comparing source vs generated values
+4. Calculate all subtotals independently
+5. Verify tax calculation: subtotal × rate
+6. Verify final total: subtotal + tax
+7. Document validation in generation script comments
 
 ### Consistency Metrics
 - **Protocol Compliance:** 95%+ adherence to all procedures
