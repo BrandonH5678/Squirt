@@ -1,0 +1,53 @@
+# Retaining Wall Design Template
+# For WaterWizard retaining wall and grade change solutions
+
+name: "Retaining Wall Design"
+description: "Professional retaining wall visualization"
+
+base_prompt: |
+  Professional landscape architecture rendering, {material} retaining wall,
+  {height} height, {length} length, {style} style,
+  {cap_type} cap treatment, {planting} integrated planting,
+  realistic lighting and textures, high quality visualization
+
+parameters:
+  material:
+    type: string
+    description: "Wall material"
+  height:
+    type: string
+    description: "Wall height"
+  length:
+    type: string
+    description: "Approximate length"
+  style:
+    type: string
+    description: "Wall style"
+  cap_type:
+    type: string
+    description: "Cap/top treatment"
+  planting:
+    type: string
+    description: "Integrated planting approach"
+
+constraints:
+  material:
+    enum: ["segmental block", "natural stone", "boulder", "timber", "poured concrete", "gabion"]
+  height:
+    enum: ["2 feet", "3 feet", "4 feet", "6 feet", "8 feet"]
+  style:
+    enum: ["straight", "curved", "terraced", "stepped", "serpentine"]
+  cap_type:
+    enum: ["flat cap", "rounded cap", "natural stone cap", "planter cap", "no cap"]
+  planting:
+    enum: ["cascading plants", "top planting", "pocket planting", "none", "vine coverage"]
+
+style_modifiers:
+  - "photorealistic"
+  - "architectural rendering"
+  - "construction detail"
+  - "landscape context"
+
+negative_prompt: |
+  collapsing, poor construction, unrealistic materials,
+  floating blocks, bad shadows, artificial look

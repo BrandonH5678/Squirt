@@ -1,0 +1,57 @@
+# Landscape Overview Template
+# For WaterWizard complete property visualization
+
+name: "Landscape Overview"
+description: "Complete property landscape visualization"
+
+base_prompt: |
+  Professional landscape design rendering, {view_type} view,
+  {property_size} property, {style} landscape style,
+  featuring {primary_element} as focal point,
+  {lawn_type} lawn area, {hardscape} hardscape elements,
+  natural outdoor lighting, high quality architectural visualization
+
+parameters:
+  view_type:
+    type: string
+    description: "Viewing perspective"
+  property_size:
+    type: string
+    description: "Property size category"
+  style:
+    type: string
+    description: "Overall landscape style"
+  primary_element:
+    type: string
+    description: "Main focal element"
+  lawn_type:
+    type: string
+    description: "Lawn/turf approach"
+  hardscape:
+    type: string
+    description: "Primary hardscape features"
+
+constraints:
+  view_type:
+    enum: ["aerial", "eye-level", "elevated perspective", "3D model", "plan view"]
+  property_size:
+    enum: ["small urban lot", "suburban quarter acre", "half acre", "one acre plus", "estate"]
+  style:
+    enum: ["contemporary", "traditional", "cottage", "desert modern", "Mediterranean", "Pacific Northwest"]
+  primary_element:
+    enum: ["pool area", "outdoor living", "garden beds", "water feature", "lawn", "mature trees"]
+  lawn_type:
+    enum: ["full lawn", "reduced lawn", "lawn-free", "artificial turf", "meadow"]
+  hardscape:
+    enum: ["patio and paths", "driveway focus", "pool deck", "entertainment area", "minimal"]
+
+style_modifiers:
+  - "photorealistic"
+  - "architectural rendering"
+  - "magazine quality"
+  - "drone photography style"
+  - "golden hour lighting"
+
+negative_prompt: |
+  blurry, low quality, unrealistic scale, floating elements,
+  poor perspective, artificial look, bad shadows, CGI appearance

@@ -1,0 +1,50 @@
+# Drainage Solution Template
+# For WaterWizard drainage and grading visualizations
+
+name: "Drainage Solution Design"
+description: "Professional drainage system visualization"
+
+base_prompt: |
+  Professional landscape engineering rendering, {solution_type} drainage solution,
+  {style} implementation style, handling {water_volume} water volume,
+  {surface_treatment} surface treatment, {integration} landscape integration,
+  technical accuracy, high quality visualization
+
+parameters:
+  solution_type:
+    type: string
+    description: "Type of drainage solution"
+  style:
+    type: string
+    description: "Implementation approach"
+  water_volume:
+    type: string
+    description: "Expected water handling"
+  surface_treatment:
+    type: string
+    description: "Surface finish"
+  integration:
+    type: string
+    description: "How it integrates with landscape"
+
+constraints:
+  solution_type:
+    enum: ["french drain", "dry creek bed", "rain garden", "swale", "channel drain", "permeable paving"]
+  style:
+    enum: ["visible decorative", "hidden functional", "naturalistic", "engineered", "hybrid"]
+  water_volume:
+    enum: ["light runoff", "moderate drainage", "heavy flow", "flood management"]
+  surface_treatment:
+    enum: ["river rock", "gravel", "plants", "concrete channel", "grate covered"]
+  integration:
+    enum: ["garden feature", "hidden utility", "path integration", "lawn edge", "standalone"]
+
+style_modifiers:
+  - "technical diagram"
+  - "photorealistic"
+  - "cross-section view"
+  - "landscape context"
+
+negative_prompt: |
+  flooding, standing water, erosion, poor grading,
+  unrealistic water flow, bad drainage pattern

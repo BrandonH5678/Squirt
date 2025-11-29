@@ -1,0 +1,56 @@
+# Outdoor Kitchen Template
+# For WaterWizard outdoor kitchen and cooking area designs
+
+name: "Outdoor Kitchen Design"
+description: "Professional outdoor kitchen and cooking area visualization"
+
+base_prompt: |
+  Professional landscape architecture rendering, outdoor kitchen design,
+  {counter_material} countertops, {appliances} appliances,
+  {structure_type} structure, {size} cooking area,
+  {seating} seating arrangement, {style} design style,
+  natural lighting, photorealistic quality
+
+parameters:
+  counter_material:
+    type: string
+    description: "Countertop material"
+  appliances:
+    type: string
+    description: "Primary appliances included"
+  structure_type:
+    type: string
+    description: "Covering structure"
+  size:
+    type: string
+    description: "Kitchen size"
+  seating:
+    type: string
+    description: "Seating arrangement"
+  style:
+    type: string
+    description: "Design aesthetic"
+
+constraints:
+  counter_material:
+    enum: ["granite", "concrete", "tile", "stainless steel", "natural stone"]
+  appliances:
+    enum: ["built-in grill", "full kitchen", "pizza oven", "smoker setup", "grill and sink"]
+  structure_type:
+    enum: ["pergola covered", "roof structure", "open air", "partial cover", "gazebo"]
+  size:
+    enum: ["compact", "standard", "large", "full outdoor kitchen"]
+  seating:
+    enum: ["bar seating", "dining table", "lounge area", "mixed seating", "counter only"]
+  style:
+    enum: ["modern", "rustic", "Mediterranean", "contemporary", "tropical"]
+
+style_modifiers:
+  - "photorealistic"
+  - "evening ambiance"
+  - "lifestyle photography"
+  - "architectural rendering"
+
+negative_prompt: |
+  blurry, low quality, unrealistic materials, poor proportions,
+  indoor kitchen, artificial lighting only, CGI look

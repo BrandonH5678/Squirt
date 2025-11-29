@@ -1,0 +1,56 @@
+# Plant Selection Visualization Template
+# For WaterWizard plant palette presentations
+
+name: "Plant Selection Visualization"
+description: "Professional plant palette and selection visualization"
+
+base_prompt: |
+  Professional botanical visualization, {plant_type} plant selection,
+  {arrangement} arrangement style, {color_scheme} color palette,
+  {season} seasonal interest, {size_range} plant sizes,
+  {style} garden style, high quality botanical rendering
+
+parameters:
+  plant_type:
+    type: string
+    description: "Primary plant category"
+  arrangement:
+    type: string
+    description: "Visualization arrangement"
+  color_scheme:
+    type: string
+    description: "Color palette approach"
+  season:
+    type: string
+    description: "Featured season"
+  size_range:
+    type: string
+    description: "Plant size range"
+  style:
+    type: string
+    description: "Garden style"
+
+constraints:
+  plant_type:
+    enum: ["perennials", "shrubs", "trees", "ornamental grasses", "succulents", "mixed palette"]
+  arrangement:
+    enum: ["grid layout", "naturalistic grouping", "height gradient", "color blocks", "specimen display"]
+  color_scheme:
+    enum: ["cool tones", "warm tones", "monochromatic", "complementary", "seasonal color", "foliage focus"]
+  season:
+    enum: ["spring bloom", "summer peak", "fall color", "winter interest", "year-round"]
+  size_range:
+    enum: ["groundcover to medium", "medium to large", "full range", "accent sizes", "specimen scale"]
+  style:
+    enum: ["cottage", "modern", "native", "tropical", "Mediterranean", "woodland"]
+
+style_modifiers:
+  - "botanical illustration"
+  - "photorealistic"
+  - "catalog style"
+  - "garden context"
+  - "white background"
+
+negative_prompt: |
+  wilting plants, dead foliage, unrealistic colors,
+  artificial plants, poor botanical accuracy, blurry

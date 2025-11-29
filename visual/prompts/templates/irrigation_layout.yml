@@ -1,0 +1,56 @@
+# Irrigation System Layout Template
+# For WaterWizard landscaping irrigation designs
+
+name: "Irrigation System Layout"
+description: "Professional irrigation system rendering with zone coverage"
+
+base_prompt: |
+  Professional landscape architecture rendering, overhead view,
+  irrigation system layout, {num_zones} zones,
+  {head_type} sprinkler heads, {spacing} spacing,
+  {coverage_type} coverage pattern, {property_size} property,
+  clean technical diagram, {style}
+
+parameters:
+  num_zones:
+    type: integer
+    description: "Number of irrigation zones"
+  head_type:
+    type: string
+    description: "Type of sprinkler heads"
+  spacing:
+    type: string
+    description: "Spacing between heads"
+  coverage_type:
+    type: string
+    description: "Coverage pattern type"
+  property_size:
+    type: string
+    description: "Property size description"
+  style:
+    type: string
+    description: "Rendering style"
+
+constraints:
+  num_zones:
+    min: 1
+    max: 20
+  head_type:
+    enum: ["rotary", "spray", "drip", "mixed"]
+  spacing:
+    enum: ["5 feet", "10 feet", "15 feet", "20 feet"]
+  coverage_type:
+    enum: ["full", "partial", "corners", "perimeter"]
+  style:
+    enum: ["technical", "photorealistic", "architectural"]
+
+style_modifiers:
+  - "technical"
+  - "photorealistic"
+  - "architectural"
+  - "blueprint"
+  - "color-coded"
+
+negative_prompt: |
+  blurry, low quality, messy, unclear, pixelated,
+  incorrect scale, unrealistic placement, poor lighting

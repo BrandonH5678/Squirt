@@ -1,0 +1,53 @@
+# Garden Bed Design Template
+# For WaterWizard planting bed visualizations
+
+name: "Garden Bed Design"
+description: "Professional garden and planting bed visualization"
+
+base_prompt: |
+  Professional landscape design rendering, {bed_type} garden bed,
+  {plant_style} planting style, {size} area, {border_type} border,
+  {season} season appearance, {mulch_type} mulch,
+  natural lighting, photorealistic quality
+
+parameters:
+  bed_type:
+    type: string
+    description: "Type of garden bed"
+  plant_style:
+    type: string
+    description: "Planting arrangement style"
+  size:
+    type: string
+    description: "Bed size"
+  border_type:
+    type: string
+    description: "Border/edging type"
+  season:
+    type: string
+    description: "Seasonal appearance"
+  mulch_type:
+    type: string
+    description: "Ground cover/mulch type"
+
+constraints:
+  bed_type:
+    enum: ["flower bed", "shrub border", "mixed perennial", "native planting", "xeriscape", "tropical"]
+  plant_style:
+    enum: ["formal", "cottage", "naturalistic", "layered", "mass planting", "specimen"]
+  border_type:
+    enum: ["stone edging", "metal edging", "brick", "natural edge", "timber", "none"]
+  season:
+    enum: ["spring", "summer", "fall", "winter", "year-round"]
+  mulch_type:
+    enum: ["wood mulch", "river rock", "decomposed granite", "ground cover plants", "pine straw"]
+
+style_modifiers:
+  - "photorealistic"
+  - "botanical illustration"
+  - "landscape photography"
+  - "garden magazine quality"
+
+negative_prompt: |
+  dead plants, wilting, artificial flowers, plastic looking,
+  poor color, unrealistic growth, floating plants

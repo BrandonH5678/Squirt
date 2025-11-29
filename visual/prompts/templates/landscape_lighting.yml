@@ -1,0 +1,51 @@
+# Landscape Lighting Plan Template
+# For WaterWizard outdoor lighting designs
+
+name: "Landscape Lighting Plan"
+description: "Professional outdoor lighting design visualization"
+
+base_prompt: |
+  Professional landscape lighting design, {time} scene,
+  {fixture_type} fixtures, {lighting_style} lighting style,
+  illuminating {focus_area}, {num_fixtures} light fixtures,
+  warm ambient glow, high quality visualization
+
+parameters:
+  time:
+    type: string
+    description: "Time of day for scene"
+  fixture_type:
+    type: string
+    description: "Type of lighting fixtures"
+  lighting_style:
+    type: string
+    description: "Overall lighting approach"
+  focus_area:
+    type: string
+    description: "Primary area to illuminate"
+  num_fixtures:
+    type: integer
+    description: "Approximate number of fixtures"
+
+constraints:
+  time:
+    enum: ["dusk", "evening", "night"]
+  fixture_type:
+    enum: ["path lights", "spotlights", "well lights", "string lights", "bollard lights", "wall sconces"]
+  lighting_style:
+    enum: ["ambient", "accent", "task", "security", "decorative", "layered"]
+  focus_area:
+    enum: ["pathway", "garden beds", "trees", "water feature", "architectural", "entertaining area"]
+  num_fixtures:
+    min: 3
+    max: 50
+
+style_modifiers:
+  - "photorealistic"
+  - "dramatic lighting"
+  - "warm tones"
+  - "professional rendering"
+
+negative_prompt: |
+  daytime, harsh lighting, unrealistic glow, light bleeding,
+  poor shadows, artificial look, overexposed

@@ -1,0 +1,48 @@
+# Deck Concept Template
+# For WaterWizard deck and outdoor living space designs
+
+name: "Deck Concept Design"
+description: "Professional deck and outdoor living space rendering"
+
+base_prompt: |
+  Professional architectural visualization, {material} deck design,
+  {size} dimensions, {features} features included,
+  {style} design style, {railing_type} railing,
+  natural outdoor lighting, photorealistic, high quality
+
+parameters:
+  material:
+    type: string
+    description: "Deck material"
+  size:
+    type: string
+    description: "Deck size"
+  features:
+    type: string
+    description: "Special features"
+  style:
+    type: string
+    description: "Design aesthetic"
+  railing_type:
+    type: string
+    description: "Railing style"
+
+constraints:
+  material:
+    enum: ["wood", "composite", "PVC", "aluminum"]
+  features:
+    enum: ["multi-level", "built-in seating", "planters", "pergola", "stairs"]
+  style:
+    enum: ["modern", "traditional", "craftsman", "contemporary"]
+  railing_type:
+    enum: ["wood", "metal", "glass", "cable", "composite"]
+
+style_modifiers:
+  - "photorealistic"
+  - "professional rendering"
+  - "landscape photography"
+  - "natural lighting"
+
+negative_prompt: |
+  blurry, low quality, unrealistic materials, poor proportions,
+  bad perspective, artificial lighting, CGI look

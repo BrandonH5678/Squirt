@@ -1,0 +1,60 @@
+# Fire Feature Template
+# For WaterWizard fire pit and fireplace designs
+
+name: "Fire Feature Design"
+description: "Professional fire pit and outdoor fireplace visualization"
+
+base_prompt: |
+  Professional landscape design rendering, {feature_type} fire feature,
+  {material} construction, {size} size, {shape} shape,
+  {fuel_type} fuel source, {seating_arrangement} seating,
+  {time} atmosphere, warm ambient lighting
+
+parameters:
+  feature_type:
+    type: string
+    description: "Type of fire feature"
+  material:
+    type: string
+    description: "Construction material"
+  size:
+    type: string
+    description: "Feature size"
+  shape:
+    type: string
+    description: "Feature shape"
+  fuel_type:
+    type: string
+    description: "Fuel source"
+  seating_arrangement:
+    type: string
+    description: "Seating layout"
+  time:
+    type: string
+    description: "Time of day"
+
+constraints:
+  feature_type:
+    enum: ["fire pit", "outdoor fireplace", "fire table", "fire bowl", "linear fire feature"]
+  material:
+    enum: ["stone", "concrete", "metal", "brick", "stucco"]
+  size:
+    enum: ["intimate", "medium gathering", "large entertainment", "statement piece"]
+  shape:
+    enum: ["round", "square", "rectangular", "custom", "linear"]
+  fuel_type:
+    enum: ["wood burning", "natural gas", "propane", "ethanol"]
+  seating_arrangement:
+    enum: ["built-in bench", "adirondack chairs", "sectional seating", "mixed seating", "none"]
+  time:
+    enum: ["evening", "dusk", "night"]
+
+style_modifiers:
+  - "photorealistic"
+  - "dramatic lighting"
+  - "cozy atmosphere"
+  - "magazine quality"
+
+negative_prompt: |
+  daytime harsh light, no fire, unrealistic flames,
+  poor shadows, artificial look, safety hazards

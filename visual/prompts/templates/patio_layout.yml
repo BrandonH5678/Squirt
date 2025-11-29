@@ -1,0 +1,54 @@
+# Patio and Paver Layout Template
+# For WaterWizard hardscape patio designs
+
+name: "Patio Layout Design"
+description: "Professional patio and paver layout visualization"
+
+base_prompt: |
+  Professional landscape architecture rendering, {material} patio,
+  {pattern} pattern, {size} area, {shape} shape,
+  {edge_treatment} edge treatment, {furniture} furniture arrangement,
+  natural outdoor lighting, photorealistic quality
+
+parameters:
+  material:
+    type: string
+    description: "Paver or patio material"
+  pattern:
+    type: string
+    description: "Laying pattern"
+  size:
+    type: string
+    description: "Approximate area"
+  shape:
+    type: string
+    description: "Patio shape"
+  edge_treatment:
+    type: string
+    description: "Edge finishing style"
+  furniture:
+    type: string
+    description: "Furniture arrangement"
+
+constraints:
+  material:
+    enum: ["concrete pavers", "brick", "natural stone", "flagstone", "travertine", "stamped concrete"]
+  pattern:
+    enum: ["herringbone", "running bond", "basketweave", "random", "circular", "linear"]
+  shape:
+    enum: ["rectangular", "square", "curved", "circular", "L-shaped", "irregular"]
+  edge_treatment:
+    enum: ["soldier course", "flush", "raised border", "natural stone edge", "metal edging"]
+  furniture:
+    enum: ["dining set", "lounge seating", "fire pit area", "outdoor kitchen", "minimal"]
+
+style_modifiers:
+  - "photorealistic"
+  - "architectural"
+  - "overhead view"
+  - "perspective view"
+  - "sunset lighting"
+
+negative_prompt: |
+  blurry, low quality, unrealistic patterns, floating pavers,
+  poor perspective, artificial colors, bad proportions

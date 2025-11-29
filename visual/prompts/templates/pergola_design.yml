@@ -1,0 +1,47 @@
+# Pergola Design Template
+# For WaterWizard pergola and shade structure designs
+
+name: "Pergola Design Concept"
+description: "Pergola and shade structure visualization"
+
+base_prompt: |
+  Professional architectural rendering, {material} pergola design,
+  {dimensions} dimensions, {style} style, {roof_type} roof structure,
+  {location} setting, natural lighting, high detail, 4k quality
+
+parameters:
+  material:
+    type: string
+    description: "Primary construction material"
+  dimensions:
+    type: string
+    description: "Pergola dimensions"
+  style:
+    type: string
+    description: "Design style"
+  roof_type:
+    type: string
+    description: "Roof structure type"
+  location:
+    type: string
+    description: "Installation location"
+
+constraints:
+  material:
+    enum: ["wood", "metal", "composite", "vinyl"]
+  style:
+    enum: ["modern", "traditional", "rustic", "Mediterranean", "Asian"]
+  roof_type:
+    enum: ["open slat", "louvered", "covered", "retractable", "lattice"]
+  location:
+    enum: ["backyard", "patio", "deck", "poolside", "garden"]
+
+style_modifiers:
+  - "photorealistic"
+  - "architectural rendering"
+  - "professional photography"
+  - "magazine quality"
+
+negative_prompt: |
+  blurry, low resolution, amateur, poor construction,
+  unrealistic proportions, bad lighting, distorted

@@ -1,0 +1,55 @@
+# Water Feature Design Template
+# For WaterWizard water feature and pool visualizations
+
+name: "Water Feature Design"
+description: "Professional water feature and pond visualization"
+
+base_prompt: |
+  Professional landscape design rendering, {feature_type} water feature,
+  {size} size, {material} construction, {style} style,
+  {water_effect} water effect, {surrounding} surrounding landscape,
+  natural lighting, photorealistic quality
+
+parameters:
+  feature_type:
+    type: string
+    description: "Type of water feature"
+  size:
+    type: string
+    description: "Feature size"
+  material:
+    type: string
+    description: "Construction material"
+  style:
+    type: string
+    description: "Design style"
+  water_effect:
+    type: string
+    description: "Water movement type"
+  surrounding:
+    type: string
+    description: "Surrounding landscape"
+
+constraints:
+  feature_type:
+    enum: ["fountain", "pond", "waterfall", "stream", "pondless waterfall", "spillway"]
+  size:
+    enum: ["small accent", "medium focal point", "large feature", "estate scale"]
+  material:
+    enum: ["natural stone", "concrete", "fiberglass", "copper", "stainless steel"]
+  style:
+    enum: ["naturalistic", "modern", "formal", "Japanese", "Mediterranean", "contemporary"]
+  water_effect:
+    enum: ["still water", "bubbling", "cascading", "flowing", "jets", "rain curtain"]
+  surrounding:
+    enum: ["rock garden", "tropical plants", "native plants", "formal hedges", "mixed perennials"]
+
+style_modifiers:
+  - "photorealistic"
+  - "garden photography"
+  - "magazine quality"
+  - "dramatic lighting"
+
+negative_prompt: |
+  dry, no water, unrealistic water, plastic looking,
+  poor reflections, artificial plants, bad perspective

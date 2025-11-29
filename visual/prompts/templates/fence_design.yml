@@ -1,0 +1,48 @@
+# Fence and Privacy Screen Template
+# For WaterWizard fencing and privacy solutions
+
+name: "Fence Design"
+description: "Professional fence and privacy screen visualization"
+
+base_prompt: |
+  Professional landscape visualization, {material} fence design,
+  {height} height, {style} style, {feature} feature,
+  {length} total length, realistic outdoor lighting,
+  high quality architectural rendering
+
+parameters:
+  material:
+    type: string
+    description: "Fence material"
+  height:
+    type: string
+    description: "Fence height"
+  style:
+    type: string
+    description: "Fence style"
+  feature:
+    type: string
+    description: "Special features"
+  length:
+    type: string
+    description: "Approximate length"
+
+constraints:
+  material:
+    enum: ["wood", "vinyl", "aluminum", "chain-link", "composite", "wrought iron"]
+  height:
+    enum: ["3 feet", "4 feet", "6 feet", "8 feet"]
+  style:
+    enum: ["privacy", "picket", "split rail", "ornamental", "horizontal slat", "lattice"]
+  feature:
+    enum: ["gate", "decorative post caps", "lattice top", "planter boxes", "lighting"]
+
+style_modifiers:
+  - "photorealistic"
+  - "professional rendering"
+  - "natural lighting"
+  - "landscape context"
+
+negative_prompt: |
+  blurry, low quality, unrealistic materials, poor construction,
+  floating elements, bad shadows, artificial look
